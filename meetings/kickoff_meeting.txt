@@ -1,0 +1,11 @@
+Stefan's Tips:
+ - wöchentliche Meetings
+ - keine dummen Fragen
+ - gute Planung -> Packete definieren
+ 
+Todo:
+ - Meetings mit Stefan Neuhaus definieren
+ 
+ Tools:
+ - via git auf codeberg repo unterhalten
+ - Arbeit (mit Word) auf Teams unterhalten

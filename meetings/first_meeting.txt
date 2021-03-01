@@ -1,0 +1,21 @@
+open source DIVA.EXCHANGE -> sonst niemand
+angewiesen auf Spenden
+oft Zusammenarbeit mit Hochschulen
+
+Aufgabenstelung:
+Teststand um Angriffe simulieren -> Vertauen erhöhen
+keinen Formalen Beweis zur Sicherheit
+praktischer Teil: Vertrauenserhöhung durch abgewiesene Angriffe
+
+DIVA:
+transparenz, möchte Teststand, App im Moment noch in der Alpha Phase
+fokussieren auf Netzwerkprobleme und Sicherheit
+kreative Sicherheitsfragen angehen
+
+Ablauf:
+Explorationsphase (DIVA und Testnetzwerke verstehen -> https://testnet.diva.exchange/, https://drive.google.com/file/d/1JUZei_XUEc3b6hJ83srQEw6yUeXbpIaz/view)
+Thread Model erstellen (DFD)
+mit STRIDE Bedrohungen finden
+vertikaler Use Case (einfaches Netzwerk aufsetzten und austesten)
+danach Netzwerk erweitern (skalieren)
+schlussendlich aufzeigen was gemacht worden ist, was man noch machen könnte
