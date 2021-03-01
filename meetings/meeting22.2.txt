@@ -1,0 +1,20 @@
+
+All
+---------------
+-Meetings wurden festgelegt. Montag 9:30 - 10:00 mit Carolyn und Konrad | Donnerstag 9:30 - 10:00 mit Carolyn Konrad und Stephan.
+-Es wurde entschieden, dass Sascha die Meetings in zukunft technisch organisiert und 30 Minuten vor Meeting die Links zum Meeting per E-Mail versendet.
+-Es wurde der Fokus auf den storage-layer besprochen, da Angriffe auf lokale Applikation wenig Sinn machen.
+-Ein Termin für die Präsentation wurde besprochen. Da dieser aber stark von der Zhaw abhängig ist, wurde beschlossen abzuwarten. Levi und Sascha sollen in der Zwischenzeit aufmerksam beobachten ob die Hochschulleitung die Studenten genauer informiert.
+-Die Bewertung der BA wurde besprochen. Teilhaben an der Bewertung werden drei Parteien. Betreuer, DIVA.EXCHANGE und Experte der ZHAW.
+-Der Zeitplan wurde in einem ersten Schritt vorgestellt und bestätigt.
+-Ein Protokoll mit Schwerpunkt auf gemeinsame Abmachungen und Entscheidungen wurde angekündigt.
+
+
+
+Students
+---------------
+-Repo aufsetzen.
+-Einlesen.
+-Fragen übere Telegram oder Mail stellen.
+-Plan (von der Zhaw) für den Aufbau des Dokuments zur weiteren Besprechung Montags aussuchen.
+

@@ -1,0 +1,14 @@
+All
+---------------
+-Meetings wurden festgelegt. Montag 9:30 - 10:00 mit Carolyn und Konrad | Donnerstag 9:30 - 10:00 mit Carolyn Konrad und Stephan.
+-Die Quellen der Arbeit werden auf einer Liste im Repository für alle festgehalten.
+-Es wurde ermöglicht ein Repo auf Codeberg unter DIVA.EXCHANGE zu erstellen.
+-Der Plan für den Aufbau des Dokuments wird Stephan per Mail zugesendet und eventuell Donnerstag kurz zusammen angesehen.
+
+
+Students
+---------------
+-Repo aufsetzen.
+-Recherche
+-Fragen übere Telegram oder Mail stellen.
+-Plan (von der Zhaw) für den Aufbau des Dokuments zur prüfung versenden.
