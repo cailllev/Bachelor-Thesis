@@ -1,0 +1,10 @@
+All
+---------------
+-Fragen zur API wurden beantwortet. Dev-Branch soll hauptsächlich verwendet werden.
+-Problem mit der anzusteuernden IP für das Testnetzwerk wurden besprochen. http://172.29.101.100:3920/
+-Byzantinische Fehlertoleranz wurde besprochen, da sie in zusammenhang mit hyperledger iroha eine Schwachstelle offenbaren könnte.
+
+
+Students
+---------------
+-Nächste Woche beginn des Schreibprozesses Einleitung.
