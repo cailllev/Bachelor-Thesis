@@ -26,12 +26,20 @@ PROJECT_PATH=`pwd`/
 
 DOMAIN=${DOMAIN:-testnet.diva.i2p}
 
+LEAVE_INSTANCE=${LEAVE_INSTANCE:0}
+
+# test for root rights
+docker ps -a >/dev/null 2>&1 || (echo "Run as root" ; exit 2)
+
 for nameFile in `ls -1 ${PROJECT_PATH}data/ | fgrep ".${DOMAIN}"`
 do
   INSTANCE=$(<${PROJECT_PATH}data/${nameFile})
+  if [[ ${LEAVE_INSTANCE} -gt 0 && ! ${LEAVE_INSTANCE} -eq ${INSTANCE} ]]
+  then
+    continue
+  fi
   rm -f ${PROJECT_PATH}data/${nameFile}
   IDENT=nx${INSTANCE}
-  IP_SUBNET=172.22.${INSTANCE}
 
   NAME_NETWORK=${IDENT}.net.${DOMAIN}
   NAME_I2P=${IDENT}.i2p.${DOMAIN}
