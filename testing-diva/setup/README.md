@@ -14,14 +14,11 @@ Running the following command creates a local testnet with a variable number of 
 python3 setup.py <nr of nodes>
 ```
 With this setup, some of the api adresses change due to more nodes and hence more addresses used.
-Explorer:	172.29.101.252:3920
-API:		172.29.101.254:19012
-Torii:		172.29.101.253:50051 (if not defined in ENV)
-
-old:
-Explorer:	172.29.101.100:3920
-API:		172.29.101.30:19012
-Torii:		172.29.101.21:50051 (if not defined in ENV)
+```
+Explorer:	172.29.101.100:3920 (no change)
+API:		172.29.101.30:19012	(no change)
+Torii:		172.29.101.12:50051 (#changed#, takes the ip addr of first node if not already defined in ENV)
+```
 
 ## Manual Setup
 
