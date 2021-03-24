@@ -1,24 +1,24 @@
 #!/usr/bin/python3
 
-def node_text(node_nr, nodes_count, offset):
+def node_text(node_ip, node_nr, node_ips, node_nrs):
   string = f"\
   n{node_nr}.testnet.diva.local:\n\
     container_name: n{node_nr}.testnet.diva.local\n\
     image: divax/iroha:latest\n\
     restart: unless-stopped\n\
     environment:\n\
-      IP_POSTGRES: 172.29.101.{node_nr}\n\
+      IP_POSTGRES: 172.29.101.{node_ip-1}\n\
       NAME_PEER: n{node_nr}\n\
       BLOCKCHAIN_NETWORK: testnet.diva.local\n\
     volumes:\n\
       - n{node_nr}.testnet.diva.local:/opt/iroha/\n\
     networks:\n\
       network.testnet.diva.local:\n\
-        ipv4_address: 172.29.101.{node_nr + offset}\n\
+        ipv4_address: 172.29.101.{node_ip}\n\
     extra_hosts:\n"
   
-  for i in range(nodes_count):
-    string += f"      - n{i+1}.testnet.diva.local:172.29.101.{i+1+offset}\n"
+  for ip,nr in zip(node_ips, node_nrs):
+    string += f"      - n{nr}.testnet.diva.local:172.29.101.{ip}\n"
 
   return string+"\n"
 

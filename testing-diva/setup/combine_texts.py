@@ -5,11 +5,19 @@ from node_text import *
 
 # nodes_dbs_ip = "172.29.101.10 + node_nr" 
 # max ip = 255
-# min node_nr = 1
-# diff = 255 - 11 = 244
-# max nodes = 244 / 2 = 122 -> each nodes has db -> round to 100 for better understanding
+# reserved ips = 0, 1, 30 (API Endpoint), 100 (Explorer), 255
+# Torii -> n1 ip ??
+
+dbs_ips = list(range(11,29,2))
+dbs_ips.extend(list(range(31,99,2)))
+dbs_ips.extend(list(range(103,255,2)))
+
+nodes_ips = list(range(12,30,2))
+nodes_ips.extend(list(range(32,100,2)))
+nodes_ips.extend(list(range(104,256,2)))
 
 max_nodes = offset = 100
+n1_ip = "172.29.101." + str(nodes_ips[0])
 
 
 def combine(nodes_count):
@@ -40,8 +48,10 @@ def combine(nodes_count):
 version: \"3.7\"\n\
 services:\n"
 	
-	nodes = [node_text(n+1, nodes_count, offset) for n in range(nodes_count)]
-	nodes_dbs = [node_db_text(n+1) for n in range(nodes_count)]
+	numbers = list(range(1, len(nodes_ips) + 1))
+	numbers = numbers[:nodes_count]
+	nodes = [node_text(ip, nr, nodes_ips, numbers) for ip, nr in zip(nodes_ips, numbers)]
+	nodes_dbs = [node_db_text(ip, nr) for ip, nr in zip(dbs_ips, numbers)]
 
 	nodes_all = ""
 	for i in range(nodes_count):
@@ -56,8 +66,8 @@ services:\n"
       NODE_ENV: development\n\
       IP_LISTEN: 0.0.0.0\n\
       PORT_LISTEN: 19012\n\
-      API_ENDPOINT: 172.29.101.254:19012\n\
-      TORII: ${TORII:-172.29.101.253:50051}\n\
+      API_ENDPOINT: 172.29.101.30:19012\n\
+      TORII: ${TORII:-"+n1_ip+":50051}\n\
       CREATOR: diva@testnet.diva.local\n\
       I2P_HOSTNAME: ${I2P_HOSTNAME:-127.0.0.1}\n\
       I2P_HTTP_PROXY_PORT: ${I2P_HTTP_PROXY_PORT:-4444}\n\
@@ -68,7 +78,7 @@ services:\n"
       - n1.testnet.diva.local:/tmp/iroha/\n\
     networks:\n\
       network.testnet.diva.local:\n\
-        ipv4_address: 172.29.101.254\n\n"
+        ipv4_address: 172.29.101.30\n\n"
 
 	explorer = "\
   explorer.testnet.diva.local:\n\
@@ -84,7 +94,7 @@ services:\n"
       - explorer.testnet.diva.local:/home/node/\n\
     networks:\n\
       network.testnet.diva.local:\n\
-        ipv4_address: 172.29.101.255\n\n"
+        ipv4_address: 172.29.101.100\n\n"
 
 	networks = "\
 networks:\n\
