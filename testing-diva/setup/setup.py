@@ -10,49 +10,74 @@ from combine_texts import *
 root_path = Path(__file__).parent / ".."
 diva_path = Path(__file__).parent / "../diva-dockerized/"
 
-# stop all old diva docker containers
-os.system(f"sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml down --volumes")
+def setup(nodes):
 
-# remove old git
-os.system(f"rm -rf {diva_path}")
+	# stop all old diva docker containers
+	print("\n------------------------------ remove old data --------------------------------")
+	os.system(f"sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml down --volumes")
 
-# clone diva dockerized repo
-os.system(f"cd {root_path} && git clone -b develop https://codeberg.org/diva.exchange/diva-dockerized.git")
+	# remove old git
+	os.system(f"rm -rf {diva_path}")
 
-# change nodes count?
-if len(sys.argv) <= 1:
-	nodes = 7
-else:
-	nodes = int(sys.argv[1])
+	# clone diva dockerized repo
+	print("\n------------------------------ clone repo --------------------------------------")
+	os.system(f"cd {root_path} && git clone -b develop https://codeberg.org/diva.exchange/diva-dockerized.git")
 
-# create and write yml file (controls nodes and dbs)
-yaml_content = combine(nodes)
-yaml_name = f"{diva_path}/docker-compose/local-testnet.yml"
+	# create and write yml file (controls nodes and dbs)
+	yaml_content = combine(nodes)
+	yaml_name = f"{diva_path}/docker-compose/local-testnet.yml"
 
-with open(yaml_name, "w") as f:
-	f.write(yaml_content)
+	with open(yaml_name, "w") as f:
+		f.write(yaml_content)
 
-# start testnet
-os.system(f"sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml pull && sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml up -d")
+	# start testnet
+	print("\n------------------------------ start testnet -----------------------------------")
+	os.system(f"sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml pull && sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml up -d")
 
-# wait (TODO: automate this)
-print("--------------------------------------------------------------------------------")
-print("Testnet is up and running, sending test-request to diva-api/about...")
-while True:
-	try:
-		res = req.get("http://172.29.101.30:19012/about")
-		print("Got 200 response: " + str(res.status_code == 200))
-		break
-	
-	except req.exceptions.RequestException:
-		print("No connection, wait for 3 sec...")
-		sleep(3)
+def test_connection():
+	# wait (TODO: automate this)
+	print("\n------------------------------ test connection ---------------------------------")
+	print("Testnet is up and running, sending test-request to diva-api/about and explorer...")
 
-input("All done? Testnet containers are stopped and repo gets deleted when continued!")
-print("--------------------------------------------------------------------------------")
+	api_responsive = False
+	explorer_responsive = False
 
-# stop testnet
-os.system(f"sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml down --volumes")
+	while not api_responsive or not explorer_responsive:
+		try:
+			if not api_responsive:
+				res = req.get("http://172.29.101.30:19012/about")
+				print("Got 200 response from API: " + str(res.status_code == 200))
+				api_responsive = True
 
-# remove git repo
-os.system(f"rm -rf {diva_path}")
+			if not explorer_responsive:
+				res = req.get("http://172.29.101.100:3920/")
+				print("Got 200 response from Explorer: " + str(res.status_code == 200))
+				explorer_responsive = True
+		
+		except req.exceptions.RequestException:
+			print("No connection, wait for 3 sec...")
+			sleep(3)
+
+
+def cleanup():
+	# stop testnet
+	print("\n------------------------------ delete git and docker -------------------------")
+	os.system(f"sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml down --volumes")
+
+	# remove git repo
+	os.system(f"rm -rf {diva_path}")
+
+
+if __name__ == "__main__":
+
+	# change nodes count?
+	if len(sys.argv) <= 1:
+		nodes = 7
+	else:
+		nodes = int(sys.argv[1])
+
+	setup(nodes)
+	test_connection()
+	input("All done? Testnet containers are stopped and repo gets deleted when continued!")
+	cleanup()
+

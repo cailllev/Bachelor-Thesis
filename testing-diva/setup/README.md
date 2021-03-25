@@ -16,20 +16,27 @@ python3 setup.py <nr of nodes>
 With this setup, some of the api adresses change due to more nodes and hence more addresses used.
 ```
 Explorer:	172.29.101.100:3920 (no change)
-API:		172.29.101.30:19012	(no change)
+API:		172.29.101.30:19012 (no change)
 Torii:		172.29.101.12:50051 (#changed#, takes the ip addr of first node if not already defined in ENV)
 ```
 
 ## Manual Setup
 
-### Docker Compose & Clone the Code
-
-**IMPORTANT**: To start a local Iroha testnet, make sure you have [Docker Compose](https://docs.docker.com/compose/install/) installed. Check your Docker Compose installation by executing `docker-compose --version` in a terminal.
 
 Clone the code repository from the public repository:
 ```
-git clone -b master https://codeberg.org/diva.exchange/diva-dockerized.git
+git clone -b develop https://codeberg.org/diva.exchange/diva-dockerized.git
 cd diva-dockerized
+```
+
+To start the local testnet (7 nodes) execute:
+```
+sudo docker-compose -f docker-compose/local-testnet.yml pull && sudo docker-compose -f docker-compose/local-testnet.yml up -d
+```
+
+To stop the local testnet execute:
+```
+sudo docker-compose -f docker-compose/local-testnet.yml down --volumes
 ```
 
 ## Donations

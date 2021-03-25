@@ -1,3 +1,5 @@
 /testing-diva/diva-dockerized
 
-**/__pychache__/**
+**/__pychache__/
+*.pyo
+*.pyc
