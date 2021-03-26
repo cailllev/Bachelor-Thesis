@@ -10,18 +10,19 @@ from combine_texts import *
 root_path = Path(__file__).parent / ".."
 diva_path = Path(__file__).parent / "../diva-dockerized/"
 
-def setup(nodes):
 
-	# stop all old diva docker containers
-	print("\n------------------------------ remove old data --------------------------------")
+def download():
+	print("\n------------------------------ docker diva volumes down ----------------------")
 	os.system(f"sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml down --volumes")
 
-	# remove old git
+	print("\n------------------------------ remove old git --------------------------------")
 	os.system(f"rm -rf {diva_path}")
 
-	# clone diva dockerized repo
-	print("\n------------------------------ clone repo --------------------------------------")
+	print("\n------------------------------ clone repo ------------------------------------")
 	os.system(f"cd {root_path} && git clone -b develop https://codeberg.org/diva.exchange/diva-dockerized.git")
+
+
+def setup(nodes):
 
 	# create and write yml file (controls nodes and dbs)
 	yaml_content = combine(nodes)
@@ -29,14 +30,17 @@ def setup(nodes):
 
 	with open(yaml_name, "w") as f:
 		f.write(yaml_content)
+	
+	print("\n------------------------------ pull docker images ----------------------------")
+	os.system(f"sudo docker-compose -f {root_path}/setup/docker_images_pull.yml pull")
 
-	# start testnet
-	print("\n------------------------------ start testnet -----------------------------------")
-	os.system(f"sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml pull && sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml up -d")
 
-def test_connection():
-	# wait (TODO: automate this)
-	print("\n------------------------------ test connection ---------------------------------")
+def start_testnet():
+	
+	print("\n------------------------------ start testnet ---------------------------------")
+	os.system(f"sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml up -d")
+	
+	print("\n------------------------------ test connection -------------------------------")
 	print("Testnet is up and running, sending test-request to diva-api/about and explorer...")
 
 	api_responsive = False
@@ -60,11 +64,10 @@ def test_connection():
 
 
 def cleanup():
-	# stop testnet
-	print("\n------------------------------ delete git and docker -------------------------")
+	print("\n------------------------------ docker diva volumes down ----------------------")
 	os.system(f"sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml down --volumes")
 
-	# remove git repo
+	print("\n------------------------------ remove git ------------------------------------")
 	os.system(f"rm -rf {diva_path}")
 
 
@@ -76,8 +79,9 @@ if __name__ == "__main__":
 	else:
 		nodes = int(sys.argv[1])
 
+	download()
 	setup(nodes)
-	test_connection()
+	start_testnet()
 	input("All done? Testnet containers are stopped and repo gets deleted when continued!")
 	cleanup()
 
