@@ -1,0 +1,8 @@
+All
+---------------
+-Es wurden einige Fragen zur Api und zu den Containern gestellt. Allgemein war die Angriffsflächer Dockercontainer Gesprächsthema.
+
+
+Students
+---------------
+-Aktuell wird das Kapitel "theoretische Grundlagen" geschrieben. Zusätzlich sollen Use-Cases erstellt werden.
