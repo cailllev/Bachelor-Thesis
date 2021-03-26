@@ -24,8 +24,6 @@ def combine(nodes_count):
 
 	assert nodes_count < max_nodes, f"[!] Max 100 nodes allowed, {nodes_count} are too much!"
 
-	print("Creating yml file for local-testnet for " + str(nodes_count) + " nodes.")
-
 	header = "\
 #\n\
 # Copyright (C) 2020 diva.exchange\n\

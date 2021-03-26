@@ -13,26 +13,33 @@ diva_path = Path(__file__).parent / "../diva-dockerized/"
 
 def download():
 	print("\n------------------------------ docker diva volumes down ----------------------")
-	os.system(f"sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml down --volumes")
+	file = f"{diva_path}/docker-compose/local-testnet.yml"
+	if os.path.isfile(file):
+		os.system(f"sudo docker-compose -f {file} down --volumes")
+	else:
+		print("No yml file detected to down the docker volumes.")
 
 	print("\n------------------------------ remove old git --------------------------------")
 	os.system(f"rm -rf {diva_path}")
+	print("Done.")
 
 	print("\n------------------------------ clone repo ------------------------------------")
 	os.system(f"cd {root_path} && git clone -b develop https://codeberg.org/diva.exchange/diva-dockerized.git")
+	
+	print("\n------------------------------ pull docker images ----------------------------")
+	os.system(f"sudo docker-compose -f {root_path}/setup/docker_images_pull.yml pull")
 
 
 def setup(nodes):
 
 	# create and write yml file (controls nodes and dbs)
+	print("\n------------------------------ adapt yml file --------------------------------")
+	print("Changing yml file to create local-testnet with " + str(nodes) + " nodes.")
 	yaml_content = combine(nodes)
 	yaml_name = f"{diva_path}/docker-compose/local-testnet.yml"
 
 	with open(yaml_name, "w") as f:
 		f.write(yaml_content)
-	
-	print("\n------------------------------ pull docker images ----------------------------")
-	os.system(f"sudo docker-compose -f {root_path}/setup/docker_images_pull.yml pull")
 
 
 def start_testnet():
@@ -69,6 +76,7 @@ def cleanup():
 
 	print("\n------------------------------ remove git ------------------------------------")
 	os.system(f"rm -rf {diva_path}")
+	print("Done.")
 
 
 if __name__ == "__main__":
