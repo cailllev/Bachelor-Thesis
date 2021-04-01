@@ -1,0 +1,9 @@
+All
+---------------
+-Die erste Version des Data-Flow-Diagram wurde gezeigt und es wurden zusammen Eckpunkte eben dieses Diagramms besprochen.
+Die Änderungen wurden direkt in das Diagramm übernommen. Zum einen ging es dabei um den transportlayer von Diva, zum anderen um die geschützten Zonen
+Innerhalb der Applikation. (trust boundaries)
+
+Students
+---------------
+-Aktuell wird das Kapitel "theoretische Grundlagen" geschrieben. Zusätzlich sollen Use-Cases erstellt werden.

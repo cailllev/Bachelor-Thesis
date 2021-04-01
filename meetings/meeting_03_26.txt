@@ -1,0 +1,10 @@
+All
+---------------
+-Konrad informierte darüber, dass es bald eine neue Irohaversion geben würde, die uns allerdings nicht beeinflussen sollte.
+-Ein erstes Skript zum Aufbau der Tests wurde gezeigt und erläutert.
+-Konrad stellt nächste Woche Container zur verfügung
+
+
+Students
+---------------
+-Aktuell wird das Kapitel "theoretische Grundlagen" geschrieben. Zusätzlich sollen Use-Cases erstellt werden.
