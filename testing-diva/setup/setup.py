@@ -5,10 +5,15 @@ import requests as req
 
 from time import sleep
 from pathlib import Path
-from combine_texts import *
+from setup.combine_texts import *
 
 root_path = Path(__file__).parent / ".."
 diva_path = Path(__file__).parent / "../diva-dockerized/"
+
+TIMEOUT = 60  # sec
+
+API = "http://172.29.101.30:19012"
+EXPLORER = "http://172.29.101.100:3920/"
 
 
 def download():
@@ -52,22 +57,29 @@ def start_testnet():
 
 	api_responsive = False
 	explorer_responsive = False
+	time = 0
 
 	while not api_responsive or not explorer_responsive:
+		if time > TIMEOUT:
+			return False
+
 		try:
 			if not api_responsive:
-				res = req.get("http://172.29.101.30:19012/about")
+				res = req.get(API + "/about")
 				print("Got 200 response from API: " + str(res.status_code == 200))
 				api_responsive = True
 
 			if not explorer_responsive:
-				res = req.get("http://172.29.101.100:3920/")
+				res = req.get(EXPLORER)
 				print("Got 200 response from Explorer: " + str(res.status_code == 200))
 				explorer_responsive = True
 		
 		except req.exceptions.RequestException:
 			print("No connection, wait for 3 sec...")
+			time += 3
 			sleep(3)
+
+	return True
 
 
 def cleanup():

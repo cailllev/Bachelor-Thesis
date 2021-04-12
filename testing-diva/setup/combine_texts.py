@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-from node_db_text import *
-from node_text import *
+from setup.node_db_text import *
+from setup.node_text import *
 
 # nodes_dbs_ip = "172.29.101.10 + node_nr" 
 # max ip = 255
