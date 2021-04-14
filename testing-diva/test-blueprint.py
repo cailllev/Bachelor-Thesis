@@ -15,7 +15,9 @@ def test():
 		print(blockchain_data)
 
 	else:
-		raise Exception("[!] TIMEOUT while trying to connect to DIVA.EXCHANGE explorer!")
+		print("[!] TIMEOUT while trying to connect to DIVA.EXCHANGE explorer!")
+
+	cleanup()
 
 
 if __name__ == "__main__":
