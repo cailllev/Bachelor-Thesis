@@ -1,0 +1,9 @@
+All
+---------------
+-Zusammen wurde das Feedback angeschaut, wobei es aber keine weiteren Punkte gab ausser die schriftlichen.
+Der Technische Teil der Arbeit wird den grossteil der Arbeit annehmen, es ist kein Kapitel zu Privatsphäre oder moralischer Disskusion geplant.
+-Kapitel über byzantinische fehlertoleranz und Consens algorithmen sind wichtig für die Theorie.
+
+Students
+---------------
+-Aktuell werden erste tests implementiert und das Kapitel Methodik geschrieben 
