@@ -1,4 +1,6 @@
 from setup.setup import download, setup, start_testnet, cleanup, API, EXPLORER
+from pprint import pprint
+from time import sleep
 
 import requests as req
 import json
@@ -11,11 +13,13 @@ def test():
 
 	is_ready = start_testnet()
 	if is_ready:
-		blocks = (json.loads(req.get(f"{EXPLORER}/blocks").text))["blocks"]
+		res = req.get(f"{EXPLORER}/blocks")
+		blocks = json.loads(res.text)["blocks"]
+
 		pprint(blocks[-1])
 		input("wait...")
 
-		# instead of print(blocks) and input(), do some tests
+		# instead of print(block) and input(), do some tests
 
 		# create new block?
 		# req.post("...diva-api/.../new block...", data="...")

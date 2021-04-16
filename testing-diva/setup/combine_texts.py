@@ -1,7 +1,15 @@
 #!/usr/bin/python3
 
-from setup.node_db_text import *
-from setup.node_text import *
+# normal usage from parent dir
+try:
+  from setup.node_db_text import *
+  from setup.node_text import *
+
+# direct usage from current dir
+except ModuleNotFoundError:
+  from node_db_text import *
+  from node_text import *
+
 
 # nodes_dbs_ip = "172.29.101.10 + node_nr" 
 # max ip = 255
@@ -129,13 +137,27 @@ volumes:\n"
 # test if created is correct
 if __name__ == "__main__":
 
-	correct = "".join(open("local-testnet_compare.yml.txt", "r").readlines())
+  from pathlib import Path
+  import re
+  ip = re.compile(r"([0-9]+\.){3}[0-9]+")
 
-	created = combine(7)
+  compare_file = Path(__file__).parent / "local-testnet_compare.yml.txt"
+  correct = "".join(open(compare_file).readlines())
 
-	for l1, l2 in zip(correct.split("\n"), created.split("\n")):
-		if l1 != l2:
-			print("correct:\n" + l1)
-			print("created:\n" + l2 + "\n")
+  created = combine(7)
+  diff_count = 0
+  diff_ip = 0
 
-	print(correct == created)
+  for l1, l2 in zip(correct.split("\n"), created.split("\n")):
+    if l1 != l2:
+      if not ip.search(l1) and not ip.search(l2): # ignore different ips
+        print("correct:  " + l1)
+        print("created:  " + l2 + "\n")
+        diff_count += 1
+      else:
+        diff_ip += 1
+
+
+  print("Files are the same? ", correct == created)
+  print("Diff IPs:   ", diff_ip)
+  print("Diff other: ", diff_count)

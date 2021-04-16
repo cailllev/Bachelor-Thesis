@@ -5,15 +5,21 @@ import requests as req
 
 from time import sleep
 from pathlib import Path
-from setup.combine_texts import *
+
+# normal usage from parent dir
+try:
+	from setup.combine_texts import *
+
+# direct usage from current dir
+except ModuleNotFoundError:
+	from combine_texts import *
 
 root_path = Path(__file__).parent / ".."
 diva_path = Path(__file__).parent / "../diva-dockerized/"
 
 TIMEOUT = 60  # sec
-
 API = "http://172.29.101.30:19012"
-EXPLORER = "http://172.29.101.100:3920/"
+EXPLORER = "http://172.29.101.100:3920"
 
 
 def download():
@@ -60,22 +66,37 @@ def start_testnet():
 	time = 0
 
 	while not api_responsive or not explorer_responsive:
+		ok_response = True
+		api_res_code = None
+		exporer_res_code = None
+
 		if time > TIMEOUT:
 			return False
 
 		try:
 			if not api_responsive:
 				res = req.get(API + "/about")
-				print("Got 200 response from API: " + str(res.status_code == 200))
-				api_responsive = True
+				if res.status_code == 200:
+					print("Got 200 response from API.")
+					api_responsive = True
+				else:
+					ok_response = False
 
 			if not explorer_responsive:
-				res = req.get(EXPLORER)
-				print("Got 200 response from Explorer: " + str(res.status_code == 200))
-				explorer_responsive = True
+				res = req.get(EXPLORER + "/blocks")
+				if res.status_code == 200:
+					print("Got 200 response from Explorer.")
+					explorer_responsive = True
+				else:
+					ok_response = False
 		
 		except req.exceptions.RequestException:
-			print("No connection, wait for 3 sec...")
+			print(f"No connection, wait for 3 sec...")
+			time += 3
+			sleep(3)
+
+		if not ok_response:
+			print(f"Connected, but res not 200 yet. API: {api_res_code}, Explorer: {exporer_res_code}, wait for 3 sec...")
 			time += 3
 			sleep(3)
 
@@ -104,4 +125,5 @@ if __name__ == "__main__":
 	start_testnet()
 	input("All done? Testnet containers are stopped and repo gets deleted when continued!")
 	cleanup()
+
 
