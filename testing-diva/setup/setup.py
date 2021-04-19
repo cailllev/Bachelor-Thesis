@@ -59,7 +59,7 @@ def start_testnet():
 	os.system(f"sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml up -d")
 	
 	print("\n------------------------------ test connection -------------------------------")
-	print("Testnet is up and running, sending test-request to diva-api/about and explorer...")
+	print("[*] Testnet is up and running, sending test-request to diva-api/about and explorer.")
 
 	api_responsive = False
 	explorer_responsive = False
@@ -77,7 +77,7 @@ def start_testnet():
 			if not api_responsive:
 				res = req.get(API + "/about")
 				if res.status_code == 200:
-					print("Got 200 response from API.")
+					print("[*] Got 200 response from API.")
 					api_responsive = True
 				else:
 					ok_response = False
@@ -85,18 +85,18 @@ def start_testnet():
 			if not explorer_responsive:
 				res = req.get(EXPLORER + "/blocks")
 				if res.status_code == 200:
-					print("Got 200 response from Explorer.")
+					print("[*] Got 200 response from Explorer.")
 					explorer_responsive = True
 				else:
 					ok_response = False
 		
 		except req.exceptions.RequestException:
-			print(f"No connection, wait for 3 sec...")
+			print("[#] No connection, wait for 3 sec...")
 			time += 3
 			sleep(3)
 
 		if not ok_response:
-			print(f"Connected, but res not 200 yet. API: {api_res_code}, Explorer: {exporer_res_code}, wait for 3 sec...")
+			print(f"[#] Connected, but res not 200 yet. API: {api_res_code}, Explorer: {exporer_res_code}, wait for 3 sec...")
 			time += 3
 			sleep(3)
 

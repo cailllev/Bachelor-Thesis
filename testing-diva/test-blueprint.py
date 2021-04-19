@@ -1,4 +1,6 @@
 from setup.setup import download, setup, start_testnet, cleanup, API, EXPLORER
+from utils import *
+
 from pprint import pprint
 from time import sleep
 
@@ -7,33 +9,45 @@ import json
 
 NODES = 7
 
+# inspect logs: sudo docker logs n1.testnet.diva.local
+
+
 def test():
 	download()
 	setup(NODES)
 
 	is_ready = start_testnet()
 	if is_ready:
-		res = req.get(f"{EXPLORER}/blocks")
-		blocks = json.loads(res.text)["blocks"]
 
-		pprint(blocks[-1])
-		input("wait...")
+		print("\n------------------------------ network up - start tests ----------------------")
 
-		# instead of print(block) and input(), do some tests
+		blocks = []
+		while len(blocks) < 2:
+			res = req.get(f"{EXPLORER}/blocks")
+			blocks = json.loads(res.text)["blocks"]
+			print("[#] Waiting for next block...")
+			sleep(5)
 
-		# create new block?
-		# req.post("...diva-api/.../new block...", data="...")
+		print("\n[*] ping committed to blockchain")
+		
+		# newest block is at the start [0]
+		print("   - block number:".ljust(25), get_block_number(blocks[0]))
 
-		# blocks[0] => first block
-		# blocks[-1] => last block
+		print("   - block id:".ljust(25), get_id(blocks[0]))
 
-		# iterate through all blocks
-		# for block in blocks:
-		#	 pprint(block)
-		#	 ...
+		print("   - creation date:".ljust(25), get_creation_date(blocks[0]))
+		
+		print("   - transactions count:".ljust(25), get_transactions_count(blocks[0]))
+
+		print("   - signatures:")
+		pprint(get_signatures(blocks[0]))
+
+		print("\n[*] ALL TESTS PASSED!")
+
 
 	else:
-		print("[!] TIMEOUT while trying to connect to DIVA.EXCHANGE explorer!")
+		print("\n[!] TIMEOUT while trying to connect to DIVA.EXCHANGE explorer!")
+		print("[*] TESTS FAILED!")
 
 	cleanup()
 
