@@ -10,6 +10,7 @@ import json
 NODES = 7
 
 # inspect logs: sudo docker logs n1.testnet.diva.local
+# inspect code at runtime: code.interact(local=dict(globals(), **locals()))
 
 
 def test():
