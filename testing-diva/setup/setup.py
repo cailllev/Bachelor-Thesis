@@ -41,23 +41,32 @@ def download():
 	os.system(f"sudo docker-compose -f {root_path}/setup/docker_images_pull.yml pull")
 
 
-def setup(nodes):
+def setup(nodes, benchmark=False):
 
 	# create and write yml file (controls nodes and dbs)
 	print("\n------------------------------ adapt yml file --------------------------------")
 	print("Changing yml file to create local-testnet with " + str(nodes) + " nodes.")
-	yaml_content = combine(nodes)
+	yaml_content = combine(nodes, benchmark)
+	
+	if yaml_content == None:  # i.e. nodes over threshold and not continued and not in benchmark
+		cleanup()
+
+
 	yaml_name = f"{diva_path}/docker-compose/local-testnet.yml"
 
 	with open(yaml_name, "w") as f:
 		f.write(yaml_content)
 
 
-def start_testnet():
+def start_testnet(benchmark=False):
 	
 	print("\n------------------------------ start testnet ---------------------------------")
 	os.system(f"sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml up -d")
 	
+	# all nodes up, return true without explorer and api started
+	if benchmark:
+		return True
+
 	print("\n------------------------------ test connection -------------------------------")
 	print("[*] Testnet is up and running, sending test-request to diva-api/about and explorer.")
 

@@ -24,15 +24,26 @@ nodes_ips = list(range(12,30,2))
 nodes_ips.extend(list(range(32,100,2)))
 nodes_ips.extend(list(range(104,256,2)))
 
-max_nodes = offset = 100
+max_nodes = len(dbs_ips)
+WARNING_THRESHOLD = 50
+
 n1_ip = "172.29.101." + str(nodes_ips[0])
 
 
-def combine(nodes_count):
+def combine(nodes_count, benchmark=False):
 
-	assert nodes_count < max_nodes, f"[!] Max 100 nodes allowed, {nodes_count} are too much!"
+  assert nodes_count <= max_nodes, f"[!] Max 100 nodes allowed, {nodes_count} are too much!"
 
-	header = "\
+  if nodes_count > WARNING_THRESHOLD and not benchmark:
+    ans = input("Diva dockerized was tested up to 50 nodes on a VM with 13GB RAM.\
+      You are about to create " + nodes_count + " nodes. \n\
+      Please save your work before continuing, or make sure your VM has enough RAM.\n\
+      Continue [y/N]?")
+
+    if ans not in ["yes", "Yes", "y", "Y"]:
+      return None
+
+  header = "\
 #\n\
 # Copyright (C) 2020 diva.exchange\n\
 #\n\
@@ -53,17 +64,19 @@ def combine(nodes_count):
 #\n\n\
 version: \"3.7\"\n\
 services:\n"
-	
-	numbers = list(range(1, len(nodes_ips) + 1))
-	numbers = numbers[:nodes_count]
-	nodes = [node_text(ip, nr, nodes_ips, numbers) for ip, nr in zip(nodes_ips, numbers)]
-	nodes_dbs = [node_db_text(ip, nr) for ip, nr in zip(dbs_ips, numbers)]
+  
+  numbers = list(range(1, len(nodes_ips) + 1))
+  numbers = numbers[:nodes_count]
+  nodes = [node_text(ip, nr, nodes_ips, numbers) for ip, nr in zip(nodes_ips, numbers)]
+  nodes_dbs = [node_db_text(ip, nr) for ip, nr in zip(dbs_ips, numbers)]
 
-	nodes_all = ""
-	for i in range(nodes_count):
-		nodes_all += nodes_dbs[i] + nodes[i]
+  nodes_all = ""
+  for i in range(nodes_count):
+    nodes_all += nodes_dbs[i] + nodes[i]
 
-	api = "\
+  # vvvvv   EXCLUDE FOR BENCHMARK   vvvvv
+  if not benchmark:
+    api = "\
   api.testnet.diva.local:\n\
     container_name: api.testnet.diva.local\n\
     image: divax/diva-api:latest\n\
@@ -86,7 +99,7 @@ services:\n"
       network.testnet.diva.local:\n\
         ipv4_address: 172.29.101.30\n\n"
 
-	explorer = "\
+    explorer = "\
   explorer.testnet.diva.local:\n\
     container_name: explorer.testnet.diva.local\n\
     image: divax/iroha-explorer:latest\n\
@@ -101,8 +114,9 @@ services:\n"
     networks:\n\
       network.testnet.diva.local:\n\
         ipv4_address: 172.29.101.100\n\n"
+  # ^^^^^   EXCLUDE FOR BENCHMARK   ^^^^^
 
-	networks = "\
+  networks = "\
 networks:\n\
   network.testnet.diva.local:\n\
     internal: true\n\
@@ -112,26 +126,31 @@ networks:\n\
       config:\n\
         - subnet: 172.29.101.0/24\n\n"
 
-	volumes = "\
+  volumes = "\
 volumes:\n"
 
-	for i in range(nodes_count):
-		volumes += f"\
+  for i in range(nodes_count):
+    volumes += f"\
   n{i+1}.testnet.diva.local:\n\
     name: n{i+1}.testnet.diva.local\n"
 
-	for i in range(nodes_count):
-		volumes += f"\
+  for i in range(nodes_count):
+    volumes += f"\
   n{i+1}.db.testnet.diva.local:\n\
     name: n{i+1}.db.testnet.diva.local\n"
 
-	volumes += "\
+  # vvvvv   EXCLUDE FOR BENCHMARK   vvvvv
+  if not benchmark:
+    volumes += "\
   api.testnet.diva.local:\n\
     name: api.testnet.diva.local\n\
   explorer.testnet.diva.local:\n\
     name: explorer.testnet.diva.local\n"
+  # ^^^^^   EXCLUDE FOR BENCHMARK   ^^^^^
 
-	return header+nodes_all+api+explorer+networks+volumes
+    return header+nodes_all+api+explorer+networks+volumes
+
+  return header+nodes_all+networks+volumes
 
 
 # test if created is correct
