@@ -1,0 +1,10 @@
+All
+---------------
+-Zusammen wurde das Feedback mit Stephan angeschaut, wobei es aber keine weiteren Punkte gab ausser die schriftlichen.
+-Erste Testumgebung wurde gezeigt.
+-Wir haben Besprochen wie die Abwesenheit ab Woche 17 aussieht.
+
+Students
+---------------
+-Aktuell werden erste tests implementiert und das Kapitel Methodik geschrieben
+-Woche 17
