@@ -1,4 +1,4 @@
-from setup.setup import download, setup, start_testnet, cleanup, API, EXPLORER
+from setup.setup import download, setup, start_testnet, stop_testnet, delete, API, EXPLORER
 from utils import *
 
 from pprint import pprint
@@ -50,7 +50,8 @@ def test():
 		print("\n[!] TIMEOUT while trying to connect to DIVA.EXCHANGE explorer!")
 		print("[*] TESTS FAILED!")
 
-	cleanup()
+	stop_testnet()
+	delete()
 
 
 if __name__ == "__main__":

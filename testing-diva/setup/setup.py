@@ -112,10 +112,12 @@ def start_testnet(benchmark=False):
 	return True
 
 
-def cleanup():
+def stop_testnet():
 	print("\n------------------------------ docker diva volumes down ----------------------")
 	os.system(f"sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml down --volumes")
 
+
+def delete():
 	print("\n------------------------------ remove git ------------------------------------")
 	os.system(f"rm -rf {diva_path}")
 	print("Done.")
@@ -133,6 +135,7 @@ if __name__ == "__main__":
 	setup(nodes)
 	start_testnet()
 	input("All done? Testnet containers are stopped and repo gets deleted when continued!")
-	cleanup()
+	stop_testnet()
+	delete()
 
 
