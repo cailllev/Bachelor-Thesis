@@ -6,24 +6,24 @@ in ``_initIroha()``, in ``/app/src/diva-api.js`` on line 244
 
 ## getting called from ...
 
-* ``_initIroha()``
-function on line 223 in ``/app/src/diva-api.js``
+* ``_initIroha()``<br>
+function on line 223 in ``/app/src/diva-api.js``<br>
 getting called from ``make()``
 
-  * ``make()``
-function on line 73 in ``/app/src/diva-api.js``
+  * ``make()``<br>
+function on line 73 in ``/app/src/diva-api.js``<br>
 getting called from ``main.js`` on line 31
 
-    * ``main.js``
-script at ``/app/main.js``
+    * ``main.js``<br>
+script at ``/app/main.js``<br>
 getting called from entrypoint.sh
 
-      * ``entrypoint.sh``
-script at /
+      * ``entrypoint.sh``<br>
+script at /<br>
 getting called from Dockerfile
 
-        * ``Dockerfile``
-script at /
+        * ``Dockerfile``<br>
+script at /<br>
 is excecuted when ``docker up``
 
 
