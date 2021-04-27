@@ -113,7 +113,7 @@ returns a Promise after ``_listToTorii(...)`` has resolved
 
               * ``_listToTorii(..)``<br>
 function on line 7 from ``/package/lib/util.js``<br>
-calls ```hash(...)`` from ``txHelper.js`` (see above)
+calls ``hash(...)`` from ``txHelper.js`` (see above)
 
 
 
