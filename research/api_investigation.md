@@ -59,8 +59,7 @@ calls ``return commands.setAccountDetail({...},{...})``<br>
       * ``commands``<br>
 defines exports for iroha-helpers<br>
 overview [iroha-helpers](https://www.npmjs.com/package/iroha-helpers#commands)<br>
-``npm pack iroha-helpers`` to download source<br>
-
+``npm pack iroha-helpers`` to download source<br><br>
 in ``/package/lib/index.js`` (this is the entrypoint)<br>
 ``var tslib_1 = require("tslib");``<br>
 ``var commands_1 = tslib_1.__importDefault(require("./commands"));``<br>
