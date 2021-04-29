@@ -1,0 +1,11 @@
+All
+---------------
+-Wir haben besprochen, dass 16 Knoten reichen zum Beweis. Die Skalierung nach oben ist von dort an, dann Sekundär.
+-Fokus ist Iroha. Die Diva-Api wird erstmal nicht benötigt.
+-Das Meeting am Montag 26.4 fällt aus.
+-29.4 möglichst Experimente fertig.
+
+
+Students
+---------------
+-Aktuell werden erste tests implementiert und das Kapitel Methodik geschrieben
