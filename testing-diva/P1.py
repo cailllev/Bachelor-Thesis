@@ -48,7 +48,7 @@ def test():
 			for j in range(i):
 				names += f"n{j+1}.testnet.diva.local n{j+1}.db.testnet.diva.local"
 				
-			os.system(f"sudo docker stop {names}") # --remove-orphans
+			os.system(f"sudo docker stop {names}")
 
 			# now wait for 2nd ping
 			timeout = 60

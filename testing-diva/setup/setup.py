@@ -61,7 +61,7 @@ def setup(nodes, benchmark=False):
 def start_testnet(benchmark=False):
 	
 	print("\n------------------------------ start testnet ---------------------------------")
-	os.system(f"sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml up -d")
+	os.system(f"sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml up -d --remove-orphans")
 	
 	# all nodes up, return true without explorer and api started
 	if benchmark:
@@ -115,6 +115,7 @@ def start_testnet(benchmark=False):
 def stop_testnet():
 	print("\n------------------------------ docker diva volumes down ----------------------")
 	os.system(f"sudo docker-compose -f {diva_path}/docker-compose/local-testnet.yml down --volumes")
+	os.system(f"sudo docker volume prune -f")
 
 
 def delete():

@@ -4,6 +4,7 @@ from utils import *
 from pprint import pprint
 from time import sleep
 from sys import stdout
+from threading import Thread
 
 import requests as req
 import json
@@ -15,6 +16,12 @@ success = []
 no_success = []
 
 
+def stop_node(n):
+	names = f"n{y}.testnet.diva.local n{y}.db.testnet.diva.local"
+	print("[#] Stopping: ", names)
+	os.system(f"sudo docker stop {names}")
+
+
 def test():
 	download()
 	setup(NODES)
@@ -22,12 +29,13 @@ def test():
 	#Stopps all nodes if ready
 	is_ready = start_testnet()
 	if is_ready:
-		for y in range (1, NODES+1):
-			names = ""
-			names = f"n{y}.testnet.diva.local n{y}.db.testnet.diva.local"
-			print("Stopping: ", names)
-			os.system(f"sudo docker stop {names}")
-		print("Stopped all Containers.")
+		for n in range (1, NODES+1):
+			t = Thread(target=stop_node, args=(n,))
+			t.start()
+			t.join()
+
+		print("[*] All nodes stopped successfully.")
+	
 	else:
 		print("\n[!] TIMEOUT while trying to connect to DIVA.EXCHANGE explorer!")
 		print("[*] TESTS FAILED!")
@@ -35,22 +43,15 @@ def test():
 		cleanup()
 		exit(1)
 			
-	#testing cycles.
+	# testing cycles.
 	last_blocks_length = 1
 	for i in range(1, NODES+1):
 
 		print(f"\n------------------------------ network up - start test round {i} -------------")
 
-
-		#start node TODO implement start as thread.
+		# start node
 		print(f"[#] start node {i}")
-		names = ""
-		names += f"n{i}.testnet.diva.local n{i}.db.testnet.diva.local"
-		print("starting: ", names)
-		os.system(f"sudo docker start {names}") #Wirklich so einfach?
-		print("started node n", i)
-
-
+		os.system(f"sudo docker start n{i}.testnet.diva.local n{i}.db.testnet.diva.local")
 		
 		# wait for 60 sec for a ping.
 		for t in range(60, 0, -1):
@@ -60,8 +61,7 @@ def test():
 			stdout.flush()
 			sleep(1)
 		stdout.write("\n")
-		
-		
+			
 		# handle ping
 		if len(blocks) == last_blocks_length + 1:
 			success.append(i)
