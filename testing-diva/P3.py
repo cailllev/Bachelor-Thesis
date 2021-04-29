@@ -11,7 +11,7 @@ import json
 import os
 
 
-NODES = 10
+NODES = 16
 success = []
 no_success = []
 
@@ -23,61 +23,75 @@ def stop_node(n):
 
 
 def test():
-	download()
-	setup(NODES)
-	
-	#Stopps all nodes if ready
-	is_ready = start_testnet()
-	if is_ready:
-		for n in range (1, NODES+1):
-			t = Thread(target=stop_node, args=(n,))
-			t.start()
-			t.join()
 
-		print("[*] All nodes stopped successfully.")
-	
-	else:
-		print("\n[!] TIMEOUT while trying to connect to DIVA.EXCHANGE explorer!")
-		print("[*] TESTS FAILED!")
-		stop_testnet()
-		cleanup()
-		exit(1)
-			
-	# testing cycles.
-	last_blocks_length = 1
-	for i in range(1, NODES+1):
-
-		print(f"\n------------------------------ network up - start test round {i} -------------")
-
-		# start node
-		print(f"[#] start node {i}")
-		os.system(f"sudo docker start n{i}.testnet.diva.local n{i}.db.testnet.diva.local")
+	try:
+		download()
+		setup(NODES)
 		
-		# wait for 60 sec for a ping.
-		for t in range(60, 0, -1):
-			res = req.get(f"{EXPLORER}/blocks")
-			blocks = json.loads(res.text)["blocks"]
-			stdout.write("\r[#] Waiting for first ping, sleep for %2d sec" % (t))
-			stdout.flush()
-			sleep(1)
-		stdout.write("\n")
-			
-		# handle ping
-		if len(blocks) == last_blocks_length + 1:
-			success.append(i)
-		elif len(blocks) == last_blocks_length:
-			no_success.append(i)
+		#Stopps all nodes if ready
+		is_ready = start_testnet()
+		if is_ready:
+			for n in range (1, NODES+1):
+				t = Thread(target=stop_node, args=(n,))
+				t.start()
+				t.join()
+
+			print("[*] All nodes stopped successfully.")
+		
 		else:
-			print("[!] strange blockchain")
-			pprint(blocks)
-		last_blocks_length = len(blocks)
+			print("\n[!] TIMEOUT while trying to connect to DIVA.EXCHANGE explorer!")
+			print("[*] TESTS FAILED!")
+			stop_testnet()
+			cleanup()
+			exit(1)
+				
+		# testing cycles.
+		last_blocks_length = 1
+		for i in range(1, NODES+1):
+
+			print(f"\n------------------------------ network up - start test round {i} -------------")
+
+			# start node
+			print(f"[#] start node {i}")
+			os.system(f"sudo docker start n{i}.testnet.diva.local n{i}.db.testnet.diva.local")
+			
+			# wait for 60 sec for a ping.
+			for t in range(60, 0, -1):
+				res = req.get(f"{EXPLORER}/blocks")
+				blocks = json.loads(res.text)["blocks"]
+				stdout.write("\r[#] Waiting for first ping, sleep for %2d sec" % (t))
+				stdout.flush()
+				sleep(1)
+			stdout.write("\n")
+				
+			# handle ping
+			if len(blocks) == last_blocks_length + 1:
+				success.append(i)
+			elif len(blocks) == last_blocks_length:
+				no_success.append(i)
+			else:
+				print("[!] Strange blockchain!")
+				pprint(blocks)
+			last_blocks_length = len(blocks)
 
 
-	stop_testnet()
-	delete()
+		stop_testnet()
+		delete()
 
-	print("\n[*] RESULTS!")
+	except KeyboardInterrupt:
+		print("\n[!] Aborting Test!")
+		stop_testnet()
+		delete()
+
+	except BaseException:
+		print("\n[!] Unexpected Error!")
+		stop_testnet()
+		delete()
+
+	print("\n------------------------------ results ---------------------------------------")
+	print("[*] Pings arrived at:")
 	pprint(success)
+	print("\n[*] No pings arrived at:")
 	pprint(no_success)
 
 
