@@ -6,6 +6,7 @@ import subprocess
 
 from time import sleep
 from pathlib import Path
+from pprint import pprint
 
 # normal usage from parent dir
 try:
@@ -41,6 +42,8 @@ def download():
 		else:
 			print("[!] No yml file detected to down the docker volumes.")
 			remove_orphans = True
+			pprint(output)
+			print(running)
 
 	else:
 		print("[*] No containers to down.")
@@ -80,7 +83,7 @@ def start_testnet(benchmark=False):
 		os.system(f"sudo docker-compose -f {yml_file} up -d --remove-orphans")
 
 	else:
-		os.system(f"sudo docker-compose -f {yml_file} up -d --remove-orphans")
+		os.system(f"sudo docker-compose -f {yml_file} up -d")
 	
 	
 	# all nodes up, return true without explorer and api started
@@ -120,14 +123,14 @@ def start_testnet(benchmark=False):
 					ok_response = False
 		
 		except req.exceptions.RequestException:
-			print("[#] No connection, wait for 3 sec...")
-			time += 3
-			sleep(3)
+			print(f"[#] No connection, waited for {time} sec...")
+			time += 5
+			sleep(5)
 
 		if not ok_response:
 			print(f"[#] Connected, but res not 200 yet. API: {api_res_code}, Explorer: {exporer_res_code}, wait for 3 sec...")
-			time += 3
-			sleep(3)
+			time += 5
+			sleep(5)
 
 	return True
 

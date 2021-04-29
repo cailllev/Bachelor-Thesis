@@ -1,18 +1,15 @@
-from setup.setup import download, setup, start_testnet, stop_testnet, delete, API, EXPLORER
+from setup.setup import download, setup, start_testnet, stop_testnet, delete, API
 from utils import *
 
 from pprint import pprint
 from time import sleep
 from sys import stdout
 
-import requests as req
-import json
 import os
 
 
 NODES = 16
-success = []
-no_success = []
+results = []
 
 
 def test():
@@ -28,52 +25,49 @@ def test():
 				
 				print(f"\n------------------------------ network up - start test round {i} -------------")
 				blocks = []
+				waiting = 0
 				while len(blocks) < 2:
-					res = req.get(f"{EXPLORER}/blocks")
-					blocks = json.loads(res.text)["blocks"]
-					print("[*] No ping, wait for 5 sec...")
+					blocks = get_blocks()
+					print(f"[#] No 1st ping, waited for {str(waiting).rjust(2)} sec...")
+					waiting += 5
 					sleep(5)
 
 				# first ping arrived
 				signatures_count_1 = len(get_signatures(blocks[0]))
-				print()
 
-				# wait for 50 sec, then stop the containers
-				for t in range(50, 0, -1):
-					stdout.write("\r[#] Got first ping, sleep for %2d sec" % (t))
-					stdout.flush()
+				# wait for 45 sec, then stop the containers
+				for t in range(44, -1, -1):
 					sleep(1)
+					stdout.write("\r[*] Got first ping, sleep for %2d sec" % (t))
+					stdout.flush()
 
 				stdout.write("\n")
-				print("[#] Stop docker containers...")
+				print("[*] Stop docker containers...")
+				stop_nodes(1, i)
 
-				names = ""
-				for j in range(i):
-					names += f"n{j+1}.testnet.diva.local n{j+1}.db.testnet.diva.local "
-					
-				os.system(f"sudo docker stop {names}")
-
-				# now wait for 2nd ping
-				timeout = 60
+				# now wait for 2nd ping, expected arrival between 60 and 120 sec after first ping
+				timeout = 120 + 15
 				waiting = 0
 				while waiting < timeout:
-					res = req.get(f"{EXPLORER}/blocks")
-					blocks = json.loads(res.text)["blocks"]
+					blocks = get_blocks()
 					
 					# ping arrived?
 					if len(blocks) == 3:
-						print(f"[*] 2nd ping with {i} nodes stopped!")
+						print(f"[*] 2nd ping arrived with {i} nodes stopped.")
 						signatures_count_2 = len(get_signatures(blocks[0]))
-						success.append((i, signatures_count_1, signatures_count_2))
+						results.append((i, signatures_count_1, signatures_count_2))
 						break
 
-					print("[*] No 2nd ping, wait for 5 sec...")
+					# wait for all docker stop messages before printing
+					if waiting >= 15:
+						print(f"[#] No 2nd ping, waited for {waiting} sec...")
+					
 					waiting += 5
 					sleep(5)
 
 				else:
-					print(f"[*] No 2nd ping with {i} nodes stopped!")
-					no_success.append((i, signatures_count_1))
+					print(f"[*] No 2nd ping arrived with {i} nodes stopped!")
+					results.append((i, signatures_count_1, "--no ping--"))
 
 				stop_testnet()
 
@@ -90,16 +84,13 @@ def test():
 		stop_testnet()
 		delete()
 
-	except BaseException:
+	except BaseException as e:
 		print("\n[!] Unexpected Error!")
+		print(str(e))
 		stop_testnet()
 		delete()
 
-	print("\n------------------------------ results ---------------------------------------")
-	print("[*] Pings arrived at:")
-	pprint(success)
-	print("\n[*] No pings arrived at:")
-	pprint(no_success)
+	print(render_results(results))
 
 if __name__ == "__main__":
 	test()
