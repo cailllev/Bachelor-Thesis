@@ -62,7 +62,7 @@ def render_results(res):
 
 	elif len(res[0]) == 2:	
 		#                   v14              v14
-		s += " running nodes | 1st ping signs \n" 
+		s += " running nodes | signs on ping  \n" 
 		s += "------------------------------- \n" 
 		for r in res:
 			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(14)} \n"
