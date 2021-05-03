@@ -18,12 +18,13 @@ def test():
 		download()
 		setup(NODES)
 
-		for i in range(1, NODES+1):
+		for i in range(NODES, 0, -1): # n16, n15, ..., n1
 
 			is_ready = start_testnet()
 			if is_ready:
+				stopped_nodes = NODES + 1 - i
 				
-				print(f"\n------------------------------ network up - start test round {i} -------------")
+				print(f"\n------------------------------ network up - test {stopped_nodes} stopped node(s) -----------")
 				blocks = []
 				waiting = 0
 				while len(blocks) < 2:
@@ -42,20 +43,20 @@ def test():
 					stdout.flush()
 
 				stdout.write("\n")
-				print("[*] Stop docker containers...")
-				stop_nodes(1, i)
+				print(f"[*] Stop nodes n{NODES}...n{i}.")
+				stop_nodes(i, NODES)
 
 				# now wait for 2nd ping, expected arrival between 60 and 120 sec after first ping
-				timeout = 120 + 15
+				timeout = 60 + 15
 				waiting = 0
 				while waiting < timeout:
 					blocks = get_blocks()
 					
 					# ping arrived?
 					if len(blocks) == 3:
-						print(f"[*] 2nd ping arrived with {i} nodes stopped.")
+						print(f"[*] 2nd ping arrived with {stopped_nodes} node(s) stopped.")
 						signatures_count_2 = len(get_signatures(blocks[0]))
-						results.append((i, signatures_count_1, signatures_count_2))
+						results.append((stopped_nodes, signatures_count_1, signatures_count_2))
 						break
 
 					# wait for all docker stop messages before printing
@@ -66,8 +67,8 @@ def test():
 					sleep(5)
 
 				else:
-					print(f"[*] No 2nd ping arrived with {i} nodes stopped!")
-					results.append((i, signatures_count_1, "--no ping--"))
+					print(f"[*] No 2nd ping arrived with {stopped_nodes} node(s) stopped!")
+					results.append((stopped_nodes, signatures_count_1, "--no ping--"))
 
 				stop_testnet()
 
@@ -80,7 +81,7 @@ def test():
 		delete()
 
 	except KeyboardInterrupt:
-		print("\n[!] Aborting Test!")
+		print("\n[!] Aborting Test! Please wait!")
 		stop_testnet()
 		delete()
 
@@ -90,7 +91,7 @@ def test():
 		stop_testnet()
 		delete()
 
-	print(render_results(results))
+	print(render_results_P1(results))
 
 if __name__ == "__main__":
 	test()

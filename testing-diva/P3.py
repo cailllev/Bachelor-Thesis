@@ -30,15 +30,14 @@ def test():
 			stop_testnet()
 			cleanup()
 				
-		# testing cycles.
+		# testing cycles
 		last_blocks_length = 1
 		for i in range(1, NODES+1):
 
 			print(f"\n------------------------------ network up - start test round {i} -------------")
 
-			# start node i
 			print(f"[#] Start node {i}.")
-			os.system(f"sudo docker start n{i}.testnet.diva.local n{i}.db.testnet.diva.local")
+			start_node(i)
 			
 			# wait for 120 sec for a ping
 			timeout = 120
@@ -64,12 +63,20 @@ def test():
 				
 			last_blocks_length = len(blocks)
 
+			# start and stop all other nodes, circumvent timeout
+			# i+2, because i+1 gets started in next loop
+			if i+2 <= NODES:
+				print("[*] Start and stop remaining nodes.")
+				start_nodes(i + 2, NODES)
+				sleep(30) # wait for all started before stopping again
+				stop_nodes(i + 2, NODES)
+
 
 		stop_testnet()
 		delete()
 
 	except KeyboardInterrupt:
-		print("\n[!] Aborting Test!")
+		print("\n[!] Aborting Test! Please wait!")
 		stop_testnet()
 		delete()
 
@@ -79,7 +86,7 @@ def test():
 		stop_testnet()
 		delete()
 
-	print(render_results(results))
+	print(render_results_P3(results))
 
 
 if __name__ == "__main__":

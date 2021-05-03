@@ -41,9 +41,38 @@ def stop_nodes(lower, upper):
 
 def stop_node(i):
 	os.system(f"sudo docker stop n{i}.testnet.diva.local n{i}.db.testnet.diva.local")
+	
+
+def start_nodes(lower, upper):
+	for i in range (lower, upper+1):
+		t = Thread(target=start_node, args=(i,))
+		t.start()
 
 
-def render_results(res):
+def start_node(i):
+	os.system(f"sudo docker start n{i}.testnet.diva.local n{i}.db.testnet.diva.local")
+
+
+def render_results_P1(res):
+	s = "\n------------------------------ results ---------------------------------------\n"
+	if len(res) == 0:
+		return s + "[!] No results."
+
+
+	if len(res[0]) == 3:	
+		#                   v14              v14              v14
+		s += " stopped nodes | 1st ping signs | 2nd ping signs \n" 
+		s += "------------------------------------------------ \n" 
+		for r in res:
+			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(14)} | {str(r[2]).rjust(14)} \n"
+
+		return s
+	
+	else:
+		return "[!] Malformed results!\n" + str(results)
+
+
+def render_results_P2(res):
 	s = "\n------------------------------ results ---------------------------------------\n"
 	if len(res) == 0:
 		return s + "[!] No results."
@@ -60,7 +89,16 @@ def render_results(res):
 
 		return s
 
-	elif len(res[0]) == 2:	
+	else:
+		return "[!] Malformed results!\n" + str(results)
+
+
+def render_results_P3(res):
+	s = "\n------------------------------ results ---------------------------------------\n"
+	if len(res) == 0:
+		return s + "[!] No results."
+
+	if len(res[0]) == 2:	
 		#                   v14              v14
 		s += " running nodes | 1st ping signs \n" 
 		s += "------------------------------- \n" 
@@ -69,4 +107,5 @@ def render_results(res):
 
 		return s
 
-	return "[!] Malformed results!\n" + str(results)
+	else:
+		return "[!] Malformed results!\n" + str(results)
