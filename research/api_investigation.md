@@ -117,6 +117,113 @@ calls ``hash(...)`` from ``txHelper.js`` (see above)
 
 
 
+# REGISTER Nodes
+
+defines how many nodes will be registered
+
+
+## Call stack
+* ``Dockerfile``<br>
+script at ``/``<br>
+is excecuted when ``docker up``
+
+  * ``entrypoint.sh``<br>
+script at ``/``<br>
+getting called from Dockerfile
+
+    * ``main.js``<br>
+script at ``/app/main.js``<br>
+getting called from entrypoint.sh<br>
+``config = _configure()`` on line 28
+
+      * ``configure(...)``
+function on line 39 in ``app/main.js``<br>
+``const config = require('../package.json')[process.env.NODE_ENV === 'production' ? 'DivaApi' : 'devDivaApi']``<br>
+``entrypoint.sh`` defines ``NODE_ENV = NODE_ENV=${NODE_ENV:-production}``, i.e. defaults to ``production`` 
+
+        * ``package.json["DivaApi"]``
+JSON entry in ``/package.json``<br>
+defines the bootstrap peers
+
+
+    * ``main.js``<br>
+script at ``/app/main.js``<br>
+getting called from entrypoint.sh<br>
+uses ``config`` in ``make()``
+calls ``_initIroha()``
+
+      * ``_initIroha()``
+function on line 223 in ``app/src/diva-api.js``<br>
+calls ``_registerPeer()``
+
+        * ``_registerPeer()``
+function on line 383 in ``app/src/diva-api.js``<br>
+checks if ``namePeer`` is in ``bootstrapPeer`` and ``address`` or ``namePeer`` is in not yet ``irohaDb``<br>
+if true, ``Peer.apply(...)``, else do not register
+
+
+
+
+# REGEX DoS -> no vuln
+
+``export const REGEX_ID_DOMAIN = /^([a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)*[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/``<br>
+from ``app/src/iroha.js`` on line 37<br>
+used in ``validateIdDomain``
+
+## Call stack
+* ``validateIdDomain``<br>
+function on line 307 in ``app/src/iroha.js``<br>
+used in ``createAccount(...)`` and ``validateAccount(...)``
+
+  * ``createAccount(...)``<br>
+function on line 214 in ``app/src/iroha.js``<br>
+
+    * not found
+
+  * ``validateAccount(...)``<br>
+function on line 283 in ``app/src/iroha.js``<br>
+used in ``apply(...)
+
+    * ``apply(...)```<br>
+function on line 47 in ``app/src/api/account.js``<br>
+used in ``_registerAccount()``
+
+      * ``_registerAccount()``
+function on line 417 in ``app/src/diva-api.js``<br>
+used in ``_registerPeer()``
+
+        * ``_registerPeer()``
+function on line 383 in ``app/src/diva-api.js``<br>
+used in ``_initIroha()``
+
+          * ``_initIroha()``
+function on line 223 in ``app/src/diva-api.js``<br>
+used in ``make(...)``
+
+            * ``make(...)``
+function on line 73 in ``app/src/diva-api.js``<br>
+used in ``app/main.js``
+
+
+            * ``main.js``<br>
+script at ``/app/main.js``<br>
+getting called from entrypoint.sh
+
+              * ``entrypoint.sh``<br>
+script at ``/``<br>
+getting called from Dockerfile
+
+                * ``Dockerfile``<br>
+script at ``/``<br>
+is excecuted when ``docker up``
+
+	
+
+
+
+
+
+
 			
 
 
