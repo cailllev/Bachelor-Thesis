@@ -158,7 +158,7 @@ calls ``_registerPeer()``
 
         * ``_registerPeer()``
 function on line 383 in ``app/src/diva-api.js``<br>
-checks if ``namePeer`` is in ``bootstrapPeer`` and ``address`` or ``namePeer`` is in ``irohaDb``<br>
+checks if ``namePeer`` is in ``bootstrapPeer`` and ``address`` or ``namePeer`` is in not yet ``irohaDb``<br>
 if true, ``Peer.apply(...)``, else do not register
 
 
