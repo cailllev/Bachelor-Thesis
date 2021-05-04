@@ -20,16 +20,16 @@ def test():
 
 		for i in range(NODES, 0, -1): # n16, n15, ..., n1
 
-			is_ready = start_testnet()
+			is_ready = start_testnet(NODES)
 			if is_ready:
 				stopped_nodes = NODES + 1 - i
 				
 				print(f"\n------------------------------ network up - test {stopped_nodes} stopped node(s) -----------")
-				blocks = []
+				blocks = get_blocks()
 				waiting = 0
-				while len(blocks) < 2:
+				while len(blocks) < 2 or not is_ping(blocks[-1]):
 					blocks = get_blocks()
-					print(f"[#] No 1st ping, waited for {str(waiting).rjust(2)} sec...")
+					print(f"[#] No 1st ping, waited for {waiting} sec...")
 					waiting += 5
 					sleep(5)
 

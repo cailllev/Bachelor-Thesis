@@ -17,8 +17,7 @@ def test():
 		download()
 		setup(NODES)
 		
-		#Stopps all nodes if ready
-		is_ready = start_testnet()
+		is_ready = start_testnet(NODES)
 		if is_ready:
 			stop_nodes(1, NODES)
 			sleep(15)

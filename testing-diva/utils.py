@@ -31,7 +31,16 @@ def get_creation_date(block):
 
 def get_transactions_count(block):
 	return block['lengthTransactions']
-	
+
+
+def is_ping(block):
+	try:
+		val = block["blockV1"]["payload"]["0"]["transactions"]["0"]["payload"]["reducedPayload"]["commands"]["0"]["setAccountDetail"]["key"]
+		return val == "ping"
+	except KeyError as e:
+		print("[!] Malformed block!", str(e))
+		return False
+
 
 def stop_nodes(lower, upper):
 	for i in range (lower, upper+1):
