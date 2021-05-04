@@ -78,6 +78,7 @@ def start_testnet(nodes, benchmark=False):
 	
 	print("\n------------------------------ start testnet ---------------------------------")
 	os.system("sudo docker system prune -f")
+	os.system("sudo docker network prune -f")
 
 	if remove_orphans:  # is only needed if different count of NODES and old yml file was deleted
 		print("[!] Did not down containers properly! Start containers with \"--remove-orphans\"!")
@@ -91,7 +92,7 @@ def start_testnet(nodes, benchmark=False):
 	if benchmark:
 		return True
 
-	"""
+	
 	print("\n------------------------------ adapt api container ---------------------------")
 
 	# create new package.json to include all the nodes
@@ -148,7 +149,7 @@ def start_testnet(nodes, benchmark=False):
 	os.system("rm package.json")
 	print("[*] Copied new package.json to new api container.")
 
-	"""
+
 	print("\n------------------------------ adapt iroha genesis block ---------------------")
 
 	res = req.get("https://codeberg.org/diva.exchange/iroha/raw/branch/main/data/local-genesis/0000000000000001")
@@ -174,6 +175,25 @@ def start_testnet(nodes, benchmark=False):
 	print("[*] Copied new genesis block to all iroha containers.")
 	os.system(f"sudo rm 0000000000000001")
 
+	priv = req.get("https://codeberg.org/diva.exchange/iroha/raw/branch/main/data/n7.priv").text
+	pub = req.get("https://codeberg.org/diva.exchange/iroha/raw/branch/main/data/n7.pub").text
+
+	with open("priv", "w") as f:
+		f.write(priv)
+	
+	with open("pub", "w") as f:
+		f.write(pub)
+
+	print("[*] Got a private and public key pair.")
+
+	for n in range(1, nodes+1): # all containers need the new key
+		for i in range(8, nodes+1): # only the keys n8...n{nodes+1}
+			os.system(f"sudo docker cp priv n{n}.testnet.diva.local:opt/iroha/data/n{i}.priv")
+			os.system(f"sudo docker cp pub n{n}.testnet.diva.local:opt/iroha/data/n{i}.pub")
+
+	os.system("rm priv pub")
+	print("[*] Added keys to iroha containers.")
+
 	
 	print("\n------------------------------ start containers ------------------------------")
 	os.system(f"sudo docker-compose -f {yml_file} up -d")
@@ -184,7 +204,7 @@ def start_testnet(nodes, benchmark=False):
 	api_responsive = False
 	explorer_responsive = False
 	time = 0
-	TIMEOUT = 60 # should not take longer than 1 min to start and get first response from explorer
+	TIMEOUT = 120 # should not take longer than 1 min to start and get first response from explorer
 
 	while not api_responsive or not explorer_responsive:
 		ok_response = True
