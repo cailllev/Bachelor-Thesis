@@ -35,57 +35,52 @@ def test():
 		last_blocks_length = 1
 		for i in range(1, NODES+1):
 
-			print(f"\n------------------------------ network up - start test round {i} -------------")
+			print(f"\n------------------------------ start test round {i} --------------------------")
 
 			print(f"[#] Start node {i}.")
 			start_node(i)
 			
-			# wait for 120 sec for a ping
-			timeout = 120
+			# wait for a ping
+			timeout = 180
 			waiting = 0
-			while waiting < timeout:
+			no_ping = False
+
+			while len(blocks) <= last_len_blocks or not is_ping(blocks[0]):
 				blocks = get_blocks()
-				
-				# ping arrived?
-				if len(blocks) == last_blocks_length + 1:
-					print(f"[*] New ping arrived with {i} nodes started.")
-					signatures_count = len(get_signatures(blocks[0]))
-					results.append((i, signatures_count))
+
+				# only print every 10 sec
+				if waiting % 10 == 0:
+					print(f"[#] Wait for another ping, waited for {waiting} sec ...")
+
+				if waiting >= timeout:
+					no_ping = True
 					break
-
-				print(f"[#] No new ping, waited for {waiting} sec...")
-				waiting += 5
-				sleep(5)
-
-			# no ping arrived
-			else:
-				print(f"[*] No new ping arrived with {i} nodes started.")
-				results.append((i, "--no ping--"))
 				
-			last_blocks_length = len(blocks)
+				waiting += 1
+				sleep(1)
 
-			# start and stop all other nodes, circumvent timeout
-			# i+2, because i+1 gets started in next loop
-			if i+2 <= NODES:
-				print("[*] Start and stop remaining nodes.")
-				start_nodes(i + 2, NODES)
-				sleep(30) # wait for all started before stopping again
-				stop_nodes(i + 2, NODES)
+			if no_ping:
+				print(f"[*] No other ping arrived with {stopped_nodes} node(s) stopped!")
+				results.append((stopped_nodes, "--no time--", "--no ping--", "--no signers--"))
 
-
-		stop_testnet()
-		delete()
+			else:
+				print(f"[*] Another ping arrived after {waiting} sec in block nr. {len(blocks)} with {stopped_nodes} node(s) stopped.")
+				signatures = get_signatures(blocks[0])
+				signers = get_signers(blocks[0])
+				results.append((stopped_nodes, waiting, len(signatures), signers))
+				last_len_blocks = len(blocks)
 
 	except KeyboardInterrupt:
 		print("\n[!] Aborting Test! Please wait!")
-		stop_testnet()
-		delete()
 
 	except BaseException as e:
 		print("\n[!] Unexpected Error!")
 		print(str(e))
+
+	finally:
 		stop_testnet()
 		delete()
+
 
 	print(render_results_P3(results))
 

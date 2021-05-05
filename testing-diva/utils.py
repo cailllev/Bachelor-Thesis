@@ -84,9 +84,15 @@ def render_results_P1(res):
 	if len(res[0]) == 4:	
 		#                   v14             v13             v13
 		s += " stopped nodes | ping at [sec] | signs on ping | signers \n" 
-		s += "--------------------------------------------------------------\n" 
+		s += "------------------------------------------------------------------------------\n" 
 		for r in res:
-			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(13)} | {str(r[2]).rjust(13)} | {str(r[3])} \n"
+			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(13)} | {str(r[2]).rjust(13)} | "
+
+			if "--no " in r[3]:
+				s += r[3]
+			else:
+				s += ', '.join(r[3])
+			s += "\n"
 
 		return s
 
@@ -102,7 +108,7 @@ def render_results_P2(res):
 	if len(res[0]) == 3:	
 		#                   v14                  v16                 v17
 		s += " running nodes | before start signs | after start signs \n"  
-		s += "------------------------------------------------ \n" 
+		s += "------------------------------------------------------------------------------\n" 
 		for r in res:
 			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(16)} | {str(r[2]).rjust(17)} \n"
 
@@ -120,7 +126,7 @@ def render_results_P3(res):
 	if len(res[0]) == 2:	
 		#                   v14              v14
 		s += " running nodes | signs on ping  \n" 
-		s += "------------------------------- \n" 
+		s += "------------------------------------------------------------------------------\n" 
 		for r in res:
 			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(14)} \n"
 

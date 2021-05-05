@@ -46,7 +46,7 @@ def test():
 			
 				stopped_nodes = NODES + 1 - i
 				
-				print(f"\n------------------------------ test {stopped_nodes} stopped node(s) -------------------------")
+				print(f"\n------------------------------ start test round {i} --------------------------")
 
 				print(f"[*] Stop node n{i} ...")
 				stop_node(i)
@@ -59,8 +59,8 @@ def test():
 				while len(blocks) <= last_len_blocks or not is_ping(blocks[0]):
 					blocks = get_blocks()
 
-					# wait for all docker stop messages before printing
-					if waiting >= 20 and waiting % 10 == 0:
+					# only print every 10 sec
+					if waiting % 10 == 0:
 						print(f"[#] Wait for another ping, waited for {waiting} sec ...")
 
 					if waiting >= timeout:
