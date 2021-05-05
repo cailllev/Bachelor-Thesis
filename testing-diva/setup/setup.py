@@ -12,6 +12,7 @@ from sys import stdout
 from time import sleep
 from pathlib import Path
 from pprint import pprint
+from threading import Thread
 
 # normal usage from parent dir
 try:
@@ -45,13 +46,13 @@ def download():
 			os.system(f"sudo docker-compose -f {yml_file} down --volumes")
 
 		else:
-			print("[!] No yml file detected to down the docker volumes.")
+			print("[!] No yml file detected to stop the docker volumes.")
 			remove_orphans = True
 			pprint(output)
 			print(running)
 
 	else:
-		print("[*] No containers to down.")
+		print("[*] No containers to stop.")
 	
 	print("\n------------------------------ pull docker images ----------------------------")
 	os.system(f"sudo docker-compose -f {root_path}/setup/docker_images_pull.yml pull")
@@ -83,11 +84,11 @@ def setup(nodes, benchmark=False):
 		os.system(f"sudo docker-compose -f {yml_file} up --no-start")
 	
 	
-	# all nodes up, return true without explorer and api started
+	# all nodes up, return without explorer and api started
 	if benchmark:
-		return True
+		return
 
-	
+	"""
 	print("\n------------------------------ adapt api container ---------------------------")
 
 	# create new package.json to include all the nodes
@@ -143,7 +144,7 @@ def setup(nodes, benchmark=False):
 	os.system("sudo docker cp package.json api.testnet.diva.local:/home/node/package.json")
 	os.system("rm package.json")
 	print("[*] Copied new package.json to new api container.")
-
+	"""
 
 	print("\n------------------------------ adapt iroha genesis block ---------------------")
 
@@ -181,25 +182,38 @@ def setup(nodes, benchmark=False):
 
 	print("\n[*] Copied new genesis block to all iroha containers.")
 	os.system(f"sudo rm 0000000000000001")
-
-	for n in range(1, nodes+1): # all containers need the new key
-		stdout.write("\r[#] Copy keys into n%d " % (n))
-		
-		for i in range(1, nodes+1): # copy keys n1...n{nodes+1} into the containers
-			stdout.write(".")
-			stdout.flush()
-
-			os.system(f"sudo docker cp {keys_path}/n{i}.priv n{n}.testnet.diva.local:opt/iroha/data/n{i}.priv")
-			os.system(f"sudo docker cp {keys_path}/n{i}.pub  n{n}.testnet.diva.local:opt/iroha/data/n{i}.pub")
 	
-	stdout.write("\n")
-	print("[*] Added keys to iroha containers.")
+
+	print("\n------------------------------ adapt iroha key pairs --------------------------")
+
+	def copy_keys(src_node, dest_node):
+		os.system(f"sudo docker cp {keys_path}/n{src_node}.priv n{dest_node}.testnet.diva.local:opt/iroha/data/n{src_node}.priv")
+		os.system(f"sudo docker cp {keys_path}/n{src_node}.pub  n{dest_node}.testnet.diva.local:opt/iroha/data/n{src_node}.pub")
+
+	T = []
+	for n in range(1, nodes+1): # all containers need the new key
+		print(f"\r[#] Copy keypairs into n{n} ", end="")
+		
+		for i in range(1, nodes+1): # copy keys n1...n{nodes+1} into the container n 
+			t = Thread(target=copy_keys, args=(i,n,))
+			t.start()
+			T.append(t)
+
+		# collect all threads if the hit 50 parallel running threads
+		if len(T) > 50:
+			for t in T:
+				t.join()
+			T = []
+
+	
+	sleep(5)
+	print("\n[*] Added keys to iroha containers.")
 
 
 def start_testnet(nodes, benchmark=False):
 
-	print("\n------------------------------ rebuild and start the containers --------------")
-	os.system(f"sudo docker-compose -f {yml_file} up -d --build")
+	print("\n------------------------------ start the containers --------------------------")
+	os.system(f"sudo docker-compose -f {yml_file} up -d")
 
 	print("\n------------------------------ test connection -------------------------------")
 	print("[*] Testnet is up and running, sending test-request to diva-api/about and explorer.")
@@ -248,9 +262,9 @@ def start_testnet(nodes, benchmark=False):
 		res = req.get(f"{EXPLORER}/peers")
 		return json.loads(res.text)["peers"]
 
-	# now wait for all peers to be added to the newwork
+	# now wait for (or check if) all peers in the newwork
 	waiting = 0
-	TIMEOUT = 2400  # after 3 min they should be up
+	TIMEOUT = 240  # after 3 min they should be up (if done manually, instant if done with genesis block)
 
 	up = len(get_peers())
 	while up < nodes:
@@ -263,7 +277,7 @@ def start_testnet(nodes, benchmark=False):
 		if waiting >= TIMEOUT:
 			return False
 
-	print(f"[*] All {nodes} nodes registered as peers.")
+	print(f"[*] All {nodes} nodes registered as peers, {up} total peers.")
 
 	# returns True if not TIMEOUT but all peers up
 	return True	

@@ -1,10 +1,11 @@
-from setup.setup import EXPLORER
+from setup.setup import EXPLORER, keys_path
 
 from dateutil.parser import parse as date_parse
 from threading import Thread
 
 import os
 import json
+import subprocess
 import requests as req
 
 
@@ -42,6 +43,19 @@ def is_ping(block):
 		return False
 
 
+def get_signers(block):
+	signatures = block["blockV1"]["signatures"]
+	signers = []
+
+	for sign in signatures:
+		output = subprocess.check_output(f'grep -F {sign["publicKey"]} {keys_path}/*.pub', shell=True).decode()
+		output = output.split("/")[-1]
+		node_name = output.split(".")[0]
+		signers.append(node_name)
+
+	return signers
+
+
 def stop_nodes(lower, upper):
 	for i in range (lower, upper+1):
 		t = Thread(target=stop_node, args=(i,))
@@ -67,16 +81,15 @@ def render_results_P1(res):
 	if len(res) == 0:
 		return s + "[!] No results."
 
-
-	if len(res[0]) == 3:	
-		#                   v14              v14              v14
-		s += " stopped nodes | 1st ping signs | 2nd ping signs \n" 
-		s += "------------------------------------------------ \n" 
+	if len(res[0]) == 4:	
+		#                   v14             v13             v13
+		s += " stopped nodes | ping at [sec] | signs on ping | signers \n" 
+		s += "--------------------------------------------------------------\n" 
 		for r in res:
-			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(14)} | {str(r[2]).rjust(14)} \n"
+			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(13)} | {str(r[2]).rjust(13)} | {str(r[3])} \n"
 
 		return s
-	
+
 	else:
 		return "[!] Malformed results!\n" + str(results)
 
@@ -86,15 +99,12 @@ def render_results_P2(res):
 	if len(res) == 0:
 		return s + "[!] No results."
 
-	# test if one or 2 pings 
-	# res = [(i, signs_1, signs_2), (...), ...] or
-	# res = [(i, signs_1), (...), ...]
 	if len(res[0]) == 3:	
-		#                   v14              v14              v14
-		s += " running nodes | 1st ping signs | 2nd ping signs \n" 
+		#                   v14                  v16                 v17
+		s += " running nodes | before start signs | after start signs \n"  
 		s += "------------------------------------------------ \n" 
 		for r in res:
-			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(14)} | {str(r[2]).rjust(14)} \n"
+			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(16)} | {str(r[2]).rjust(17)} \n"
 
 		return s
 
