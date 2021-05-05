@@ -1,10 +1,14 @@
 #!/usr/bin/python3
+# python3 setup/setup.py
+
+
 import os
 import sys
 import json
 import subprocess
 import requests as req
 
+from sys import stdout
 from time import sleep
 from pathlib import Path
 from pprint import pprint
@@ -18,8 +22,8 @@ except ModuleNotFoundError:
 	from combine_texts import *
 
 root_path = Path(__file__).parent / ".."
-diva_path = Path(__file__).parent / "../diva-dockerized/"
 yml_file = Path(__file__).parent / "local-testnet.yml"
+keys_path = Path(__file__).parent / "../setup/keys/"
 
 TIMEOUT = 60  # sec
 API = "http://172.29.101.30:19012"
@@ -29,14 +33,14 @@ remove_orphans = False
 
 
 def download():
-	print("\n------------------------------ docker diva volumes down ----------------------")
+	print("\n------------------------------ docker stop and remove volumes ----------------")
 
 	# check if there are containers running
 	output = subprocess.check_output(["sudo", "docker", "ps", "-a"])
 	running = len(output.split(b"\n")) - 2 # -1 for header and last \n
 	if running > 0:
 	
-		# check if the original yml file is there to delete the containers
+		# check if the original yml file is there to remove the containers
 		if os.path.isfile(yml_file):
 			os.system(f"sudo docker-compose -f {yml_file} down --volumes")
 
@@ -48,13 +52,6 @@ def download():
 
 	else:
 		print("[*] No containers to down.")
-
-	print("\n------------------------------ remove old git --------------------------------")
-	os.system(f"rm -rf {diva_path}")
-	print("[*] Done.")
-
-	print("\n------------------------------ clone repo ------------------------------------")
-	os.system(f"cd {root_path} && git clone -b develop https://codeberg.org/diva.exchange/diva-dockerized.git")
 	
 	print("\n------------------------------ pull docker images ----------------------------")
 	os.system(f"sudo docker-compose -f {root_path}/setup/docker_images_pull.yml pull")
@@ -71,12 +68,10 @@ def setup(nodes, benchmark=False):
 		cleanup()
 
 	with open(yml_file, "w") as f:
-		f.write(yml_content)
-
-
-def start_testnet(nodes, benchmark=False):
+		f.write(yml_content)	
 	
-	print("\n------------------------------ start testnet ---------------------------------")
+
+	print("\n------------------------------ create docker containers ----------------------")
 	os.system("sudo docker system prune -f")
 	os.system("sudo docker network prune -f")
 
@@ -154,12 +149,22 @@ def start_testnet(nodes, benchmark=False):
 
 	res = req.get("https://codeberg.org/diva.exchange/iroha/raw/branch/main/data/local-genesis/0000000000000001")
 	data = json.loads(res.text)
+
+	pub_keys = []
+	for i in range(1, nodes+1):
+		pub_keys.append(open(f"{keys_path}/n{i}.pub").readlines()[0])
 	
-	add_peer = '[' + ', '.join([f'{{"addPeer": {{"peer": {{"address": "n{i}.testnet.diva.local:10001", "peerKey": "6611c5accd8643f30bda43088171e471471b1494c791eaf14f070c174ee75162"}}}}}}' for i in range(8, nodes+1)]) + ']'
+	add_peer = '[' + ', '.join([f'{{"addPeer": {{"peer": {{"address": "n{i}.testnet.diva.local:10001", \
+		"peerKey": "{key}"}}}}}}' for i, key in zip(range(1, nodes+1), pub_keys)]) + ']'
 	add_peer = json.loads(add_peer)
 
 	commands = data["blockV1"]["payload"]["transactions"][0]["payload"]["reducedPayload"]["commands"]
-	commands = commands[:7] + add_peer + commands[7:]
+
+	# remove all old addPeer commands
+	commands = list(filter(lambda cmd: "addPeer" not in cmd, commands))
+
+	# add new addPeers to commands
+	commands = add_peer + commands 
 
 	data["blockV1"]["payload"]["transactions"][0]["payload"]["reducedPayload"]["commands"] = commands
 
@@ -170,33 +175,31 @@ def start_testnet(nodes, benchmark=False):
 
 	# copy new package.json to the api container
 	for i in range(1, nodes+1):
+		print(f"\r[#] Copy genesis block into n{i}", end="")
 		os.system(f"sudo docker cp 0000000000000001 n{i}.testnet.diva.local:/opt/iroha/data/local-genesis/0000000000000001")
 	
-	print("[*] Copied new genesis block to all iroha containers.")
+
+	print("\n[*] Copied new genesis block to all iroha containers.")
 	os.system(f"sudo rm 0000000000000001")
 
-	priv = req.get("https://codeberg.org/diva.exchange/iroha/raw/branch/main/data/n7.priv").text
-	pub = req.get("https://codeberg.org/diva.exchange/iroha/raw/branch/main/data/n7.pub").text
-
-	with open("priv", "w") as f:
-		f.write(priv)
-	
-	with open("pub", "w") as f:
-		f.write(pub)
-
-	print("[*] Got a private and public key pair.")
-
 	for n in range(1, nodes+1): # all containers need the new key
-		for i in range(8, nodes+1): # only the keys n8...n{nodes+1}
-			os.system(f"sudo docker cp priv n{n}.testnet.diva.local:opt/iroha/data/n{i}.priv")
-			os.system(f"sudo docker cp pub n{n}.testnet.diva.local:opt/iroha/data/n{i}.pub")
+		stdout.write("\r[#] Copy keys into n%d " % (n))
+		
+		for i in range(1, nodes+1): # copy keys n1...n{nodes+1} into the containers
+			stdout.write(".")
+			stdout.flush()
 
-	os.system("rm priv pub")
+			os.system(f"sudo docker cp {keys_path}/n{i}.priv n{n}.testnet.diva.local:opt/iroha/data/n{i}.priv")
+			os.system(f"sudo docker cp {keys_path}/n{i}.pub  n{n}.testnet.diva.local:opt/iroha/data/n{i}.pub")
+	
+	stdout.write("\n")
 	print("[*] Added keys to iroha containers.")
 
-	
-	print("\n------------------------------ start containers ------------------------------")
-	os.system(f"sudo docker-compose -f {yml_file} up -d")
+
+def start_testnet(nodes, benchmark=False):
+
+	print("\n------------------------------ rebuild and start the containers --------------")
+	os.system(f"sudo docker-compose -f {yml_file} up -d --build")
 
 	print("\n------------------------------ test connection -------------------------------")
 	print("[*] Testnet is up and running, sending test-request to diva-api/about and explorer.")
@@ -267,15 +270,15 @@ def start_testnet(nodes, benchmark=False):
 
 
 def stop_testnet():
-	print("\n------------------------------ docker diva volumes down ----------------------")
-	os.system(f"sudo docker-compose -f {yml_file} down --volumes")
-	os.system(f"sudo docker network prune -f")
+	print("\n------------------------------ docker volumes down ---------------------------")
+	os.system(f"sudo docker-compose -f {yml_file} down")
 
 
 def delete():
-	print("\n------------------------------ remove git ------------------------------------")
-	os.system(f"rm -rf {diva_path}")
-	print("[*] Done.")
+	print("\n------------------------------ docker remove all -----------------------------")
+	os.system(f"sudo docker system prune -f")
+	os.system(f"sudo docker network prune -f")
+	os.system(f"sudo docker volume prune -f")
 
 
 if __name__ == "__main__":
@@ -290,7 +293,7 @@ if __name__ == "__main__":
 		download()
 		setup(nodes)
 		start_testnet(nodes)
-		input("[*] All done? Testnet containers are stopped and local diva-repo gets deleted when continued!")
+		input("[*] All done? Testnet containers are stopped and deleted when continued!")
 	
 	except KeyboardInterrupt:
 		print("[!] Aborting setup! Please wait!")

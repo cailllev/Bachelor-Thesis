@@ -35,10 +35,10 @@ def get_transactions_count(block):
 
 def is_ping(block):
 	try:
-		val = block["blockV1"]["payload"]["0"]["transactions"]["0"]["payload"]["reducedPayload"]["commands"]["0"]["setAccountDetail"]["key"]
+		val = block["blockV1"]["payload"]["transactions"][0]["payload"]["reducedPayload"]["commands"][0]["setAccountDetail"]["key"]
 		return val == "ping"
 	except KeyError as e:
-		print("[!] Malformed block!", str(e))
+		print("[!] Malformed block! KeyError on key:", str(e))
 		return False
 
 

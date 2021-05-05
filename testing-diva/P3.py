@@ -1,9 +1,11 @@
+#!/usr/bin/python3
+# python3 P3.py
+
 from setup.setup import download, setup, start_testnet, stop_testnet, delete, API
 from utils import *
 
 from pprint import pprint
 from time import sleep
-from sys import stdout
 
 import os
 

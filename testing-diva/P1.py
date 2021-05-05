@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+# python3 P1.py
+
+
 from setup.setup import download, setup, start_testnet, stop_testnet, delete, API
 from utils import *
 
@@ -27,13 +31,14 @@ def test():
 				print(f"\n------------------------------ network up - test {stopped_nodes} stopped node(s) -----------")
 				blocks = get_blocks()
 				waiting = 0
-				while len(blocks) < 2 or not is_ping(blocks[-1]):
+				while len(blocks) <= last_len_blocks or not is_ping(blocks[0]):  # blocks[0] is always the newest block
 					blocks = get_blocks()
-					print(f"[#] No 1st ping, waited for {waiting} sec...")
+					print(f"[#] No further ping, waited for {waiting} sec...")
 					waiting += 5
 					sleep(5)
 
-				# first ping arrived
+				# another ping arrived
+				last_len_blocks = len(blocks)
 				signatures_count_1 = len(get_signatures(blocks[0]))
 
 				# wait for 45 sec, then stop the containers
@@ -43,7 +48,7 @@ def test():
 					stdout.flush()
 
 				stdout.write("\n")
-				print(f"[*] Stop nodes n{NODES}...n{i}.")
+				print(f"[*] Stop nodes n{NODES} ... n{i}.")
 				stop_nodes(i, NODES)
 
 				# now wait for 2nd ping, expected arrival between 60 and 120 sec after first ping
