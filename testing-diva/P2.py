@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # python3 P3.py
 
-from setup.setup import download, setup, start_testnet, stop_testnet, delete, API
+from setup.setup import download, setup, start_testnet, stop_testnet, delete
 from utils import *
 
 from pprint import pprint
@@ -15,7 +15,6 @@ def test(nodes):
 	try:
 		results = []
 		blocks = []
-		last_len_blocks = 1
 
 		download()
 		setup(nodes)
@@ -31,21 +30,35 @@ def test(nodes):
 			print("[*] Test Failed!")
 			stop_testnet()
 			delete()
+
+		# next peer to remove
+		to_remove = nodes
+		last_remove_successful = False
+		started_nodes = 0
 				
 		# testing cycles
 		for i in range(1, nodes+1):
 
 			print(f"\n------------------------------ start test round {i} --------------------------")
 
-			print(f"[#] Start node {i}.")
-			start_node(i)
+			# only start the node, if no success at removing peer
+			if not last_remove_successful:
+				print(f"[#] Start peer n{i} ...")
+				start_node(i)
+				started_nodes += 1
+
+			if started_nodes == to_remove:
+				print("[*] Last started node == next node to remove. Test complete.")
+				break
 			
-			# wait for a ping
+			# try if remove peer already works (always test the last)
+			last_remove_successful = True
+			remove_peer(to_remove)
+
 			timeout = 180
 			waiting = 0
-			no_ping = False
 
-			while len(blocks) <= last_len_blocks or not is_ping(blocks[0]):  # blocks[0] is the newest
+			while len(get_peers()) == to_remove:  # wait until on peer was removed
 				blocks = get_blocks()
 
 				# only print every 10 sec
@@ -53,22 +66,24 @@ def test(nodes):
 					print(f"[#] Wait for another ping, waited for {waiting} sec ...")
 
 				if waiting >= timeout:
-					no_ping = True
+					last_remove_successful = False
 					break
 				
 				waiting += 1
 				sleep(1)
 
-			if no_ping:
-				print(f"[*] No other ping arrived with {i} node(s) started!")
-				results.append((i, "--no time--", "--no block--", "--no signers--"))
+			if last_remove_successful:
+				print(f"[*] Peer n{to_remove} successfully removed with {started_nodes} started peers.")	
+				to_remove -= 1
 
-			else:
-				print(f"[*] Another ping arrived after {waiting} sec in block nr. {len(blocks)} with {i} node(s) started.")
 				signatures = get_signatures(blocks[0])
 				signers = get_signers(blocks[0])
-				results.append((i, waiting, len(signatures), signers))
-				last_len_blocks = len(blocks)
+				results.append((started_nodes, waiting, len(signatures), signers))
+
+			else:
+				print(f"[*] Could not remove peer n{to_remove}.")
+				results.append((started_nodes, "--no time--", "--no block--", "--no signers--"))
+
 
 	except KeyboardInterrupt:
 		print("\n[!] Aborting Test! Please wait!")
@@ -82,7 +97,7 @@ def test(nodes):
 		delete()
 
 	try:
-		print(render_results_P3(results))
+		print(render_results_P2(results))
 	
 	except BaseException as e:
 		print("\n[!] Unexpected Error!")

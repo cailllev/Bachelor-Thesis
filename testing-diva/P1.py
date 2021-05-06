@@ -12,26 +12,23 @@ from sys import stdout
 import os
 
 
-NODES = 16
-
-
-def test():
+def test(nodes):
 
 	try:
 		results = []
-		last_len_blocks = 1
 		blocks = []
+		last_len_blocks = 1
 
 		download()
-		setup(NODES)
-		is_ready = start_testnet(NODES)
+		setup(nodes)
+		is_ready = start_testnet(nodes)
 
 		if is_ready:
 				
 			waiting = 0
 
 			while len(blocks) <= last_len_blocks or not is_ping(blocks[0]):  # blocks[0] is always the newest block
-				if waiting % 5 == 0:
+				if waiting % 10 == 0:
 					print(f"[#] Wait for first ping, waited for {waiting} sec ...")					
 
 				blocks = get_blocks()
@@ -39,16 +36,16 @@ def test():
 				sleep(1)
 			
 			# first ping arrived, start test (i.e. stop nodes one after another)
-			print(f"[*] Got first ping in block nr. {len(blocks)}")
+			print(f"[*] Got first ping in block nr. {len(blocks)} after {waiting} sec.")
 			last_len_blocks = len(blocks)
 
-			for i in range(NODES, 0, -1): # n16, n15, ..., n1
+			for i in range(nodes, 0, -1): # n16, n15, ..., n1
 			
-				stopped_nodes = NODES + 1 - i
+				stopped_nodes = nodes + 1 - i
 				
 				print(f"\n------------------------------ start test round {i} --------------------------")
 
-				print(f"[*] Stop node n{i} ...")
+				print(f"[*] Stop peer n{i} ...")
 				stop_node(i)
 
 				# now wait for next ping, expected arrival between 60 and 120 sec after previous ping
@@ -56,7 +53,7 @@ def test():
 				waiting = 0
 				no_ping = False
 
-				while len(blocks) <= last_len_blocks or not is_ping(blocks[0]):
+				while len(blocks) <= last_len_blocks or not is_ping(blocks[0]):  # blocks[0] is the newest
 					blocks = get_blocks()
 
 					# only print every 10 sec
@@ -72,7 +69,7 @@ def test():
 
 				if no_ping:
 					print(f"[*] No other ping arrived with {stopped_nodes} node(s) stopped!")
-					results.append((stopped_nodes, "--no time--", "--no ping--", "--no signers--"))
+					results.append((stopped_nodes, "--no ping--", "--no block--", "--no ping--"))
 
 				else:
 					print(f"[*] Another ping arrived after {waiting} sec in block nr. {len(blocks)} with {stopped_nodes} node(s) stopped.")
@@ -106,4 +103,12 @@ def test():
 		pprint(results)
 
 if __name__ == "__main__":
-	test()
+	from sys import argv
+
+	if len(argv) > 2:
+		nodes = int(argv[2])
+
+	else:
+		nodes = 16
+	
+	test(nodes)

@@ -1,4 +1,4 @@
-from setup.setup import EXPLORER, keys_path
+from setup.setup import API, EXPLORER, keys_path
 
 from dateutil.parser import parse as date_parse
 from threading import Thread
@@ -76,6 +76,21 @@ def start_node(i):
 	os.system(f"sudo docker start n{i}.testnet.diva.local n{i}.db.testnet.diva.local")
 
 
+def get_peers():
+	res = req.get(f"{EXPLORER}/peers")
+	return json.loads(res.text)["peers"]
+
+
+# HTTPConnectionPool(host='172.29.101.30', port=19012): Max retries exceeded with url: /peer/remove?key=67549f3f31403d99f57b0d741b3bce16fc6e5a3d76d74a14c6adf25ccca36089 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f1a9ef7eaf0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+def remove_peer(name):
+	print(req.get(f"{API}/blockstore").text)
+	pub_key = open(f"{keys_path}/n{name}.pub", "r").readlines()[0]
+	url = f"{API}/peer/remove?key={pub_key}"
+	print(url)
+	res = req.get(url)
+	print(f"[#] Remove peer {name}: {res.text}")
+
+
 def render_results_P1(res):
 	s = "\n------------------------------ results ---------------------------------------\n"
 	if len(res) == 0:
@@ -105,12 +120,18 @@ def render_results_P2(res):
 	if len(res) == 0:
 		return s + "[!] No results."
 
-	if len(res[0]) == 3:	
-		#                   v14                  v16                 v17
-		s += " running nodes | before start signs | after start signs \n"  
+	if len(res[0]) == 4:	
+		#                   v14                v16             v13
+		s += " stopped nodes | removed at [sec] | signs on ping | signers \n" 
 		s += "------------------------------------------------------------------------------\n" 
 		for r in res:
-			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(16)} | {str(r[2]).rjust(17)} \n"
+			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(16)} | {str(r[2]).rjust(13)} | "
+
+			if "--no " in r[3]:
+				s += r[3]
+			else:
+				s += ', '.join(r[3])
+			s += "\n"
 
 		return s
 

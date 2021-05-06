@@ -1,0 +1,20 @@
+------------------------------ results ---------------------------------------
+ stopped nodes | ping at [sec] | signs on ping | signers 
+------------------------------------------------------------------------------
+             1 |            73 |             9 | n11, n5, n14, n7, n15, n13, n3, n6, n2 
+             2 |            59 |            10 | n1, n4, n14, n5, n10, n12, n6, n13, n2, n7 
+             3 |           105 |            10 | n1, n8, n11, n5, n7, n9, n4, n2, n6, n3 
+             4 |            78 |             9 | n1, n12, n3, n5, n8, n10, n6, n2, n7 
+             5 |           125 |             9 | n1, n3, n11, n10, n5, n9, n6, n4, n8 
+             6 |   --no time-- |   --no ping-- | --no signers-- 
+             7 |   --no time-- |   --no ping-- | --no signers--
+             8 |   --no time-- |   --no ping-- | --no signers--
+             9 |   --no time-- |   --no ping-- | --no signers--
+            10 |   --no time-- |   --no ping-- | --no signers--
+            11 |   --no time-- |   --no ping-- | --no signers--
+            12 |   --no time-- |   --no ping-- | --no signers--
+            13 |   --no time-- |   --no ping-- | --no signers--
+            14 |   --no time-- |   --no ping-- | --no signers--
+            15 |   --no time-- |   --no ping-- | --no signers--
+            16 |   --no time-- |   --no ping-- | --no signers--
+

@@ -88,63 +88,6 @@ def setup(nodes, benchmark=False):
 	if benchmark:
 		return
 
-	"""
-	print("\n------------------------------ adapt api container ---------------------------")
-
-	# create new package.json to include all the nodes
-	res = req.get("https://codeberg.org/diva.exchange/diva-api/raw/branch/main/package.json")
-	data = json.loads(res.text)
-
-	node_names = '"' + '", "'.join([f'n{i}.testnet.diva.local' for i in range(1, nodes+1)]) + '"'
-	peer_endpoints = '[["' + '"], ["'.join([f'172.29.101.{ip}:10001", "n{i}.testnet.diva.local' for ip,i in zip(nodes_ips, range(1, nodes+1))]) + '"]]'
-
-	dev_diva_api_content = f' \
-	{{"bootstrap_peer": \
-		[{node_names}], \
-		"i2p_hostname": "172.20.101.200", \
-		"i2p_port_http_proxy": 4444, \
-		"i2p_port_webconsole": 7070, \
-		"ip_listen": "0.0.0.0", \
-		"log_level": "trace", \
-		"log_name": "devDivaApi", \
-		"path_iroha": "/tmp/iroha", \
-		"port_listen": 19012, \
-		"torii": "{n1_ip}:50051", \
-    	"creator": "diva@testnet.diva.local", \
-    	"api_endpoint": "localhost:19012", \
-    	"array_peer_endpoint": {peer_endpoints} \
-	}}'
-	
-	diva_api_content = f' \
-	{{"bootstrap_peer": \
-		[{node_names}], \
-		"i2p_hostname": "172.20.101.200", \
-		"i2p_port_http_proxy": 4444, \
-		"i2p_port_webconsole": 7070, \
-		"ip_listen": "0.0.0.0", \
-		"log_level": "info", \
-		"log_name": "DivaApi", \
-		"path_iroha": "/tmp/iroha", \
-		"port_listen": 19012, \
-		"torii": "172.20.101.3:50051" \
-	}}'
-
-	dev_diva_api_content = json.loads(dev_diva_api_content)
-	data["devDivaApi"] = dev_diva_api_content
-	
-	diva_api_content = json.loads(diva_api_content)
-	data["DivaApi"] = diva_api_content
-
-	with open("package.json", "w") as f:
-		json.dump(data, f, indent=4)
-
-	print("[*] New package.json created.")
-
-	# copy new package.json to the api container
-	os.system("sudo docker cp package.json api.testnet.diva.local:/home/node/package.json")
-	os.system("rm package.json")
-	print("[*] Copied new package.json to new api container.")
-	"""
 
 	print("\n------------------------------ adapt iroha genesis block ---------------------")
 
@@ -184,17 +127,17 @@ def setup(nodes, benchmark=False):
 	os.system(f"sudo rm 0000000000000001")
 	
 
-	print("\n------------------------------ adapt iroha key pairs --------------------------")
+	print("\n------------------------------ copy iroha key pairs ---------------------------")
 
 	def copy_keys(src_node, dest_node):
 		os.system(f"sudo docker cp {keys_path}/n{src_node}.priv n{dest_node}.testnet.diva.local:opt/iroha/data/n{src_node}.priv")
 		os.system(f"sudo docker cp {keys_path}/n{src_node}.pub  n{dest_node}.testnet.diva.local:opt/iroha/data/n{src_node}.pub")
 
 	T = []
-	for n in range(1, nodes+1): # all containers need the new key
+	for n in range(1, nodes+1): # what keypair to copy
 		print(f"\r[#] Copy keypairs into n{n} ", end="")
 		
-		for i in range(1, nodes+1): # copy keys n1...n{nodes+1} into the container n 
+		for i in range(1, nodes+1): # copy keypair  n1...n{nodes+1} into the container n 
 			t = Thread(target=copy_keys, args=(i,n,))
 			t.start()
 			T.append(t)
