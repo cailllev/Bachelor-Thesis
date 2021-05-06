@@ -14,75 +14,64 @@ def test(nodes):
 
 	try:
 		results = []
-		blocks = []
 
 		download()
-		setup(nodes)
-		is_ready = start_testnet(nodes)
-
-		if is_ready:
-			stop_nodes(1, nodes)
-			sleep(15)
-			print("[*] All nodes stopped successfully.")
 		
-		else:
-			print("\n[!] TIMEOUT while trying to connect to DIVA.EXCHANGE explorer!")
-			print("[*] Test Failed!")
-			stop_testnet()
-			delete()
-
-		# next peer to remove
-		to_remove = nodes
-		last_remove_successful = False
-		started_nodes = 0
-				
 		# testing cycles
 		for i in range(1, nodes+1):
 
-			print(f"\n------------------------------ start test round {i} --------------------------")
+			setup(nodes)
+			is_ready = start_testnet(nodes)
+			to_remove = nodes
 
-			# only start the node, if no success at removing peer
-			if not last_remove_successful:
-				print(f"[#] Start peer n{i} ...")
-				start_node(i)
-				started_nodes += 1
+			if is_ready:
 
-			if started_nodes == to_remove:
-				print("[*] Last started node == next node to remove. Test complete.")
-				break
-			
-			# try if remove peer already works (always test the last)
-			last_remove_successful = True
-			remove_peer(to_remove)
+				print(f"\n------------------------------ start test round {i} --------------------------")
 
-			timeout = 180
-			waiting = 0
+				# stop all nodes that are not in current cycle
+				print(f"[*] Stopping peers n{i+1} ... n{nodes} ...")
+				stop_nodes(i+1, nodes)
+				sleep(20)
+				print("[*] Peers stopped successfully.")
 
-			while len(get_peers()) == to_remove:  # wait until on peer was removed
-				blocks = get_blocks()
-
-				# only print every 10 sec
-				if waiting % 10 == 0:
-					print(f"[#] Wait for another ping, waited for {waiting} sec ...")
-
-				if waiting >= timeout:
-					last_remove_successful = False
-					break
+				while True:
 				
-				waiting += 1
-				sleep(1)
+					# try to remove peer (always test the last)
+					res = remove_peer(to_remove)
 
-			if last_remove_successful:
-				print(f"[*] Peer n{to_remove} successfully removed with {started_nodes} started peers.")	
-				to_remove -= 1
+					if res.status_code == 200:
+						to_remove -= 1
 
-				signatures = get_signatures(blocks[0])
-				signers = get_signers(blocks[0])
-				results.append((started_nodes, waiting, len(signatures), signers))
+						block = get_blocks()[0]
+						pub_key = json.loads(res.text)["publicKey"]
+						
+						if is_remove_peer(block, pub_key):
+							print(f"[*] Peer n{to_remove} successfully removed with {i} started peers.")	
 
+							signatures = get_signatures(block)
+							signers = get_signers(block)
+							results.append((i, to_remove, len(signatures), signers))
+
+						else:
+							print(f"[!] Removed peer n{to_remove} but no entry in blockchain found!")
+							results.append((i, to_remove, "--no block--", "--no signers--"))
+
+						if to_remove == i:
+							print(f"[*] Removed all non started peers (n{nodes} ... n{i+1}) => test round complete.")
+							break
+
+					else:
+						print(f"[*] Could not remove peer n{to_remove} with {i} started peers => test round complete.")
+						results.append((i, "--not removed--", "--no block--", "--no signers--"))
+						break
+		
 			else:
-				print(f"[*] Could not remove peer n{to_remove}.")
-				results.append((started_nodes, "--no time--", "--no block--", "--no signers--"))
+				print("\n[!] TIMEOUT while trying to connect to DIVA.EXCHANGE explorer!")
+				print("[*] Test Failed!")
+				break
+
+			stop_testnet()
+			delete()
 
 
 	except KeyboardInterrupt:

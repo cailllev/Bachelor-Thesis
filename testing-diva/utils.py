@@ -2,6 +2,7 @@ from setup.setup import API, EXPLORER, keys_path
 
 from dateutil.parser import parse as date_parse
 from threading import Thread
+from time import sleep
 
 import os
 import json
@@ -36,8 +37,16 @@ def get_transactions_count(block):
 
 def is_ping(block):
 	try:
-		val = block["blockV1"]["payload"]["transactions"][0]["payload"]["reducedPayload"]["commands"][0]["setAccountDetail"]["key"]
-		return val == "ping"
+		transactions = block["blockV1"]["payload"]["transactions"]
+
+		for t in transactions:
+			commands = transactions[t]["payload"]["reducedPayload"]["commands"]
+
+			for c in commands:
+				val = commands[c]["setAccountDetail"]["key"]
+				if val == "ping":
+					return True
+
 	except KeyError as e:
 		print("[!] Malformed block! KeyError on key:", str(e))
 		return False
@@ -81,14 +90,43 @@ def get_peers():
 	return json.loads(res.text)["peers"]
 
 
-# HTTPConnectionPool(host='172.29.101.30', port=19012): Max retries exceeded with url: /peer/remove?key=67549f3f31403d99f57b0d741b3bce16fc6e5a3d76d74a14c6adf25ccca36089 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f1a9ef7eaf0>: Failed to establish a new connection: [Errno 111] Connection refused'))
 def remove_peer(name):
-	print(req.get(f"{API}/blockstore").text)
 	pub_key = open(f"{keys_path}/n{name}.pub", "r").readlines()[0]
-	url = f"{API}/peer/remove?key={pub_key}"
-	print(url)
-	res = req.get(url)
-	print(f"[#] Remove peer {name}: {res.text}")
+
+	try:
+		res = req.get(f"{API}/peer/remove?key={pub_key}", timeout=30)
+		print(f"[#] Removed peer {name}")
+		
+	except req.exceptions.Timeout as e:
+		print(f"[#] Timeout while trying to remove peer!")
+				
+		class res: pass
+		res.status_code = 408
+		
+	except req.exceptions.RequestException as e:
+		print(f"[#] Unexpected exception while trying to remove peer!")
+		print(str(e))
+				
+		class res: pass
+		res.status_code = 500
+
+	return res
+
+
+def is_remove_peer(block, pub_key):	
+	try:
+		transactions = block["blockV1"]["payload"]["transactions"]
+
+		for t in transactions:
+			commands = transactions[t]["payload"]["reducedPayload"]["commands"]
+
+			for c in commands:		
+				if "removePeer" in c:
+					return commands[c]["removePeer"]["publicKey"] == pub_key
+
+	except KeyError as e:
+		print("[!] Malformed block! KeyError on key:", str(e))
+		return False
 
 
 def render_results_P1(res):
@@ -106,7 +144,7 @@ def render_results_P1(res):
 			if "--no " in r[3]:
 				s += r[3]
 			else:
-				s += ', '.join(r[3])
+				s += ', \t'.join(r[3])
 			s += "\n"
 
 		return s
@@ -121,16 +159,16 @@ def render_results_P2(res):
 		return s + "[!] No results."
 
 	if len(res[0]) == 4:	
-		#                   v14                v16             v13
-		s += " stopped nodes | removed at [sec] | signs on ping | signers \n" 
+		#                   v14            v16               v15
+		s += " stopped nodes | removed peer | signs on remove | signers \n" 
 		s += "------------------------------------------------------------------------------\n" 
 		for r in res:
-			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(16)} | {str(r[2]).rjust(13)} | "
+			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(16)} | {str(r[2]).rjust(15)} | "
 
 			if "--no " in r[3]:
 				s += r[3]
 			else:
-				s += ', '.join(r[3])
+				s += ', \t'.join(r[3])
 			s += "\n"
 
 		return s
@@ -144,12 +182,18 @@ def render_results_P3(res):
 	if len(res) == 0:
 		return s + "[!] No results."
 
-	if len(res[0]) == 2:	
-		#                   v14              v14
-		s += " running nodes | signs on ping  \n" 
+	if len(res[0]) == 4:	
+		#                   v14             v13             v13
+		s += " running nodes | ping at [sec] | signs on ping | signers \n" 
 		s += "------------------------------------------------------------------------------\n" 
 		for r in res:
-			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(14)} \n"
+			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(13)} | {str(r[2]).rjust(13)} | "
+
+			if "--no " in r[3]:
+				s += r[3]
+			else:
+				s += ', \t'.join(r[3])
+			s += "\n"
 
 		return s
 

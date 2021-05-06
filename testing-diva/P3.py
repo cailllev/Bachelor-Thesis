@@ -22,8 +22,9 @@ def test(nodes):
 		is_ready = start_testnet(nodes)
 
 		if is_ready:
+			print("[*] Stopping nodes ...")
 			stop_nodes(1, nodes)
-			sleep(15)
+			sleep(20)
 			print("[*] All nodes stopped successfully.")
 		
 		else:
@@ -37,7 +38,7 @@ def test(nodes):
 
 			print(f"\n------------------------------ start test round {i} --------------------------")
 
-			print(f"[#] Start node {i}.")
+			print(f"[#] Start peer n{i} ...")
 			start_node(i)
 			
 			# wait for a ping

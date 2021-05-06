@@ -1,0 +1,39 @@
+ubuntu@ubuntu2004:~/BA2021-Cailllev-Kybursas/testing-diva$ sudo docker logs api.testnet.diva.local --details
+ Looking for creator key file /tmp/iroha//data/diva@testnet.diva.local.priv...
+ Waiting for Torii...
+ wait-for-it.sh: waiting 120 seconds for 172.29.101.12:50051
+ wait-for-it.sh: 172.29.101.12:50051 is available after 4 seconds
+ {"level":10,"time":1620288145383,"name":"DivaApi","msg":"Configuration"}
+ {"level":10,"time":1620288145387,"name":"DivaApi","msg":"{\n  ip_listen: '0.0.0.0',\n  port_listen: 19012,\n  log_name: 'DivaApi',\n  log_level: 'trace',\n  i2p_hostname: '127.0.0.1',\n  i2p_port_http_proxy: 4444,\n  i2p_port_webconsole: 7070,\n  path_iroha: '/tmp/iroha/',\n  torii: '172.29.101.12:50051',\n  bootstrap_peer: [\n    'n1.testnet.diva.i2p',\n    'n2.testnet.diva.i2p',\n    'n3.testnet.diva.i2p',\n    'n4.testnet.diva.i2p',\n    'n5.testnet.diva.i2p',\n    'n6.testnet.diva.i2p',\n    'n7.testnet.diva.i2p',\n    [length]: 7\n  ],\n  creator: 'diva@testnet.diva.local',\n  api_endpoint: '172.29.101.30:19012',\n  array_peer_endpoint: [ [length]: 0 ],\n  API_BUILD: '2021-02-17T06:53:05.000Z'\n}"}
+ {"level":30,"time":1620288145391,"name":"DivaApi","msg":"HTTP API 172.29.101.30:19012"}
+ {"level":30,"time":1620288145530,"name":"DivaApi","msg":"API (0.1.0-alpha-2021-02-17T06:53:05.000Z) listening on 0.0.0.0:19012"}
+ {"level":30,"time":1620288145531,"name":"DivaApi","msg":"WebsocketServer listening on 0.0.0.0:19012"}
+ {"level":30,"time":1620288145539,"name":"DivaApi","msg":"Iroha ready"}
+ {"level":30,"time":1620288145539,"name":"DivaApi","msg":"Path /tmp/iroha/"}
+ {"level":30,"time":1620288145539,"name":"DivaApi","msg":"Torii 172.29.101.12:50051"}
+ {"level":30,"time":1620288145539,"name":"DivaApi","msg":"Peer n1"}
+ {"level":30,"time":1620288145539,"name":"DivaApi","msg":"Public Key Peer 3a7c684579a8a878f396ac230fa349fec2783c4877fe667efca32ee5c61fedd0"}
+ {"level":30,"time":1620288145539,"name":"DivaApi","msg":"Creator diva@testnet.diva.local"}
+ {"level":30,"time":1620288145540,"name":"DivaApi","msg":"Public Key Creator c96eb6930d961a36e13ad18bff28b2e98a1e849223a5d8e2ff15f5f0550c1e4e"}
+ {"level":60,"time":1620288159288,"name":"DivaApi","msg":"uncaughtException"}
+ {"level":60,"time":1620288159292,"name":"DivaApi","msg":"Error: 14 UNAVAILABLE: GOAWAY received\n    at Object.exports.createStatusError (/home/node/node_modules/grpc/src/common.js:91:15)\n    at ClientReadableStream._emitStatusIfDone (/home/node/node_modules/grpc/src/client.js:233:26)\n    at ClientReadableStream._receiveStatus (/home/node/node_modules/grpc/src/client.js:211:8)\n    at Object.onReceiveStatus (/home/node/node_modules/grpc/src/client_interceptors.js:1277:15)\n    at InterceptingListener._callNext (/home/node/node_modules/grpc/src/client_interceptors.js:568:42)\n    at InterceptingListener.onReceiveStatus (/home/node/node_modules/grpc/src/client_interceptors.js:618:8)\n    at /home/node/node_modules/grpc/src/client_interceptors.js:1033:24 {\n  [stack]: 'Error: 14 UNAVAILABLE: GOAWAY received\\n' +\n    '    at Object.exports.createStatusError (/home/node/node_modules/grpc/src/common.js:91:15)\\n' +\n    '    at ClientReadableStream._emitStatusIfDone (/home/node/node_modules/grpc/src/client.js:233:26)\\n' +\n    '    at ClientReadableStream._receiveStatus (/home/node/node_modules/grpc/src/client.js:211:8)\\n' +\n    '    at Object.onReceiveStatus (/home/node/node_modules/grpc/src/client_interceptors.js:1277:15)\\n' +\n    '    at InterceptingListener._callNext (/home/node/node_modules/grpc/src/client_interceptors.js:568:42)\\n' +\n    '    at InterceptingListener.onReceiveStatus (/home/node/node_modules/grpc/src/client_interceptors.js:618:8)\\n' +\n    '    at /home/node/node_modules/grpc/src/client_interceptors.js:1033:24',\n  [message]: '14 UNAVAILABLE: GOAWAY received',\n  code: 14,\n  metadata: Metadata { _internal_repr: {}, flags: 0 },\n  details: 'GOAWAY received',\n  [Symbol(kEnhanceStackBeforeInspector)]: [Function: bound enhanceStackTrace] {\n    [length]: 0,\n    [name]: 'bound enhanceStackTrace'\n  }\n}"}
+ Error: 14 UNAVAILABLE: GOAWAY received
+     at Object.exports.createStatusError (/home/node/node_modules/grpc/src/common.js:91:15)
+     at ClientReadableStream._emitStatusIfDone (/home/node/node_modules/grpc/src/client.js:233:26)
+     at ClientReadableStream._receiveStatus (/home/node/node_modules/grpc/src/client.js:211:8)
+     at Object.onReceiveStatus (/home/node/node_modules/grpc/src/client_interceptors.js:1277:15)
+     at InterceptingListener._callNext (/home/node/node_modules/grpc/src/client_interceptors.js:568:42)
+     at InterceptingListener.onReceiveStatus (/home/node/node_modules/grpc/src/client_interceptors.js:618:8)
+     at /home/node/node_modules/grpc/src/client_interceptors.js:1033:24
+ Emitted 'error' event on ClientReadableStream instance at:
+     at ClientReadableStream._emitStatusIfDone (/home/node/node_modules/grpc/src/client.js:234:12)
+     at ClientReadableStream._receiveStatus (/home/node/node_modules/grpc/src/client.js:211:8)
+     [... lines matching original stack trace ...]
+     at /home/node/node_modules/grpc/src/client_interceptors.js:1033:24 {
+   code: 14,
+   metadata: Metadata { _internal_repr: {}, flags: 0 },
+   details: 'GOAWAY received'
+ }
+ Looking for creator key file /tmp/iroha//data/diva@testnet.diva.local.priv...
+ Waiting for Torii...
+ wait-for-it.sh: waiting 120 seconds for 172.29.101.12:50051

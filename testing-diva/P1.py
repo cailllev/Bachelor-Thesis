@@ -49,7 +49,7 @@ def test(nodes):
 				stop_node(i)
 
 				# now wait for next ping, expected arrival between 60 and 120 sec after previous ping
-				timeout = 180
+				timeout = 1800  # 30 mins to include safety buffer
 				waiting = 0
 				no_ping = False
 

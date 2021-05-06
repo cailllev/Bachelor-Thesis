@@ -48,8 +48,6 @@ def download():
 		else:
 			print("[!] No yml file detected to stop the docker volumes.")
 			remove_orphans = True
-			pprint(output)
-			print(running)
 
 	else:
 		print("[*] No containers to stop.")
@@ -75,6 +73,7 @@ def setup(nodes, benchmark=False):
 	print("\n------------------------------ create docker containers ----------------------")
 	os.system("sudo docker system prune -f")
 	os.system("sudo docker network prune -f")
+	os.system("sudo docker volume prune -f")
 
 	if remove_orphans:  # is only needed if different count of NODES and old yml file was deleted
 		print("[!] Did not down containers properly! Start containers with \"--remove-orphans\"!")
@@ -135,9 +134,9 @@ def setup(nodes, benchmark=False):
 
 	T = []
 	for n in range(1, nodes+1): # what keypair to copy
-		print(f"\r[#] Copy keypairs into n{n} ", end="")
+		print(f"\r[#] Copy keypairs into n{n}", end="")
 		
-		for i in range(1, nodes+1): # copy keypair  n1...n{nodes+1} into the container n 
+		for i in range(1, nodes+1): # copy keypair n into the containers n1...n{nodes+1}
 			t = Thread(target=copy_keys, args=(i,n,))
 			t.start()
 			T.append(t)
