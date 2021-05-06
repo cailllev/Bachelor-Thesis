@@ -17,7 +17,7 @@ def test():
 	download()
 	setup(NODES)
 
-	is_ready = start_testnet()
+	is_ready = start_testnet(NODES)
 	if is_ready:
 
 		print("\n------------------------------ network up - start tests ----------------------")

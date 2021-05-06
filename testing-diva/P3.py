@@ -1,84 +1,88 @@
-from setup.setup import download, setup, start_testnet, stop_testnet, delete, API, EXPLORER
+#!/usr/bin/python3
+# python3 P3.py
+
+from setup.setup import download, setup, start_testnet, stop_testnet, delete, API
 from utils import *
 
 from pprint import pprint
 from time import sleep
-from sys import stdout
 
-import requests as req
-import json
 import os
 
 
-NODES = 10
-success = []
-no_success = []
-
+NODES = 16
+results = []
 
 def test():
-	download()
-	setup(NODES)
-	
-	#Stopps all nodes if ready
-	is_ready = start_testnet()
-	if is_ready:
-		for y in range (1, NODES+1):
-			names = ""
-			names = f"n{y}.testnet.diva.local n{y}.db.testnet.diva.local"
-			print("Stopping: ", names)
-			os.system(f"sudo docker stop {names}")
-		print("Stopped all Containers.")
-	else:
-		print("\n[!] TIMEOUT while trying to connect to DIVA.EXCHANGE explorer!")
-		print("[*] TESTS FAILED!")
-		stop_testnet()
-		cleanup()
-		exit(1)
-			
-	#testing cycles.
-	last_blocks_length = 1
-	for i in range(1, NODES+1):
 
-		print(f"\n------------------------------ network up - start test round {i} -------------")
-
-
-		#start node TODO implement start as thread.
-		print(f"[#] start node {i}")
-		names = ""
-		names += f"n{i}.testnet.diva.local n{i}.db.testnet.diva.local"
-		print("starting: ", names)
-		os.system(f"sudo docker start {names}") #Wirklich so einfach?
-		print("started node n", i)
-
-
+	try:
+		download()
+		setup(NODES)
 		
-		# wait for 60 sec for a ping.
-		for t in range(60, 0, -1):
-			res = req.get(f"{EXPLORER}/blocks")
-			blocks = json.loads(res.text)["blocks"]
-			stdout.write("\r[#] Waiting for first ping, sleep for %2d sec" % (t))
-			stdout.flush()
-			sleep(1)
-		stdout.write("\n")
+		is_ready = start_testnet(NODES)
+		if is_ready:
+			stop_nodes(1, NODES)
+			sleep(15)
+			print("[*] All nodes stopped successfully.")
 		
-		
-		# handle ping
-		if len(blocks) == last_blocks_length + 1:
-			success.append(i)
-		elif len(blocks) == last_blocks_length:
-			no_success.append(i)
 		else:
-			print("[!] strange blockchain")
-			pprint(blocks)
-		last_blocks_length = len(blocks)
+			print("\n[!] TIMEOUT while trying to connect to DIVA.EXCHANGE explorer!")
+			print("[*] Test Failed!")
+			stop_testnet()
+			cleanup()
+				
+		# testing cycles
+		last_blocks_length = 1
+		for i in range(1, NODES+1):
+
+			print(f"\n------------------------------ start test round {i} --------------------------")
+
+			print(f"[#] Start node {i}.")
+			start_node(i)
+			
+			# wait for a ping
+			timeout = 180
+			waiting = 0
+			no_ping = False
+
+			while len(blocks) <= last_len_blocks or not is_ping(blocks[0]):
+				blocks = get_blocks()
+
+				# only print every 10 sec
+				if waiting % 10 == 0:
+					print(f"[#] Wait for another ping, waited for {waiting} sec ...")
+
+				if waiting >= timeout:
+					no_ping = True
+					break
+				
+				waiting += 1
+				sleep(1)
+
+			if no_ping:
+				print(f"[*] No other ping arrived with {stopped_nodes} node(s) stopped!")
+				results.append((stopped_nodes, "--no time--", "--no ping--", "--no signers--"))
+
+			else:
+				print(f"[*] Another ping arrived after {waiting} sec in block nr. {len(blocks)} with {stopped_nodes} node(s) stopped.")
+				signatures = get_signatures(blocks[0])
+				signers = get_signers(blocks[0])
+				results.append((stopped_nodes, waiting, len(signatures), signers))
+				last_len_blocks = len(blocks)
+
+	except KeyboardInterrupt:
+		print("\n[!] Aborting Test! Please wait!")
+
+	except BaseException as e:
+		print("\n[!] Unexpected Error!")
+		print(str(e))
+
+	finally:
+		stop_testnet()
+		delete()
 
 
-	stop_testnet()
-	delete()
-
-	print("\n[*] RESULTS!")
-	pprint(success)
-	pprint(no_success)
+	print(render_results_P3(results))
 
 
 if __name__ == "__main__":

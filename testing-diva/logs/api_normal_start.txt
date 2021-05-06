@@ -1,0 +1,12 @@
+ Looking for creator key file /tmp/iroha//data/diva@testnet.diva.local.priv...
+ Waiting for Torii...
+ {"level":30,"time":1620120333523,"name":"DivaApi","msg":"HTTP API 172.29.101.30:19012"}
+ {"level":30,"time":1620120333769,"name":"DivaApi","msg":"API (0.1.0-alpha-2021-02-17T06:53:05.000Z) listening on 0.0.0.0:19012"}
+ {"level":30,"time":1620120333770,"name":"DivaApi","msg":"WebsocketServer listening on 0.0.0.0:19012"}
+ {"level":30,"time":1620120333778,"name":"DivaApi","msg":"Iroha ready"}
+ {"level":30,"time":1620120333778,"name":"DivaApi","msg":"Path /tmp/iroha/"}
+ {"level":30,"time":1620120333780,"name":"DivaApi","msg":"Torii 172.29.101.12:50051"}
+ {"level":30,"time":1620120333780,"name":"DivaApi","msg":"Peer n1"}
+ {"level":30,"time":1620120333781,"name":"DivaApi","msg":"Public Key Peer 3a7c684579a8a878f396ac230fa349fec2783c4877fe667efca32ee5c61fedd0"}
+ {"level":30,"time":1620120333781,"name":"DivaApi","msg":"Creator diva@testnet.diva.local"}
+ {"level":30,"time":1620120333781,"name":"DivaApi","msg":"Public Key Creator c96eb6930d961a36e13ad18bff28b2e98a1e849223a5d8e2ff15f5f0550c1e4e"}

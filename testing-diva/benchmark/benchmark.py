@@ -13,7 +13,7 @@ BENCHMARK = True
 def benchmark():
 	download()
 	setup(NODES, BENCHMARK)
-	start_testnet(BENCHMARK)
+	start_testnet(NODES, BENCHMARK)
 
 	print("\n------------------------------ network up - check ram and cpu usage ----------")
 	print("Enter following in separate terminal:")

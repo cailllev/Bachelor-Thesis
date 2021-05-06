@@ -82,7 +82,7 @@ services:\n"
     image: divax/diva-api:latest\n\
     restart: unless-stopped\n\
     environment:\n\
-      NODE_ENV: development\n\
+      NODE_ENV: production\n\
       IP_LISTEN: 0.0.0.0\n\
       PORT_LISTEN: 19012\n\
       API_ENDPOINT: 172.29.101.30:19012\n\
