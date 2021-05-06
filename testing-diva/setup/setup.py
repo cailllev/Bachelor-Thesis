@@ -12,7 +12,6 @@ from sys import stdout
 from time import sleep
 from pathlib import Path
 from pprint import pprint
-from threading import Thread
 
 # normal usage from parent dir
 try:
@@ -56,14 +55,14 @@ def download():
 	os.system(f"sudo docker-compose -f {root_path}/setup/docker_images_pull.yml pull")
 
 
-def setup(nodes, benchmark=False):
+def setup(peers, benchmark=False):
 
-	# create and write yml file (controls nodes and dbs)
+	# create and write yml file (controls peers and dbs)
 	print("\n------------------------------ adapt yml file --------------------------------")
-	print("[*] Changing yml file to create local-testnet with " + str(nodes) + " nodes.")
-	yml_content = combine(nodes, benchmark)
+	print("[*] Changing yml file to create local-testnet with " + str(peers) + " peers.")
+	yml_content = combine(peers, benchmark)
 	
-	if yml_content == None:  # i.e. nodes over threshold and not continued and not in benchmark
+	if yml_content == None:  # i.e. peers over threshold and not continued and not in benchmark
 		cleanup()
 
 	with open(yml_file, "w") as f:
@@ -75,7 +74,7 @@ def setup(nodes, benchmark=False):
 	os.system("sudo docker network prune -f")
 	os.system("sudo docker volume prune -f")
 
-	if remove_orphans:  # is only needed if different count of NODES and old yml file was deleted
+	if remove_orphans:  # is only needed if different count of peers and old yml file was deleted
 		print("[!] Did not down containers properly! Start containers with \"--remove-orphans\"!")
 		os.system(f"sudo docker-compose -f {yml_file} up --remove-orphans --no-start")
 
@@ -83,7 +82,7 @@ def setup(nodes, benchmark=False):
 		os.system(f"sudo docker-compose -f {yml_file} up --no-start")
 	
 	
-	# all nodes up, return without explorer and api started
+	# all peers up, return without explorer and api started
 	if benchmark:
 		return
 
@@ -94,11 +93,11 @@ def setup(nodes, benchmark=False):
 	data = json.loads(res.text)
 
 	pub_keys = []
-	for i in range(1, nodes+1):
+	for i in range(1, peers+1):
 		pub_keys.append(open(f"{keys_path}/n{i}.pub").readlines()[0])
 	
 	add_peer = '[' + ', '.join([f'{{"addPeer": {{"peer": {{"address": "n{i}.testnet.diva.local:10001", \
-		"peerKey": "{key}"}}}}}}' for i, key in zip(range(1, nodes+1), pub_keys)]) + ']'
+		"peerKey": "{key}"}}}}}}' for i, key in zip(range(1, peers+1), pub_keys)]) + ']'
 	add_peer = json.loads(add_peer)
 
 	commands = data["blockV1"]["payload"]["transactions"][0]["payload"]["reducedPayload"]["commands"]
@@ -117,42 +116,29 @@ def setup(nodes, benchmark=False):
 	print("[*] New genesis block created.")
 
 	# copy new package.json to the api container
-	for i in range(1, nodes+1):
+	for i in range(1, peers+1):
 		print(f"\r[#] Copy genesis block into n{i}", end="")
 		os.system(f"sudo docker cp 0000000000000001 n{i}.testnet.diva.local:/opt/iroha/data/local-genesis/0000000000000001")
 	
 
-	print("\n[*] Copied new genesis block to all iroha containers.")
+	print("\r[*] Copied new genesis block to all iroha containers.")
 	os.system(f"sudo rm 0000000000000001")
 	
 
 	print("\n------------------------------ copy iroha key pairs ---------------------------")
-
-	def copy_keys(src_node, dest_node):
-		os.system(f"sudo docker cp {keys_path}/n{src_node}.priv n{dest_node}.testnet.diva.local:opt/iroha/data/n{src_node}.priv")
-		os.system(f"sudo docker cp {keys_path}/n{src_node}.pub  n{dest_node}.testnet.diva.local:opt/iroha/data/n{src_node}.pub")
-
-	T = []
-	for n in range(1, nodes+1): # what keypair to copy
-		print(f"\r[#] Copy keypairs into n{n}", end="")
 		
-		for i in range(1, nodes+1): # copy keypair n into the containers n1...n{nodes+1}
-			t = Thread(target=copy_keys, args=(i,n,))
-			t.start()
-			T.append(t)
+	for n in range(1, peers+1): # what keypair to copy
+		for i in range(1, peers+1): # copy keypair n into the containers n1...n{peers+1}
+			print(f"\r[#] Copy n{n}'s keypair into n{i} ...", end="")
+			os.system(f"sudo docker cp {keys_path}/n{n}.priv n{i}.testnet.diva.local:opt/iroha/data/n{n}.priv")
+			os.system(f"sudo docker cp {keys_path}/n{n}.pub  n{i}.testnet.diva.local:opt/iroha/data/n{n}.pub")
+		
+		print("\r", end="")
 
-		# collect all threads if the hit 50 parallel running threads
-		if len(T) > 50:
-			for t in T:
-				t.join()
-			T = []
-
-	
-	sleep(5)
-	print("\n[*] Added keys to iroha containers.")
+	print("\r[*] Added keys to iroha containers.")
 
 
-def start_testnet(nodes, benchmark=False):
+def start_testnet(peers, benchmark=False):
 
 	print("\n------------------------------ start the containers --------------------------")
 	os.system(f"sudo docker-compose -f {yml_file} up -d")
@@ -209,8 +195,8 @@ def start_testnet(nodes, benchmark=False):
 	TIMEOUT = 240  # after 3 min they should be up (if done manually, instant if done with genesis block)
 
 	up = len(get_peers())
-	while up < nodes:
-		print(f"[#] Only {up} peers registered out of {nodes}, waited for {waiting} sec...")
+	while up < peers:
+		print(f"[#] Only {up} peers registered out of {peers}, waited for {waiting} sec...")
 		sleep(15)
 		waiting += 15
 
@@ -219,7 +205,7 @@ def start_testnet(nodes, benchmark=False):
 		if waiting >= TIMEOUT:
 			return False
 
-	print(f"[*] All {nodes} nodes registered as peers, {up} total peers.")
+	print(f"[*] All {peers} peers registered as peers, {up} total peers.")
 
 	# returns True if not TIMEOUT but all peers up
 	return True	
@@ -239,16 +225,16 @@ def delete():
 
 if __name__ == "__main__":
 
-	# change nodes count?
-	if len(sys.argv) <= 1:
-		nodes = 10
+	# change peers count?
+	if len(sys.argv) < 2:
+		peers = 9
 	else:
-		nodes = int(sys.argv[1])
+		peers = int(sys.argv[1])
 
 	try: 
 		download()
-		setup(nodes)
-		start_testnet(nodes)
+		setup(peers)
+		start_testnet(peers)
 		input("[*] All done? Testnet containers are stopped and deleted when continued!")
 	
 	except KeyboardInterrupt:

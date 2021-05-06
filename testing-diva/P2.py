@@ -1,68 +1,65 @@
-#!/usr/bin/python3
-# python3 P3.py
+# python3 P2.py [peers]
 
 from setup.setup import download, setup, start_testnet, stop_testnet, delete
 from utils import *
 
 from pprint import pprint
-from time import sleep
 
 import os
 
 
-def test(nodes):
+def test(peers):
 
 	try:
 		results = []
 
 		download()
 		
-		# testing cycles
-		for i in range(1, nodes+1):
+		# testing cycles, stop all except:
+		# n1; 
+		# n1,n2;
+		# ...
+		# ...
+		# n1,n2,n3,...,peers;
+		for i in range(1, peers+1):
 
-			setup(nodes)
-			is_ready = start_testnet(nodes)
-			to_remove = nodes
+			setup(peers)
+			is_ready = start_testnet(peers)
 
 			if is_ready:
 
 				print(f"\n------------------------------ start test round {i} --------------------------")
+			
+				to_remove = peers # start with (trying to) remove n16
 
-				# stop all nodes that are not in current cycle
-				print(f"[*] Stopping peers n{i+1} ... n{nodes} ...")
-				stop_nodes(i+1, nodes)
-				sleep(20)
-				print("[*] Peers stopped successfully.")
+				# stop all peers that are not in current cycle
+				print(f"[*] Stopping peers n{i+1} ... n{peers}.")
+				stop_peers(i+1, peers)
 
 				while True:
 				
 					# try to remove peer (always test the last)
-					res = remove_peer(to_remove)
+					res = remove_peer(to_remove, 120)
 
-					if res.status_code == 200:
-						to_remove -= 1
-
-						block = get_blocks()[0]
-						pub_key = json.loads(res.text)["publicKey"]
+					if res.status_code == 200:	
 						
-						if is_remove_peer(block, pub_key):
-							print(f"[*] Peer n{to_remove} successfully removed with {i} started peers.")	
+						to_remove -= 1
+						block = get_blocks()[0]
 
-							signatures = get_signatures(block)
-							signers = get_signers(block)
-							results.append((i, to_remove, len(signatures), signers))
+						signatures = get_signatures(block)
+						signers = get_signers(block)
+						results.append((i, to_remove, len(signatures), signers))
+						
+						still_up = min(i, to_remove)
+						print(f"[*] Peer n{to_remove} successfully removed with {still_up} started peers.")
 
-						else:
-							print(f"[!] Removed peer n{to_remove} but no entry in blockchain found!")
-							results.append((i, to_remove, "--no block--", "--no signers--"))
-
-						if to_remove == i:
-							print(f"[*] Removed all non started peers (n{nodes} ... n{i+1}) => test round complete.")
+						if to_remove == 1:
+							print(f"[*] Removed peers except n1 => test round complete.")
 							break
 
 					else:
 						print(f"[*] Could not remove peer n{to_remove} with {i} started peers => test round complete.")
-						results.append((i, "--not removed--", "--no block--", "--no signers--"))
+						results.append((i, "--no one--", "--no block--", "--no signers--"))
 						break
 		
 			else:
@@ -98,9 +95,11 @@ if __name__ == "__main__":
 	from sys import argv
 
 	if len(argv) > 2:
-		nodes = int(argv[2])
+		peers = int(argv[2])
 
 	else:
-		nodes = 16
+		peers = 9    # 3f+1 - 2f+1 = 2
+		# peers = 15 # 3f+1 - 2f+1 = 3
 	
-	test(nodes)
+	print(f"[*] Starting test P2 with {peers} peers")
+	test(peers)

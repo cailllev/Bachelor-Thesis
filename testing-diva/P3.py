@@ -1,5 +1,4 @@
-#!/usr/bin/python3
-# python3 P3.py
+# python3 P3.py [peers]
 
 from setup.setup import download, setup, start_testnet, stop_testnet, delete, API
 from utils import *
@@ -10,7 +9,7 @@ from time import sleep
 import os
 
 
-def test(nodes):
+def test(peers):
 
 	try:
 		results = []
@@ -18,14 +17,13 @@ def test(nodes):
 		last_len_blocks = 1
 
 		download()
-		setup(nodes)
-		is_ready = start_testnet(nodes)
+		setup(peers)
+		is_ready = start_testnet(peers)
 
 		if is_ready:
-			print("[*] Stopping nodes ...")
-			stop_nodes(1, nodes)
-			sleep(20)
-			print("[*] All nodes stopped successfully.")
+			print("[*] Stopping peers ...")
+			stop_peers(1, peers)
+			print("[*] All peers stopped successfully.")
 		
 		else:
 			print("\n[!] TIMEOUT while trying to connect to DIVA.EXCHANGE explorer!")
@@ -34,12 +32,12 @@ def test(nodes):
 			delete()
 				
 		# testing cycles
-		for i in range(1, nodes+1):
+		for i in range(1, peers+1):
 
 			print(f"\n------------------------------ start test round {i} --------------------------")
 
-			print(f"[#] Start peer n{i} ...")
-			start_node(i)
+			print(f"[#] Start peer n{i}.")
+			start_peer(i)
 			
 			# wait for a ping
 			timeout = 180
@@ -61,11 +59,11 @@ def test(nodes):
 				sleep(1)
 
 			if no_ping:
-				print(f"[*] No other ping arrived with {i} node(s) started!")
+				print(f"[*] No other ping arrived with {i} peers started!")
 				results.append((i, "--no time--", "--no block--", "--no signers--"))
 
 			else:
-				print(f"[*] Another ping arrived after {waiting} sec in block nr. {len(blocks)} with {i} node(s) started.")
+				print(f"[*] Another ping arrived after {waiting} sec in block nr. {len(blocks)} with {i} peers started.")
 				signatures = get_signatures(blocks[0])
 				signers = get_signers(blocks[0])
 				results.append((i, waiting, len(signatures), signers))
@@ -95,9 +93,11 @@ if __name__ == "__main__":
 	from sys import argv
 
 	if len(argv) > 2:
-		nodes = int(argv[2])
+		peers = int(argv[2])
 
 	else:
-		nodes = 16
+		peers = 9    # 3f+1 - 2f+1 = 2
+		# peers = 15 # 3f+1 - 2f+1 = 3
 	
-	test(nodes)
+	print(f"[*] Starting test P2 with {peers} peers")
+	test(peers)

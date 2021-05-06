@@ -1,5 +1,4 @@
-#!/usr/bin/python3
-# python3 P1.py
+# python3 P1.py [peers]
 
 
 from setup.setup import download, setup, start_testnet, stop_testnet, delete, API
@@ -12,7 +11,7 @@ from sys import stdout
 import os
 
 
-def test(nodes):
+def test(peers):
 
 	try:
 		results = []
@@ -20,8 +19,8 @@ def test(nodes):
 		last_len_blocks = 1
 
 		download()
-		setup(nodes)
-		is_ready = start_testnet(nodes)
+		setup(peers)
+		is_ready = start_testnet(peers)
 
 		if is_ready:
 				
@@ -35,18 +34,18 @@ def test(nodes):
 				waiting += 1
 				sleep(1)
 			
-			# first ping arrived, start test (i.e. stop nodes one after another)
+			# first ping arrived, start test (i.e. stop peers one after another)
 			print(f"[*] Got first ping in block nr. {len(blocks)} after {waiting} sec.")
 			last_len_blocks = len(blocks)
 
-			for i in range(nodes, 0, -1): # n16, n15, ..., n1
+			for i in range(peers, 0, -1): # n16, n15, ..., n1
 			
-				stopped_nodes = nodes + 1 - i
+				stopped_peers = peers + 1 - i
 				
 				print(f"\n------------------------------ start test round {i} --------------------------")
 
-				print(f"[*] Stop peer n{i} ...")
-				stop_node(i)
+				print(f"[*] Stopping peer n{i}.")
+				stop_peer(i)
 
 				# now wait for next ping, expected arrival between 60 and 120 sec after previous ping
 				timeout = 1800  # 30 mins to include safety buffer
@@ -68,14 +67,14 @@ def test(nodes):
 					sleep(1)
 
 				if no_ping:
-					print(f"[*] No other ping arrived with {stopped_nodes} node(s) stopped!")
-					results.append((stopped_nodes, "--no ping--", "--no block--", "--no ping--"))
+					print(f"[*] No other ping arrived with {stopped_peers} peers stopped!")
+					results.append((stopped_peers, "--no ping--", "--no block--", "--no ping--"))
 
 				else:
-					print(f"[*] Another ping arrived after {waiting} sec in block nr. {len(blocks)} with {stopped_nodes} node(s) stopped.")
+					print(f"[*] Another ping arrived after {waiting} sec in block nr. {len(blocks)} with {stopped_peers} peers stopped.")
 					signatures = get_signatures(blocks[0])
 					signers = get_signers(blocks[0])
-					results.append((stopped_nodes, waiting, len(signatures), signers))
+					results.append((stopped_peers, waiting, len(signatures), signers))
 					last_len_blocks = len(blocks)
 
 
@@ -106,9 +105,11 @@ if __name__ == "__main__":
 	from sys import argv
 
 	if len(argv) > 2:
-		nodes = int(argv[2])
+		peers = int(argv[2])
 
 	else:
-		nodes = 16
+		peers = 9    # 3f+1 - 2f+1 = 2
+		# peers = 15 # 3f+1 - 2f+1 = 3
 	
-	test(nodes)
+	print(f"[*] Starting test P2 with {peers} peers")
+	test(peers)

@@ -2,6 +2,7 @@ from setup.setup import API, EXPLORER, keys_path
 
 from dateutil.parser import parse as date_parse
 from threading import Thread
+from pprint import pprint
 from time import sleep
 
 import os
@@ -40,10 +41,10 @@ def is_ping(block):
 		transactions = block["blockV1"]["payload"]["transactions"]
 
 		for t in transactions:
-			commands = transactions[t]["payload"]["reducedPayload"]["commands"]
+			commands = t["payload"]["reducedPayload"]["commands"]
 
 			for c in commands:
-				val = commands[c]["setAccountDetail"]["key"]
+				val = c["setAccountDetail"]["key"]
 				if val == "ping":
 					return True
 
@@ -59,29 +60,39 @@ def get_signers(block):
 	for sign in signatures:
 		output = subprocess.check_output(f'grep -F {sign["publicKey"]} {keys_path}/*.pub', shell=True).decode()
 		output = output.split("/")[-1]
-		node_name = output.split(".")[0]
-		signers.append(node_name)
+		peer_name = output.split(".")[0]
+		signers.append(peer_name)
 
 	return signers
 
 
-def stop_nodes(lower, upper):
+def stop_peers(lower, upper):
+	T = []
 	for i in range (lower, upper+1):
-		t = Thread(target=stop_node, args=(i,))
+		t = Thread(target=stop_peer, args=(i,))
 		t.start()
+		T.append(t)
+
+	for t in T:
+		t.join()
 
 
-def stop_node(i):
+def stop_peer(i):
 	os.system(f"sudo docker stop n{i}.testnet.diva.local n{i}.db.testnet.diva.local")
 	
 
-def start_nodes(lower, upper):
+def start_peers(lower, upper):
+	T = []
 	for i in range (lower, upper+1):
-		t = Thread(target=start_node, args=(i,))
+		t = Thread(target=start_peer, args=(i,))
 		t.start()
+		T.append(t)
+
+	for t in T:
+		t.join()
 
 
-def start_node(i):
+def start_peer(i):
 	os.system(f"sudo docker start n{i}.testnet.diva.local n{i}.db.testnet.diva.local")
 
 
@@ -90,11 +101,12 @@ def get_peers():
 	return json.loads(res.text)["peers"]
 
 
-def remove_peer(name):
+def remove_peer(name, t):
+	print(f"[#] Trying to remove peer n{name} with timeout of {t} sec.")
 	pub_key = open(f"{keys_path}/n{name}.pub", "r").readlines()[0]
 
 	try:
-		res = req.get(f"{API}/peer/remove?key={pub_key}", timeout=30)
+		res = req.get(f"{API}/peer/remove?key={pub_key}", timeout=t)
 		print(f"[#] Removed peer {name}")
 		
 	except req.exceptions.Timeout as e:
@@ -118,11 +130,11 @@ def is_remove_peer(block, pub_key):
 		transactions = block["blockV1"]["payload"]["transactions"]
 
 		for t in transactions:
-			commands = transactions[t]["payload"]["reducedPayload"]["commands"]
+			commands = t["payload"]["reducedPayload"]["commands"]
 
 			for c in commands:		
 				if "removePeer" in c:
-					return commands[c]["removePeer"]["publicKey"] == pub_key
+					return c["removePeer"]["publicKey"] == pub_key
 
 	except KeyError as e:
 		print("[!] Malformed block! KeyError on key:", str(e))
@@ -136,7 +148,7 @@ def render_results_P1(res):
 
 	if len(res[0]) == 4:	
 		#                   v14             v13             v13
-		s += " stopped nodes | ping at [sec] | signs on ping | signers \n" 
+		s += " stopped peers | ping at [sec] | signs on ping | signers \n" 
 		s += "------------------------------------------------------------------------------\n" 
 		for r in res:
 			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(13)} | {str(r[2]).rjust(13)} | "
@@ -159,11 +171,11 @@ def render_results_P2(res):
 		return s + "[!] No results."
 
 	if len(res[0]) == 4:	
-		#                   v14            v16               v15
-		s += " stopped nodes | removed peer | signs on remove | signers \n" 
+		#                   v14            v13               v15
+		s += " stopped peers | removed peer | signs on remove | signers \n" 
 		s += "------------------------------------------------------------------------------\n" 
 		for r in res:
-			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(16)} | {str(r[2]).rjust(15)} | "
+			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(13)} | {str(r[2]).rjust(15)} | "
 
 			if "--no " in r[3]:
 				s += r[3]
@@ -184,7 +196,7 @@ def render_results_P3(res):
 
 	if len(res[0]) == 4:	
 		#                   v14             v13             v13
-		s += " running nodes | ping at [sec] | signs on ping | signers \n" 
+		s += " running peers | ping at [sec] | signs on ping | signers \n" 
 		s += "------------------------------------------------------------------------------\n" 
 		for r in res:
 			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(13)} | {str(r[2]).rjust(13)} | "
