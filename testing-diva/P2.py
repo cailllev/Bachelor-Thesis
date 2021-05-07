@@ -1,4 +1,4 @@
-# python3 P2.py [peers]
+# python3 P2.py [all | <peers_count> | <None>]
 
 from setup.setup import download, setup, start_testnet, stop_testnet, delete
 from utils import *
@@ -54,12 +54,12 @@ def test(peers):
 						print(f"[*] Peer n{to_remove+1} successfully removed with {still_up} peers up.")
 
 						if to_remove == 1:
-							print(f"[*] Removed peers except n1 => test round complete.")
+							print(f"[*] Removed all peers except n1 => test round complete.")
 							break
 
 					else:
-						print(f"[*] Could not remove peer n{to_remove} with {i} started peers => test round complete.")
-						results.append((i, "--no one--", "--no block--", "--no signers--"))
+						print(f"[*] Could not remove peer n{to_remove} with {i} peers up out of {peers} peers => test round complete.")
+						results.append((i, to_remove, "--still up--", "--"))
 						break
 		
 			else:
@@ -83,7 +83,7 @@ def test(peers):
 		delete()
 
 	try:
-		print(render_results_P2(results))
+		print(render_results(results, peers, ["peers up", "removed peer", "signs on remove", "signers"], "P2"))
 	
 	except BaseException as e:
 		print("\n[!] Unexpected Error!")
@@ -93,13 +93,24 @@ def test(peers):
 
 if __name__ == "__main__":
 	from sys import argv
-
-	if len(argv) > 2:
-		peers = int(argv[2])
-
-	else:
-		peers = 9    # 3f+1 - 2f+1 = 2
-		# peers = 15 # 3f+1 - 2f+1 = 3
+	optimalPeers = [9, 15, 21, 27, 33] # see 2f_3f_optimal.diff
 	
-	print(f"[*] Starting test P2 with {peers} peers")
-	test(peers)
+	if len(argv) > 1:
+
+		# test all?
+		if argv[1] in ["All", "all", "A", "a"]:
+			for peers in optimalPeers:
+				print("******************************************************************************")
+				print(f"[*] Starting test P2 with {peers} peers.")
+				print("******************************************************************************")
+				test(peers)
+
+		# test given peers count
+		else:
+			peers = int(argv[1])
+			test(peers)
+
+	# test default peers count
+	else:
+		peers = 9
+		test(peers)

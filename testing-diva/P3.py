@@ -1,4 +1,4 @@
-# python3 P3.py [peers]
+# python3 P3.py [all | <peers_count> | <None>]
 
 from setup.setup import download, setup, start_testnet, stop_testnet, delete, API
 from utils import *
@@ -38,32 +38,36 @@ def test(peers):
 
 			print(f"[#] Start peer n{i}.")
 			start_peer(i)
-			
-			# wait for a ping
-			timeout = 180
+
+			# 2f+1
+			if running_peers <= peers / 2:
+				timeout = 60 # not expecting a ping
+			else:
+				timeout = 15 * 60  # expecting a ping
+
 			waiting = 0
 			no_ping = False
 
+			# now wait for next ping
 			while len(blocks) <= last_len_blocks or not is_ping(blocks[0]):  # blocks[0] is the newest
 				blocks = get_blocks()
-
-				# only print every 10 sec
-				if waiting % 10 == 0:
-					print(f"[#] Wait for another ping, waited for {waiting} sec ...")
+				
+				print(f"\r[#] Wait for another ping, waited for {waiting} sec ...", end="")
 
 				if waiting >= timeout:
 					no_ping = True
 					break
 				
 				waiting += 1
-				sleep(1)
+				sleep_till_whole_sec()
+
 
 			if no_ping:
-				print(f"[*] No other ping arrived with {i} peers started!")
-				results.append((i, "--no time--", "--no block--", "--no signers--"))
+				print(f"\r[*] No other ping arrived after {waiting} sec with {i} peers up out of {peers} peers.")
+				results.append((i, waiting, "--no ping--", "--"))
 
 			else:
-				print(f"[*] Another ping arrived after {waiting} sec in block nr. {len(blocks)} with {i} peers started.")
+				print(f"\r[*] Another ping arrived after {waiting} sec in block nr. {len(blocks)} with {i} peers up out of {peers} peers")
 				signatures = get_signatures(blocks[0])
 				signers = get_signers(blocks[0])
 				results.append((i, waiting, len(signatures), signers))
@@ -81,7 +85,7 @@ def test(peers):
 		delete()
 
 	try:
-		print(render_results_P3(results))
+		print(render_results(results, peers, ["peers up", "ping at [sec]", "signs on ping", "signers"], "P3"))
 	
 	except BaseException as e:
 		print("\n[!] Unexpected Error!")
@@ -91,13 +95,24 @@ def test(peers):
 
 if __name__ == "__main__":
 	from sys import argv
-
-	if len(argv) > 2:
-		peers = int(argv[2])
-
-	else:
-		peers = 9    # 3f+1 - 2f+1 = 2
-		# peers = 15 # 3f+1 - 2f+1 = 3
+	optimalPeers = [9, 15, 21, 27, 33] # see 2f_3f_optimal.diff
 	
-	print(f"[*] Starting test P2 with {peers} peers")
-	test(peers)
+	if len(argv) > 1:
+
+		# test all?
+		if argv[1] in ["All", "all", "A", "a"]:
+			for peers in optimalPeers:
+				print("******************************************************************************")
+				print(f"[*] Starting test P3 with {peers} peers.")
+				print("******************************************************************************")
+				test(peers)
+
+		# test given peers count
+		else:
+			peers = int(argv[1])
+			test(peers)
+
+	# test default peers count
+	else:
+		peers = 9
+		test(peers)

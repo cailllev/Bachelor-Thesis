@@ -2,8 +2,9 @@ from setup.setup import API, EXPLORER, keys_path
 
 from dateutil.parser import parse as date_parse
 from threading import Thread
+from time import sleep, time
+from math import floor
 from pprint import pprint
-from time import sleep
 
 import os
 import json
@@ -140,19 +141,24 @@ def is_remove_peer(block, pub_key):
 		return False
 
 
-def render_results_P1(res):
-	s = "\n------------------------------ results ---------------------------------------\n"
-	if len(res) == 0:
-		return s + "[!] No results."
+def sleep_till_whole_sec():
+	now_s = time()
+	only_ms = now_s - floor(now_s)
+	sleep(1 - only_ms + 0.001) # safety margin of 1 ms
 
-	if len(res[0]) == 4:	
-		#                   v14             v13             v13
-		s += " stopped peers | ping at [sec] | signs on ping | signers \n" 
+
+def render_results(res, peers, header, test_nr):
+	s = f"\n------------------------------ results - {peers} peers total ----------------------\n"
+	if len(res) == 0:
+		s += "[!] No results."
+
+	if len(res[0]) == 4:
+		s += f" {header[0]} | {header[1]} | {header[2]} | {header[3]} \n" 
 		s += "------------------------------------------------------------------------------\n" 
 		for r in res:
-			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(13)} | {str(r[2]).rjust(13)} | "
+			s += f" {str(r[0]).rjust(len(header[0]))} | {str(r[1]).rjust(len(header[1]))} | {str(r[2]).rjust(len(header[2]))} | "
 
-			if "--no " in r[3]:
+			if "--" in r[3]:
 				s += r[3]
 			else:
 				for signer in r[3]:
@@ -160,59 +166,10 @@ def render_results_P1(res):
 				s = s[:-2]
 			s += "\n"
 
-		return s
-
 	else:
-		return "[!] Malformed results!\n" + str(results)
+		s = "[!] Malformed results!\n" + str(res)
 
+	with open(f"results/{test_nr}_{peers}.txt", "w") as f:
+		f.write(s)
 
-def render_results_P2(res):
-	s = "\n------------------------------ results ---------------------------------------\n"
-	if len(res) == 0:
-		return s + "[!] No results."
-
-	if len(res[0]) == 4:	
-		#                   v14            v12               v15
-		s += " started peers | removed peer | signs on remove | signers \n" 
-		s += "------------------------------------------------------------------------------\n" 
-		for r in res:
-			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(12)} | {str(r[2]).rjust(15)} | "
-
-			if "--no " in r[3]:
-				s += r[3]
-			else:
-				for signer in r[3]:
-					s += str(signer).rjust(3) + ", "
-				s = s[:-2]
-			s += "\n"
-
-		return s
-
-	else:
-		return "[!] Malformed results!\n" + str(results)
-
-
-def render_results_P3(res):
-	s = "\n------------------------------ results ---------------------------------------\n"
-	if len(res) == 0:
-		return s + "[!] No results."
-
-	if len(res[0]) == 4:	
-		#                   v14             v13             v13
-		s += " running peers | ping at [sec] | signs on ping | signers \n" 
-		s += "------------------------------------------------------------------------------\n" 
-		for r in res:
-			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(13)} | {str(r[2]).rjust(13)} | "
-
-			if "--no " in r[3]:
-				s += r[3]
-			else:
-				for signer in r[3]:
-					s += str(signer).rjust(3) + ", "
-				s = s[:-2]
-			s += "\n"
-
-		return s
-
-	else:
-		return "[!] Malformed results!\n" + str(results)
+	return s

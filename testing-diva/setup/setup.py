@@ -46,7 +46,6 @@ def download():
 
 		else:
 			print("[!] No yml file detected to stop the docker volumes.")
-			remove_orphans = True
 
 	else:
 		print("[*] No containers to stop.")
@@ -73,13 +72,7 @@ def setup(peers, benchmark=False):
 	os.system("sudo docker system prune -f")
 	os.system("sudo docker network prune -f")
 	os.system("sudo docker volume prune -f")
-
-	if remove_orphans:  # is only needed if different count of peers and old yml file was deleted
-		print("[!] Did not down containers properly! Start containers with \"--remove-orphans\"!")
-		os.system(f"sudo docker-compose -f {yml_file} up --remove-orphans --no-start")
-
-	else:
-		os.system(f"sudo docker-compose -f {yml_file} up --no-start")
+	os.system(f"sudo docker-compose -f {yml_file} up --no-start")
 	
 	
 	# all peers up, return without explorer and api started
@@ -89,8 +82,11 @@ def setup(peers, benchmark=False):
 
 	print("\n------------------------------ adapt iroha genesis block ---------------------")
 
-	res = req.get("https://codeberg.org/diva.exchange/iroha/raw/branch/main/data/local-genesis/0000000000000001")
+	print("[#] Trying to download the genesis block from codeberg ...")
+	res = req.get("https://codeberg.org/diva.exchange/iroha/raw/branch/develop/data/local-genesis/0000000000000001")
 	data = json.loads(res.text)
+
+	print("[*] Got the genesis block.")
 
 	pub_keys = []
 	for i in range(1, peers+1):
@@ -113,7 +109,7 @@ def setup(peers, benchmark=False):
 	with open("0000000000000001", "w") as f:
 		json.dump(data, f, indent=4)
 
-	print("[*] New genesis block created.")
+	print(f"[*] Genesis block adapted for {peers} peers.")
 
 	# copy new package.json to the api container
 	for i in range(1, peers+1):
@@ -126,14 +122,21 @@ def setup(peers, benchmark=False):
 	
 
 	print("\n------------------------------ copy iroha key pairs ---------------------------")
-		
-	for n in range(1, peers+1): # what keypair to copy
-		for i in range(1, peers+1): # copy keypair n into the containers n1...n{peers+1}
-			print(f"\r[#] Copy n{n}'s keypair into n{i} ...", end="")
-			os.system(f"sudo docker cp {keys_path}/n{n}.priv n{i}.testnet.diva.local:opt/iroha/data/n{n}.priv")
+
+	# what key to copy (n1...n7 are already there)
+	for n in range(8, peers+1):
+
+		# copy keypair n into the containers n1...n{peers+1}
+		for i in range(1, peers+1):
+
+			print(f"\r[#] Copy n{n}'s public key into n{i} ...", end="")
 			os.system(f"sudo docker cp {keys_path}/n{n}.pub  n{i}.testnet.diva.local:opt/iroha/data/n{n}.pub")
+
+			if i == n: # only copy the private key to own container
+				os.system(f"sudo docker cp {keys_path}/n{n}.priv n{i}.testnet.diva.local:opt/iroha/data/n{n}.priv")
 		
-		print("\r", end="")
+		print("\r                                              ", end="")
+
 
 	print("\r[*] Added keys to iroha containers.")
 
