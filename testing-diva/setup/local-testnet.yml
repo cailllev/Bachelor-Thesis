@@ -57,13 +57,6 @@ services:
       - n7.testnet.diva.local:172.29.101.24
       - n8.testnet.diva.local:172.29.101.26
       - n9.testnet.diva.local:172.29.101.28
-      - n10.testnet.diva.local:172.29.101.32
-      - n11.testnet.diva.local:172.29.101.34
-      - n12.testnet.diva.local:172.29.101.36
-      - n13.testnet.diva.local:172.29.101.38
-      - n14.testnet.diva.local:172.29.101.40
-      - n15.testnet.diva.local:172.29.101.42
-      - n16.testnet.diva.local:172.29.101.44
 
   n2.db.testnet.diva.local:
     container_name: n2.db.testnet.diva.local
@@ -103,13 +96,6 @@ services:
       - n7.testnet.diva.local:172.29.101.24
       - n8.testnet.diva.local:172.29.101.26
       - n9.testnet.diva.local:172.29.101.28
-      - n10.testnet.diva.local:172.29.101.32
-      - n11.testnet.diva.local:172.29.101.34
-      - n12.testnet.diva.local:172.29.101.36
-      - n13.testnet.diva.local:172.29.101.38
-      - n14.testnet.diva.local:172.29.101.40
-      - n15.testnet.diva.local:172.29.101.42
-      - n16.testnet.diva.local:172.29.101.44
 
   n3.db.testnet.diva.local:
     container_name: n3.db.testnet.diva.local
@@ -149,13 +135,6 @@ services:
       - n7.testnet.diva.local:172.29.101.24
       - n8.testnet.diva.local:172.29.101.26
       - n9.testnet.diva.local:172.29.101.28
-      - n10.testnet.diva.local:172.29.101.32
-      - n11.testnet.diva.local:172.29.101.34
-      - n12.testnet.diva.local:172.29.101.36
-      - n13.testnet.diva.local:172.29.101.38
-      - n14.testnet.diva.local:172.29.101.40
-      - n15.testnet.diva.local:172.29.101.42
-      - n16.testnet.diva.local:172.29.101.44
 
   n4.db.testnet.diva.local:
     container_name: n4.db.testnet.diva.local
@@ -195,13 +174,6 @@ services:
       - n7.testnet.diva.local:172.29.101.24
       - n8.testnet.diva.local:172.29.101.26
       - n9.testnet.diva.local:172.29.101.28
-      - n10.testnet.diva.local:172.29.101.32
-      - n11.testnet.diva.local:172.29.101.34
-      - n12.testnet.diva.local:172.29.101.36
-      - n13.testnet.diva.local:172.29.101.38
-      - n14.testnet.diva.local:172.29.101.40
-      - n15.testnet.diva.local:172.29.101.42
-      - n16.testnet.diva.local:172.29.101.44
 
   n5.db.testnet.diva.local:
     container_name: n5.db.testnet.diva.local
@@ -241,13 +213,6 @@ services:
       - n7.testnet.diva.local:172.29.101.24
       - n8.testnet.diva.local:172.29.101.26
       - n9.testnet.diva.local:172.29.101.28
-      - n10.testnet.diva.local:172.29.101.32
-      - n11.testnet.diva.local:172.29.101.34
-      - n12.testnet.diva.local:172.29.101.36
-      - n13.testnet.diva.local:172.29.101.38
-      - n14.testnet.diva.local:172.29.101.40
-      - n15.testnet.diva.local:172.29.101.42
-      - n16.testnet.diva.local:172.29.101.44
 
   n6.db.testnet.diva.local:
     container_name: n6.db.testnet.diva.local
@@ -287,13 +252,6 @@ services:
       - n7.testnet.diva.local:172.29.101.24
       - n8.testnet.diva.local:172.29.101.26
       - n9.testnet.diva.local:172.29.101.28
-      - n10.testnet.diva.local:172.29.101.32
-      - n11.testnet.diva.local:172.29.101.34
-      - n12.testnet.diva.local:172.29.101.36
-      - n13.testnet.diva.local:172.29.101.38
-      - n14.testnet.diva.local:172.29.101.40
-      - n15.testnet.diva.local:172.29.101.42
-      - n16.testnet.diva.local:172.29.101.44
 
   n7.db.testnet.diva.local:
     container_name: n7.db.testnet.diva.local
@@ -333,13 +291,6 @@ services:
       - n7.testnet.diva.local:172.29.101.24
       - n8.testnet.diva.local:172.29.101.26
       - n9.testnet.diva.local:172.29.101.28
-      - n10.testnet.diva.local:172.29.101.32
-      - n11.testnet.diva.local:172.29.101.34
-      - n12.testnet.diva.local:172.29.101.36
-      - n13.testnet.diva.local:172.29.101.38
-      - n14.testnet.diva.local:172.29.101.40
-      - n15.testnet.diva.local:172.29.101.42
-      - n16.testnet.diva.local:172.29.101.44
 
   n8.db.testnet.diva.local:
     container_name: n8.db.testnet.diva.local
@@ -379,13 +330,6 @@ services:
       - n7.testnet.diva.local:172.29.101.24
       - n8.testnet.diva.local:172.29.101.26
       - n9.testnet.diva.local:172.29.101.28
-      - n10.testnet.diva.local:172.29.101.32
-      - n11.testnet.diva.local:172.29.101.34
-      - n12.testnet.diva.local:172.29.101.36
-      - n13.testnet.diva.local:172.29.101.38
-      - n14.testnet.diva.local:172.29.101.40
-      - n15.testnet.diva.local:172.29.101.42
-      - n16.testnet.diva.local:172.29.101.44
 
   n9.db.testnet.diva.local:
     container_name: n9.db.testnet.diva.local
@@ -425,342 +369,13 @@ services:
       - n7.testnet.diva.local:172.29.101.24
       - n8.testnet.diva.local:172.29.101.26
       - n9.testnet.diva.local:172.29.101.28
-      - n10.testnet.diva.local:172.29.101.32
-      - n11.testnet.diva.local:172.29.101.34
-      - n12.testnet.diva.local:172.29.101.36
-      - n13.testnet.diva.local:172.29.101.38
-      - n14.testnet.diva.local:172.29.101.40
-      - n15.testnet.diva.local:172.29.101.42
-      - n16.testnet.diva.local:172.29.101.44
-
-  n10.db.testnet.diva.local:
-    container_name: n10.db.testnet.diva.local
-    image: postgres:10-alpine
-    command: -c max_prepared_transactions=100
-    restart: unless-stopped
-    environment:
-      POSTGRES_DATABASE: iroha
-      POSTGRES_USER: iroha
-      POSTGRES_PASSWORD: iroha
-    volumes:
-      - n10.db.testnet.diva.local:/var/lib/postgresql/data/
-    networks:
-      network.testnet.diva.local:
-        ipv4_address: 172.29.101.31
-
-  n10.testnet.diva.local:
-    container_name: n10.testnet.diva.local
-    image: divax/iroha:latest
-    restart: unless-stopped
-    environment:
-      IP_POSTGRES: 172.29.101.31
-      NAME_PEER: n10
-      BLOCKCHAIN_NETWORK: testnet.diva.local
-    volumes:
-      - n10.testnet.diva.local:/opt/iroha/
-    networks:
-      network.testnet.diva.local:
-        ipv4_address: 172.29.101.32
-    extra_hosts:
-      - n1.testnet.diva.local:172.29.101.12
-      - n2.testnet.diva.local:172.29.101.14
-      - n3.testnet.diva.local:172.29.101.16
-      - n4.testnet.diva.local:172.29.101.18
-      - n5.testnet.diva.local:172.29.101.20
-      - n6.testnet.diva.local:172.29.101.22
-      - n7.testnet.diva.local:172.29.101.24
-      - n8.testnet.diva.local:172.29.101.26
-      - n9.testnet.diva.local:172.29.101.28
-      - n10.testnet.diva.local:172.29.101.32
-      - n11.testnet.diva.local:172.29.101.34
-      - n12.testnet.diva.local:172.29.101.36
-      - n13.testnet.diva.local:172.29.101.38
-      - n14.testnet.diva.local:172.29.101.40
-      - n15.testnet.diva.local:172.29.101.42
-      - n16.testnet.diva.local:172.29.101.44
-
-  n11.db.testnet.diva.local:
-    container_name: n11.db.testnet.diva.local
-    image: postgres:10-alpine
-    command: -c max_prepared_transactions=100
-    restart: unless-stopped
-    environment:
-      POSTGRES_DATABASE: iroha
-      POSTGRES_USER: iroha
-      POSTGRES_PASSWORD: iroha
-    volumes:
-      - n11.db.testnet.diva.local:/var/lib/postgresql/data/
-    networks:
-      network.testnet.diva.local:
-        ipv4_address: 172.29.101.33
-
-  n11.testnet.diva.local:
-    container_name: n11.testnet.diva.local
-    image: divax/iroha:latest
-    restart: unless-stopped
-    environment:
-      IP_POSTGRES: 172.29.101.33
-      NAME_PEER: n11
-      BLOCKCHAIN_NETWORK: testnet.diva.local
-    volumes:
-      - n11.testnet.diva.local:/opt/iroha/
-    networks:
-      network.testnet.diva.local:
-        ipv4_address: 172.29.101.34
-    extra_hosts:
-      - n1.testnet.diva.local:172.29.101.12
-      - n2.testnet.diva.local:172.29.101.14
-      - n3.testnet.diva.local:172.29.101.16
-      - n4.testnet.diva.local:172.29.101.18
-      - n5.testnet.diva.local:172.29.101.20
-      - n6.testnet.diva.local:172.29.101.22
-      - n7.testnet.diva.local:172.29.101.24
-      - n8.testnet.diva.local:172.29.101.26
-      - n9.testnet.diva.local:172.29.101.28
-      - n10.testnet.diva.local:172.29.101.32
-      - n11.testnet.diva.local:172.29.101.34
-      - n12.testnet.diva.local:172.29.101.36
-      - n13.testnet.diva.local:172.29.101.38
-      - n14.testnet.diva.local:172.29.101.40
-      - n15.testnet.diva.local:172.29.101.42
-      - n16.testnet.diva.local:172.29.101.44
-
-  n12.db.testnet.diva.local:
-    container_name: n12.db.testnet.diva.local
-    image: postgres:10-alpine
-    command: -c max_prepared_transactions=100
-    restart: unless-stopped
-    environment:
-      POSTGRES_DATABASE: iroha
-      POSTGRES_USER: iroha
-      POSTGRES_PASSWORD: iroha
-    volumes:
-      - n12.db.testnet.diva.local:/var/lib/postgresql/data/
-    networks:
-      network.testnet.diva.local:
-        ipv4_address: 172.29.101.35
-
-  n12.testnet.diva.local:
-    container_name: n12.testnet.diva.local
-    image: divax/iroha:latest
-    restart: unless-stopped
-    environment:
-      IP_POSTGRES: 172.29.101.35
-      NAME_PEER: n12
-      BLOCKCHAIN_NETWORK: testnet.diva.local
-    volumes:
-      - n12.testnet.diva.local:/opt/iroha/
-    networks:
-      network.testnet.diva.local:
-        ipv4_address: 172.29.101.36
-    extra_hosts:
-      - n1.testnet.diva.local:172.29.101.12
-      - n2.testnet.diva.local:172.29.101.14
-      - n3.testnet.diva.local:172.29.101.16
-      - n4.testnet.diva.local:172.29.101.18
-      - n5.testnet.diva.local:172.29.101.20
-      - n6.testnet.diva.local:172.29.101.22
-      - n7.testnet.diva.local:172.29.101.24
-      - n8.testnet.diva.local:172.29.101.26
-      - n9.testnet.diva.local:172.29.101.28
-      - n10.testnet.diva.local:172.29.101.32
-      - n11.testnet.diva.local:172.29.101.34
-      - n12.testnet.diva.local:172.29.101.36
-      - n13.testnet.diva.local:172.29.101.38
-      - n14.testnet.diva.local:172.29.101.40
-      - n15.testnet.diva.local:172.29.101.42
-      - n16.testnet.diva.local:172.29.101.44
-
-  n13.db.testnet.diva.local:
-    container_name: n13.db.testnet.diva.local
-    image: postgres:10-alpine
-    command: -c max_prepared_transactions=100
-    restart: unless-stopped
-    environment:
-      POSTGRES_DATABASE: iroha
-      POSTGRES_USER: iroha
-      POSTGRES_PASSWORD: iroha
-    volumes:
-      - n13.db.testnet.diva.local:/var/lib/postgresql/data/
-    networks:
-      network.testnet.diva.local:
-        ipv4_address: 172.29.101.37
-
-  n13.testnet.diva.local:
-    container_name: n13.testnet.diva.local
-    image: divax/iroha:latest
-    restart: unless-stopped
-    environment:
-      IP_POSTGRES: 172.29.101.37
-      NAME_PEER: n13
-      BLOCKCHAIN_NETWORK: testnet.diva.local
-    volumes:
-      - n13.testnet.diva.local:/opt/iroha/
-    networks:
-      network.testnet.diva.local:
-        ipv4_address: 172.29.101.38
-    extra_hosts:
-      - n1.testnet.diva.local:172.29.101.12
-      - n2.testnet.diva.local:172.29.101.14
-      - n3.testnet.diva.local:172.29.101.16
-      - n4.testnet.diva.local:172.29.101.18
-      - n5.testnet.diva.local:172.29.101.20
-      - n6.testnet.diva.local:172.29.101.22
-      - n7.testnet.diva.local:172.29.101.24
-      - n8.testnet.diva.local:172.29.101.26
-      - n9.testnet.diva.local:172.29.101.28
-      - n10.testnet.diva.local:172.29.101.32
-      - n11.testnet.diva.local:172.29.101.34
-      - n12.testnet.diva.local:172.29.101.36
-      - n13.testnet.diva.local:172.29.101.38
-      - n14.testnet.diva.local:172.29.101.40
-      - n15.testnet.diva.local:172.29.101.42
-      - n16.testnet.diva.local:172.29.101.44
-
-  n14.db.testnet.diva.local:
-    container_name: n14.db.testnet.diva.local
-    image: postgres:10-alpine
-    command: -c max_prepared_transactions=100
-    restart: unless-stopped
-    environment:
-      POSTGRES_DATABASE: iroha
-      POSTGRES_USER: iroha
-      POSTGRES_PASSWORD: iroha
-    volumes:
-      - n14.db.testnet.diva.local:/var/lib/postgresql/data/
-    networks:
-      network.testnet.diva.local:
-        ipv4_address: 172.29.101.39
-
-  n14.testnet.diva.local:
-    container_name: n14.testnet.diva.local
-    image: divax/iroha:latest
-    restart: unless-stopped
-    environment:
-      IP_POSTGRES: 172.29.101.39
-      NAME_PEER: n14
-      BLOCKCHAIN_NETWORK: testnet.diva.local
-    volumes:
-      - n14.testnet.diva.local:/opt/iroha/
-    networks:
-      network.testnet.diva.local:
-        ipv4_address: 172.29.101.40
-    extra_hosts:
-      - n1.testnet.diva.local:172.29.101.12
-      - n2.testnet.diva.local:172.29.101.14
-      - n3.testnet.diva.local:172.29.101.16
-      - n4.testnet.diva.local:172.29.101.18
-      - n5.testnet.diva.local:172.29.101.20
-      - n6.testnet.diva.local:172.29.101.22
-      - n7.testnet.diva.local:172.29.101.24
-      - n8.testnet.diva.local:172.29.101.26
-      - n9.testnet.diva.local:172.29.101.28
-      - n10.testnet.diva.local:172.29.101.32
-      - n11.testnet.diva.local:172.29.101.34
-      - n12.testnet.diva.local:172.29.101.36
-      - n13.testnet.diva.local:172.29.101.38
-      - n14.testnet.diva.local:172.29.101.40
-      - n15.testnet.diva.local:172.29.101.42
-      - n16.testnet.diva.local:172.29.101.44
-
-  n15.db.testnet.diva.local:
-    container_name: n15.db.testnet.diva.local
-    image: postgres:10-alpine
-    command: -c max_prepared_transactions=100
-    restart: unless-stopped
-    environment:
-      POSTGRES_DATABASE: iroha
-      POSTGRES_USER: iroha
-      POSTGRES_PASSWORD: iroha
-    volumes:
-      - n15.db.testnet.diva.local:/var/lib/postgresql/data/
-    networks:
-      network.testnet.diva.local:
-        ipv4_address: 172.29.101.41
-
-  n15.testnet.diva.local:
-    container_name: n15.testnet.diva.local
-    image: divax/iroha:latest
-    restart: unless-stopped
-    environment:
-      IP_POSTGRES: 172.29.101.41
-      NAME_PEER: n15
-      BLOCKCHAIN_NETWORK: testnet.diva.local
-    volumes:
-      - n15.testnet.diva.local:/opt/iroha/
-    networks:
-      network.testnet.diva.local:
-        ipv4_address: 172.29.101.42
-    extra_hosts:
-      - n1.testnet.diva.local:172.29.101.12
-      - n2.testnet.diva.local:172.29.101.14
-      - n3.testnet.diva.local:172.29.101.16
-      - n4.testnet.diva.local:172.29.101.18
-      - n5.testnet.diva.local:172.29.101.20
-      - n6.testnet.diva.local:172.29.101.22
-      - n7.testnet.diva.local:172.29.101.24
-      - n8.testnet.diva.local:172.29.101.26
-      - n9.testnet.diva.local:172.29.101.28
-      - n10.testnet.diva.local:172.29.101.32
-      - n11.testnet.diva.local:172.29.101.34
-      - n12.testnet.diva.local:172.29.101.36
-      - n13.testnet.diva.local:172.29.101.38
-      - n14.testnet.diva.local:172.29.101.40
-      - n15.testnet.diva.local:172.29.101.42
-      - n16.testnet.diva.local:172.29.101.44
-
-  n16.db.testnet.diva.local:
-    container_name: n16.db.testnet.diva.local
-    image: postgres:10-alpine
-    command: -c max_prepared_transactions=100
-    restart: unless-stopped
-    environment:
-      POSTGRES_DATABASE: iroha
-      POSTGRES_USER: iroha
-      POSTGRES_PASSWORD: iroha
-    volumes:
-      - n16.db.testnet.diva.local:/var/lib/postgresql/data/
-    networks:
-      network.testnet.diva.local:
-        ipv4_address: 172.29.101.43
-
-  n16.testnet.diva.local:
-    container_name: n16.testnet.diva.local
-    image: divax/iroha:latest
-    restart: unless-stopped
-    environment:
-      IP_POSTGRES: 172.29.101.43
-      NAME_PEER: n16
-      BLOCKCHAIN_NETWORK: testnet.diva.local
-    volumes:
-      - n16.testnet.diva.local:/opt/iroha/
-    networks:
-      network.testnet.diva.local:
-        ipv4_address: 172.29.101.44
-    extra_hosts:
-      - n1.testnet.diva.local:172.29.101.12
-      - n2.testnet.diva.local:172.29.101.14
-      - n3.testnet.diva.local:172.29.101.16
-      - n4.testnet.diva.local:172.29.101.18
-      - n5.testnet.diva.local:172.29.101.20
-      - n6.testnet.diva.local:172.29.101.22
-      - n7.testnet.diva.local:172.29.101.24
-      - n8.testnet.diva.local:172.29.101.26
-      - n9.testnet.diva.local:172.29.101.28
-      - n10.testnet.diva.local:172.29.101.32
-      - n11.testnet.diva.local:172.29.101.34
-      - n12.testnet.diva.local:172.29.101.36
-      - n13.testnet.diva.local:172.29.101.38
-      - n14.testnet.diva.local:172.29.101.40
-      - n15.testnet.diva.local:172.29.101.42
-      - n16.testnet.diva.local:172.29.101.44
 
   api.testnet.diva.local:
     container_name: api.testnet.diva.local
     image: divax/diva-api:latest
     restart: unless-stopped
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       IP_LISTEN: 0.0.0.0
       PORT_LISTEN: 19012
       API_ENDPOINT: 172.29.101.30:19012
@@ -820,20 +435,6 @@ volumes:
     name: n8.testnet.diva.local
   n9.testnet.diva.local:
     name: n9.testnet.diva.local
-  n10.testnet.diva.local:
-    name: n10.testnet.diva.local
-  n11.testnet.diva.local:
-    name: n11.testnet.diva.local
-  n12.testnet.diva.local:
-    name: n12.testnet.diva.local
-  n13.testnet.diva.local:
-    name: n13.testnet.diva.local
-  n14.testnet.diva.local:
-    name: n14.testnet.diva.local
-  n15.testnet.diva.local:
-    name: n15.testnet.diva.local
-  n16.testnet.diva.local:
-    name: n16.testnet.diva.local
   n1.db.testnet.diva.local:
     name: n1.db.testnet.diva.local
   n2.db.testnet.diva.local:
@@ -852,20 +453,6 @@ volumes:
     name: n8.db.testnet.diva.local
   n9.db.testnet.diva.local:
     name: n9.db.testnet.diva.local
-  n10.db.testnet.diva.local:
-    name: n10.db.testnet.diva.local
-  n11.db.testnet.diva.local:
-    name: n11.db.testnet.diva.local
-  n12.db.testnet.diva.local:
-    name: n12.db.testnet.diva.local
-  n13.db.testnet.diva.local:
-    name: n13.db.testnet.diva.local
-  n14.db.testnet.diva.local:
-    name: n14.db.testnet.diva.local
-  n15.db.testnet.diva.local:
-    name: n15.db.testnet.diva.local
-  n16.db.testnet.diva.local:
-    name: n16.db.testnet.diva.local
   api.testnet.diva.local:
     name: api.testnet.diva.local
   explorer.testnet.diva.local:

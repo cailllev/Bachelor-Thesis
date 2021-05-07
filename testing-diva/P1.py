@@ -1,3 +1,6 @@
+# python3 P1.py [peers]
+
+
 from setup.setup import download, setup, start_testnet, stop_testnet, delete, API
 from utils import *
 
@@ -8,90 +11,105 @@ from sys import stdout
 import os
 
 
-NODES = 16
-results = []
-
-
-def test():
+def test(peers):
 
 	try:
+		results = []
+		blocks = []
+		last_len_blocks = 1
+
 		download()
-		setup(NODES)
+		setup(peers)
+		is_ready = start_testnet(peers)
 
-		for i in range(NODES, 0, -1): # n16, n15, ..., n1
-
-			is_ready = start_testnet()
-			if is_ready:
-				stopped_nodes = NODES + 1 - i
+		if is_ready:
 				
-				print(f"\n------------------------------ network up - test {stopped_nodes} stopped node(s) -----------")
-				blocks = []
+			waiting = 0
+
+			while len(blocks) <= last_len_blocks or not is_ping(blocks[0]):  # blocks[0] is always the newest block
+				if waiting % 10 == 0:
+					print(f"[#] Wait for first ping, waited for {waiting} sec ...")					
+
+				blocks = get_blocks()
+				waiting += 1
+				sleep(1)
+			
+			# first ping arrived, start test (i.e. stop peers one after another)
+			print(f"[*] Got first ping in block nr. {len(blocks)} after {waiting} sec.")
+			last_len_blocks = len(blocks)
+
+			for i in range(peers, 0, -1): # n16, n15, ..., n1
+			
+				stopped_peers = peers + 1 - i
+				
+				print(f"\n****************************** start test round {i} **************************")
+
+				print(f"[*] Stopping peer n{i}.")
+				stop_peer(i)
+
+				# now wait for next ping, expected arrival between 60 and 120 sec after previous ping
+				timeout = 1800  # 30 mins to include safety buffer
 				waiting = 0
-				while len(blocks) < 2:
+				no_ping = False
+
+				while len(blocks) <= last_len_blocks or not is_ping(blocks[0]):  # blocks[0] is the newest
 					blocks = get_blocks()
-					print(f"[#] No 1st ping, waited for {str(waiting).rjust(2)} sec...")
-					waiting += 5
-					sleep(5)
 
-				# first ping arrived
-				signatures_count_1 = len(get_signatures(blocks[0]))
+					# only print every 10 sec
+					if waiting % 10 == 0:
+						print(f"[#] Wait for another ping, waited for {waiting} sec ...")
 
-				# wait for 45 sec, then stop the containers
-				for t in range(44, -1, -1):
-					sleep(1)
-					stdout.write("\r[*] Got first ping, sleep for %2d sec" % (t))
-					stdout.flush()
-
-				stdout.write("\n")
-				print(f"[*] Stop nodes n{NODES}...n{i}.")
-				stop_nodes(i, NODES)
-
-				# now wait for 2nd ping, expected arrival between 60 and 120 sec after first ping
-				timeout = 60 + 15
-				waiting = 0
-				while waiting < timeout:
-					blocks = get_blocks()
-					
-					# ping arrived?
-					if len(blocks) == 3:
-						print(f"[*] 2nd ping arrived with {stopped_nodes} node(s) stopped.")
-						signatures_count_2 = len(get_signatures(blocks[0]))
-						results.append((stopped_nodes, signatures_count_1, signatures_count_2))
+					if waiting >= timeout:
+						no_ping = True
 						break
-
-					# wait for all docker stop messages before printing
-					if waiting >= 15:
-						print(f"[#] No 2nd ping, waited for {waiting} sec...")
 					
-					waiting += 5
-					sleep(5)
+					waiting += 1
+					sleep(1)
+
+				if no_ping:
+					print(f"[*] No other ping arrived with {stopped_peers} peers stopped!")
+					results.append((stopped_peers, "--no ping--", "--no block--", "--no ping--"))
 
 				else:
-					print(f"[*] No 2nd ping arrived with {stopped_nodes} node(s) stopped!")
-					results.append((stopped_nodes, signatures_count_1, "--no ping--"))
+					print(f"[*] Another ping arrived after {waiting} sec in block nr. {len(blocks)} with {stopped_peers} peers stopped.")
+					signatures = get_signatures(blocks[0])
+					signers = get_signers(blocks[0])
+					results.append((stopped_peers, waiting, len(signatures), signers))
+					last_len_blocks = len(blocks)
 
-				stop_testnet()
 
-			else:
-				print("\n[!] TIMEOUT while trying to connect to DIVA.EXCHANGE explorer!")
-				print("[!] Test Failed!")
-				stop_testnet()
-				break
-
-		delete()
+		else:
+			print("\n[!] TIMEOUT while trying to connect to Iroha Blockchain Explorer!")
+			print("[!] Test Failed!")
 
 	except KeyboardInterrupt:
 		print("\n[!] Aborting Test! Please wait!")
-		stop_testnet()
-		delete()
 
 	except BaseException as e:
 		print("\n[!] Unexpected Error!")
 		print(str(e))
+
+	finally:
 		stop_testnet()
 		delete()
 
-	print(render_results_P1(results))
+	try:
+		print(render_results_P1(results))
+	
+	except BaseException as e:
+		print("\n[!] Unexpected Error!")
+		print(str(e))
+		pprint(results)
 
 if __name__ == "__main__":
-	test()
+	from sys import argv
+
+	if len(argv) > 2:
+		peers = int(argv[2])
+
+	else:
+		peers = 9    # 3f+1 - 2f+1 = 2
+		# peers = 15 # 3f+1 - 2f+1 = 3
+	
+	print(f"[*] Starting test P2 with {peers} peers")
+	test(peers)

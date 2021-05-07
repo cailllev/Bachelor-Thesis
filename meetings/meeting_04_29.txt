@@ -1,0 +1,8 @@
+All
+---------------
+-Wir haben besprochen, dass 16 Knoten reichen zum Beweis. 50 ist am Systemlimit. So weit wie möglich von der Ressourcengrenze arbeiten.
+-Wie ein Knoten von Diva hinzugefügt und entfernt wird muss konzeptionell verstanden werden.
+
+Students
+---------------
+-Test durchführen

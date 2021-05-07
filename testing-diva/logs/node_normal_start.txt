@@ -1,0 +1,70 @@
+ Blockchain network: testnet.diva.local
+ Iroha node: n1
+ Initialization: using local genesis
+ [2021-05-04 09:25:30.239266938][th:61][  info  ][Init]: Irohad version: 1.2.1
+ [2021-05-04 09:25:30.240210736][th:61][  info  ][Init]: config initialized
+ [2021-05-04 09:25:30.241649832][th:61][  info  ][Irohad]: created
+ [2021-05-04 09:25:30.242404231][th:61][  info  ][Irohad]: [Init] => pending transactions storage
+ [2021-05-04 09:25:31.255740368][th:61][warning ][Irohad]: rollback on creation has failed: Cannot execute query. Fatal error. ERROR:  prepared transaction with identifier "prepared_block_iroha" does not exist  while executing "ROLLBACK PREPARED 'prepared_block_iroha';".
+ [2021-05-04 09:25:31.260776755][th:61][  info  ][Irohad]: [Init] => storage
+ [2021-05-04 09:25:31.277925913][th:61][  info  ][Irohad/Storage/Storage/PostgresSettingQuery]: Kept value for MaxDescriptionSize: 64
+ [2021-05-04 09:25:31.278043213][th:61][  info  ][Irohad]: [Init] => settings
+ [2021-05-04 09:25:31.278084213][th:61][  info  ][Irohad]: [Init] => validators configs
+ [2021-05-04 09:25:31.278109813][th:61][  info  ][Irohad]: [Init] => transaction batch parser
+ [2021-05-04 09:25:31.278269213][th:61][  info  ][Irohad]: [Init] => validators
+ [2021-05-04 09:25:31.343057355][th:61][  info  ][Irohad/Validators/Chain]: validate chain...
+ [2021-05-04 09:25:31.347270645][th:61][  info  ][Irohad/Storage/Storage/MutableStorageImpl]: Applying block: height 1, hash df89adb2e998d67f3404aafaf14763b5c3348f04de24631697b3f1e841059f8b
+ [2021-05-04 09:25:31.394301430][th:61][  info  ][Irohad]: [Init] => crypto provider
+ [2021-05-04 09:25:31.395650827][th:61][  info  ][Irohad]: [Init] => factories
+ [2021-05-04 09:25:31.395699327][th:61][  info  ][Irohad]: [Init] => persistent cache
+ [2021-05-04 09:25:31.403336408][th:61][  info  ][Irohad]: [Init] => init ordering gate - [true]
+ [2021-05-04 09:25:31.449056997][th:61][  info  ][Irohad]: [Init] => init simulator
+ [2021-05-04 09:25:31.449158997][th:61][  info  ][Irohad]: [Init] => init consensus block cache
+ [2021-05-04 09:25:31.449293396][th:61][  info  ][Irohad]: [Init] => block loader
+ [2021-05-04 09:25:31.457646776][th:61][  info  ][Irohad]: [Init] => consensus gate
+ [2021-05-04 09:25:31.579393980][th:61][  info  ][Irohad]: [Init] => synchronizer
+ [2021-05-04 09:25:31.579795579][th:61][  info  ][Irohad]: [Init] => pcs
+ [2021-05-04 09:25:31.580513977][th:61][  info  ][Irohad]: [Init] => Tx status bus
+ [2021-05-04 09:25:31.581524075][th:61][  info  ][Irohad]: [Init] => MST processor
+ [2021-05-04 09:25:31.583308971][th:61][  info  ][Irohad]: [Init] => command service
+ [2021-05-04 09:25:31.585344366][th:61][  info  ][Irohad]: [Init] => query service
+ [2021-05-04 09:25:31.585426066][th:61][  info  ][Init]: Running iroha
+ [2021-05-04 09:25:31.588475458][th:61][  info  ][Irohad]: Torii server bound on port 50051
+ [2021-05-04 09:25:31.590910052][th:61][  info  ][Irohad]: Internal server bound on port 10001
+ [2021-05-04 09:25:31.591026752][th:61][  info  ][Irohad]: ===> iroha initialized
+ [2021-05-04 09:25:31.598573134][th:61][ debug  ][Irohad]: Committed block handle: height 1.
+ [2021-05-04 09:25:31.598673834][th:61][ debug  ][Irohad/Ordering/Gate]: Asking to remove 1 transactions from cache.
+ [2021-05-04 09:25:31.598757234][th:61][ debug  ][Irohad]: Using hash: Hash: [3030303030303030303030303030303030303030303030303030303030303030]
+ [2021-05-04 09:25:31.598829833][th:61][ debug  ][Irohad]: Using hash: Hash: [3030303030303030303030303030303030303030303030303030303030303030]
+ [2021-05-04 09:25:31.598886333][th:61][ debug  ][Irohad]: Using hash: Hash: [df89adb2e998d67f3404aafaf14763b5c3348f04de24631697b3f1e841059f8b]
+ [2021-05-04 09:25:31.599912531][th:61][ debug  ][Irohad]: For Round: [block=2, reject=2], using OS on peer: Peer: [address=n5.testnet.diva.local:10001, pubkey=70d397834daf08287464c69f2157435a9ecc5e9a4dfba7973ad2c134805273bd, tlsCertificate=0]
+ [2021-05-04 09:25:31.608222110][th:61][ debug  ][Irohad]: For Round: [block=3, reject=0], using OS on peer: Peer: [address=n4.testnet.diva.local:10001, pubkey=7d543849884c01a86bf8707fbd76dc8e94c9f0ecaaa0f9a30bd3a593089e4f84, tlsCertificate=0]
+ [2021-05-04 09:25:31.608277010][th:61][ debug  ][Irohad]: For Round: [block=3, reject=1], using OS on peer: Peer: [address=n3.testnet.diva.local:10001, pubkey=972a44a1e365af554e5a9a578198cab9a914ba3568d59582457a9101a72b4f5c, tlsCertificate=0]
+ [2021-05-04 09:25:31.608304310][th:61][ debug  ][Irohad]: For Round: [block=4, reject=0], using OS on peer: Peer: [address=n5.testnet.diva.local:10001, pubkey=70d397834daf08287464c69f2157435a9ecc5e9a4dfba7973ad2c134805273bd, tlsCertificate=0]
+ [2021-05-04 09:25:31.608330710][th:61][ debug  ][Irohad]: For Round: [block=2, reject=0], using OS on peer: Peer: [address=n4.testnet.diva.local:10001, pubkey=7d543849884c01a86bf8707fbd76dc8e94c9f0ecaaa0f9a30bd3a593089e4f84, tlsCertificate=0]
+ [2021-05-04 09:25:31.610574205][th:61][ debug  ][Irohad]: Sync event on Round: [block=1, reject=0]: commit.
+ [2021-05-04 09:25:31.610656605][th:61][ debug  ][Irohad/Ordering/Gate]: Current: Round: [block=2, reject=0]
+ [2021-05-04 09:25:31.610686705][th:61][  info  ][Irohad/Ordering/Service]: onCollaborationOutcome => Round: [block=2, reject=0]
+ [2021-05-04 09:25:31.610726405][th:61][ debug  ][Irohad/Ordering/Service]: Packed proposal contains: 0 transactions.
+ [2021-05-04 09:25:31.610751105][th:61][ debug  ][Irohad/Ordering/Service]: No transactions to create a proposal for Round: [block=2, reject=0]
+ [2021-05-04 09:25:31.610781804][th:61][ debug  ][Irohad/Ordering/ConnectionManager]: onRequestProposal, Round: [block=2, reject=0]
+ [2021-05-04 09:25:31.619162483][th:61][ debug  ][Irohad/Consensus/Gate]: Agreed on nothing to commit
+ [2021-05-04 09:25:31.619265983][th:61][  info  ][Irohad/Consensus/HashGate]: Order for voting: [n4.testnet.diva.local:10001, n1.testnet.diva.local:10001, n5.testnet.diva.local:10001, n7.testnet.diva.local:10001, n3.testnet.diva.local:10001, n2.testnet.diva.local:10001, n6.testnet.diva.local:10001]
+ [2021-05-04 09:25:31.622552476][th:61][  info  ][Irohad/Consensus/HashGate]: votingStep got vote: VoteMessage: [yac hash=YacHash: [round=Round: [block=2, reject=0], hashes=VoteHashes: [proposal=, block=]], signature=Signature: [publicKey=3a7c684579a8a878f396ac230fa349fec2783c4877fe667efca32ee5c61fedd0, signedData=f52f891293b734c0771423ea6b7a6ceecaf7e30b499a39d34fc82fd4736814309b65be9176232a43e64bcbed99d87743817cb2f1ee23704363fdcf0c3e7ca800]], attempt 0
+ [2021-05-04 09:25:31.622882075][th:61][  info  ][Irohad/Consensus/HashGate]: Vote VoteMessage: [yac hash=YacHash: [round=Round: [block=2, reject=0], hashes=VoteHashes: [proposal=, block=]], signature=Signature: [publicKey=3a7c684579a8a878f396ac230fa349fec2783c4877fe667efca32ee5c61fedd0, signedData=f52f891293b734c0771423ea6b7a6ceecaf7e30b499a39d34fc82fd4736814309b65be9176232a43e64bcbed99d87743817cb2f1ee23704363fdcf0c3e7ca800]] to peer Peer: [address=n4.testnet.diva.local:10001, pubkey=7d543849884c01a86bf8707fbd76dc8e94c9f0ecaaa0f9a30bd3a593089e4f84, tlsCertificate=0]
+ [2021-05-04 09:25:31.623014675][th:61][  info  ][Irohad/Consensus/Network]: Send votes bundle[size=1] to Peer: [address=n4.testnet.diva.local:10001, pubkey=7d543849884c01a86bf8707fbd76dc8e94c9f0ecaaa0f9a30bd3a593089e4f84, tlsCertificate=0]
+ [2021-05-04 09:25:31.632492151][th:61][  info  ][Irohad]: ~~~~~~~~~| PROPOSAL ^_^ |~~~~~~~~~ 
+ [2021-05-04 09:25:32.092281634][th:73][  info  ][Irohad/Consensus/Network]: Received votes[size=1] from ipv4:172.29.101.16:55004
+ [2021-05-04 09:25:32.092966833][th:73][  info  ][Irohad/Consensus/VoteStorage/ProposalStorage]: Vote with Round: [block=2, reject=0] and hashes [, ] looks valid
+ [2021-05-04 09:25:32.093046833][th:73][  info  ][Irohad/Consensus/VoteStorage/ProposalStorage/BlockStorage]: Vote with round Round: [block=2, reject=0] and hashes (, ) inserted, votes in storage [1/7]
+ [2021-05-04 09:25:32.631814123][th:69][  info  ][Irohad/Consensus/HashGate]: votingStep got vote: VoteMessage: [yac hash=YacHash: [round=Round: [block=2, reject=0], hashes=VoteHashes: [proposal=, block=]], signature=Signature: [publicKey=3a7c684579a8a878f396ac230fa349fec2783c4877fe667efca32ee5c61fedd0, signedData=f52f891293b734c0771423ea6b7a6ceecaf7e30b499a39d34fc82fd4736814309b65be9176232a43e64bcbed99d87743817cb2f1ee23704363fdcf0c3e7ca800]], attempt 1
+ [2021-05-04 09:25:32.631951523][th:69][  info  ][Irohad/Consensus/HashGate]: Vote VoteMessage: [yac hash=YacHash: [round=Round: [block=2, reject=0], hashes=VoteHashes: [proposal=, block=]], signature=Signature: [publicKey=3a7c684579a8a878f396ac230fa349fec2783c4877fe667efca32ee5c61fedd0, signedData=f52f891293b734c0771423ea6b7a6ceecaf7e30b499a39d34fc82fd4736814309b65be9176232a43e64bcbed99d87743817cb2f1ee23704363fdcf0c3e7ca800]] to peer Peer: [address=n1.testnet.diva.local:10001, pubkey=3a7c684579a8a878f396ac230fa349fec2783c4877fe667efca32ee5c61fedd0, tlsCertificate=0]
+ [2021-05-04 09:25:32.633426320][th:69][  info  ][Irohad/Consensus/Network]: Send votes bundle[size=1] to Peer: [address=n1.testnet.diva.local:10001, pubkey=3a7c684579a8a878f396ac230fa349fec2783c4877fe667efca32ee5c61fedd0, tlsCertificate=0]
+ [2021-05-04 09:25:32.637399609][th:75][  info  ][Irohad/Consensus/Network]: Received votes[size=1] from ipv4:172.29.101.12:44156
+ [2021-05-04 09:25:32.639722304][th:75][  info  ][Irohad/Consensus/VoteStorage/ProposalStorage]: Vote with Round: [block=2, reject=0] and hashes [, ] looks valid
+ [2021-05-04 09:25:32.639846203][th:75][  info  ][Irohad/Consensus/VoteStorage/ProposalStorage/BlockStorage]: Vote with round Round: [block=2, reject=0] and hashes (, ) inserted, votes in storage [2/7]
+ [2021-05-04 09:25:33.107319168][th:73][  info  ][Irohad/Consensus/Network]: Received votes[size=1] from ipv4:172.29.101.14:38286
+ [2021-05-04 09:25:33.109115963][th:73][  info  ][Irohad/Consensus/VoteStorage/ProposalStorage]: Vote with Round: [block=2, reject=0] and hashes [, ] looks valid
+ [2021-05-04 09:25:33.109222663][th:73][  info  ][Irohad/Consensus/VoteStorage/ProposalStorage/BlockStorage]: Vote with round Round: [block=2, reject=0] and hashes (, ) inserted, votes in storage [3/7]
+ [2021-05-04 09:25:33.162822433][th:73][  info  ][Irohad/Consensus/Network]: Received votes[size=1] from ipv4:172.29.101.26:59138
+ [2021-05-04 09:25:33.162929832][th:73][warning ][Irohad/Consensus/HashGate]: Got a vote from an unknown peer: VoteMessage: [yac hash=YacHash: [round=Round: [block=2, reject=0], hashes=VoteHashes: [proposal=, block=]], signature=Signature: [publicKey=ce98ed2d99a0e1423d339699bcab714e8bcea9413604d01cc5b3fd2687289e18, signedData=6296f23dfb70a231f2c5c485ac0f66d7b4f0bd46a8c14f1610d574f03294fd694a0377cc18a9ed0c6a18563910afde3e4dca2d5d7297084560e7f916d62a5805]]
