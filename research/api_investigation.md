@@ -164,11 +164,15 @@ if true, ``Peer.apply(...)``, else do not register
 
 
 
-# REGEX DoS -> no vuln
+# REGEX DoS
 
 ``export const REGEX_ID_DOMAIN = /^([a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)*[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/``<br>
 from ``app/src/iroha.js`` on line 37<br>
 used in ``validateIdDomain``
+
+## analysis
+no vuln, because it uses ``((...)?)*``<br>
+would be vulnerable if it was ``((...)+)?`` 
 
 ## Call stack
 * ``validateIdDomain``<br>
