@@ -42,7 +42,7 @@ def test(peers):
 			
 				stopped_peers = peers + 1 - i
 				
-				print(f"\n------------------------------ start test round {i} --------------------------")
+				print(f"\n****************************** start test round {i} **************************")
 
 				print(f"[*] Stopping peer n{i}.")
 				stop_peer(i)

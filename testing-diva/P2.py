@@ -20,15 +20,15 @@ def test(peers):
 		# n1,n2;
 		# ...
 		# ...
-		# n1,n2,n3,...,peers;
-		for i in range(1, peers+1):
+		# n1,n2,n3,...,peers-1;
+		for i in range(1, peers):
+
+			print(f"\n****************************** start test round {i} **************************")
 
 			setup(peers)
 			is_ready = start_testnet(peers)
 
 			if is_ready:
-
-				print(f"\n------------------------------ start test round {i} --------------------------")
 			
 				to_remove = peers # start with (trying to) remove n16
 
@@ -43,15 +43,15 @@ def test(peers):
 
 					if res.status_code == 200:	
 						
-						to_remove -= 1
 						block = get_blocks()[0]
-
 						signatures = get_signatures(block)
 						signers = get_signers(block)
 						results.append((i, to_remove, len(signatures), signers))
 						
-						still_up = min(i, to_remove)
-						print(f"[*] Peer n{to_remove} successfully removed with {still_up} started peers.")
+						to_remove -= 1
+						
+						still_up = min(i, to_remove+1)
+						print(f"[*] Peer n{to_remove+1} successfully removed with {still_up} peers up.")
 
 						if to_remove == 1:
 							print(f"[*] Removed peers except n1 => test round complete.")

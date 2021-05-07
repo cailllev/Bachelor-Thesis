@@ -107,7 +107,6 @@ def remove_peer(name, t):
 
 	try:
 		res = req.get(f"{API}/peer/remove?key={pub_key}", timeout=t)
-		print(f"[#] Removed peer {name}")
 		
 	except req.exceptions.Timeout as e:
 		print(f"[#] Timeout while trying to remove peer!")
@@ -156,7 +155,9 @@ def render_results_P1(res):
 			if "--no " in r[3]:
 				s += r[3]
 			else:
-				s += ', \t'.join(r[3])
+				for signer in r[3]:
+					s += str(signer).rjust(3) + ", "
+				s = s[:-2]
 			s += "\n"
 
 		return s
@@ -171,16 +172,18 @@ def render_results_P2(res):
 		return s + "[!] No results."
 
 	if len(res[0]) == 4:	
-		#                   v14            v13               v15
-		s += " stopped peers | removed peer | signs on remove | signers \n" 
+		#                   v14            v12               v15
+		s += " started peers | removed peer | signs on remove | signers \n" 
 		s += "------------------------------------------------------------------------------\n" 
 		for r in res:
-			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(13)} | {str(r[2]).rjust(15)} | "
+			s += f"{str(r[0]).rjust(14)} | {str(r[1]).rjust(12)} | {str(r[2]).rjust(15)} | "
 
 			if "--no " in r[3]:
 				s += r[3]
 			else:
-				s += ', \t'.join(r[3])
+				for signer in r[3]:
+					s += str(signer).rjust(3) + ", "
+				s = s[:-2]
 			s += "\n"
 
 		return s
@@ -204,7 +207,9 @@ def render_results_P3(res):
 			if "--no " in r[3]:
 				s += r[3]
 			else:
-				s += ', \t'.join(r[3])
+				for signer in r[3]:
+					s += str(signer).rjust(3) + ", "
+				s = s[:-2]
 			s += "\n"
 
 		return s

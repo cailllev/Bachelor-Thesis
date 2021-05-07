@@ -34,7 +34,7 @@ def test(peers):
 		# testing cycles
 		for i in range(1, peers+1):
 
-			print(f"\n------------------------------ start test round {i} --------------------------")
+			print(f"\n****************************** start test round {i} **************************")
 
 			print(f"[#] Start peer n{i}.")
 			start_peer(i)
