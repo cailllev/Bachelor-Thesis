@@ -1,4 +1,5 @@
 from setup.setup import API, EXPLORER, keys_path
+from setup.combine_texts import nodes_ips
 
 from dateutil.parser import parse as date_parse
 from threading import Thread
@@ -108,6 +109,38 @@ def remove_peer(name, t):
 
 	try:
 		res = req.get(f"{API}/peer/remove?key={pub_key}", timeout=t)
+		
+	except req.exceptions.Timeout as e:
+		print(f"[#] Timeout while trying to remove peer!")
+				
+		class res: pass
+		res.status_code = 408
+		
+	except req.exceptions.RequestException as e:
+		print(f"[#] Unexpected exception while trying to remove peer!")
+		print(str(e))
+				
+		class res: pass
+		res.status_code = 500
+
+	return res
+
+#TODO: check if this works
+def add_peer(name, t):
+	"""
+	api:		where the api endpoint is (always first peer in this env)
+	address: 	172.29.101.<peer_specific>
+	name_peer:	n1.testnet.diva.local (e.g.)
+	key:		the peers public key
+	"""
+
+	print(f"[#] Trying to add peer n{name} with timeout of {t} sec.")
+	api = "n1.testnet.diva.local"
+	address = nodes_ips[peer-1]
+	pub_key = open(f"{keys_path}/n{name}.pub", "r").readlines()[0]
+
+	try:
+		res = req.get(f"{API}/peer/apply?action=add&api={api}&adress={address}&key={pub_key}", timeout=t)
 		
 	except req.exceptions.Timeout as e:
 		print(f"[#] Timeout while trying to remove peer!")

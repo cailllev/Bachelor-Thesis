@@ -8,29 +8,31 @@ from pprint import pprint
 import os
 
 
-def test(peers):
+def test(peers, exhaustive):
 
 	try:
 		results = []
 
 		download()
+		setup(peers)
+		is_ready = start_testnet(peers)
 		
-		# testing cycles, stop all except:
-		# n1; 
-		# n1,n2;
-		# ...
-		# ...
-		# n1,n2,n3,...,peers-1;
-		for i in range(1, peers):
 
-			print(f"\n****************************** start test round {i} **************************")
+		if is_ready:
+		
+			# testing cycles, stop all except:
+			# n1; 
+			# n1,n2;
+			# ...
+			# ...
+			# n1,n2,n3,...,peers-1;
+			for i in range(1, peers):
 
-			setup(peers)
-			is_ready = start_testnet(peers)
+				print(f"\n****************************** start test round {i} **************************")
 
-			if is_ready:
-			
-				to_remove = peers # start with (trying to) remove n16
+				to_remove = peers # start with (trying to) remove last peer
+				removed_peers = []
+				timeout = 60
 
 				# stop all peers that are not in current cycle
 				print(f"[*] Stopping peers n{i+1} ... n{peers}.")
@@ -38,20 +40,33 @@ def test(peers):
 
 				while True:
 				
-					# try to remove peer (always test the last)
-					res = remove_peer(to_remove, 120)
+					# try to remove peer (always the last first)
+					res = remove_peer(to_remove, timeout)
 
 					if res.status_code == 200:	
 						
 						block = get_blocks()[0]
-						signatures = get_signatures(block)
-						signers = get_signers(block)
+						try:
+							signatures = get_signatures(block)
+							signers = get_signers(block)
+						except BaseException as e:
+							print("[!] Malformed block!\n")
+							pprint(block)
+							print()
+							signatures = 0
+							signers = []
 						results.append((i, to_remove, len(signatures), signers))
-						
+
+						removed_peers.append(to_remove)						
 						to_remove -= 1
 						
 						still_up = min(i, to_remove+1)
 						print(f"[*] Peer n{to_remove+1} successfully removed with {still_up} peers up.")
+
+						if not exhaustive:
+							print(f"[*] Non exhaustive mode => test round complete.")
+							break
+
 
 						if to_remove == 1:
 							print(f"[*] Removed all peers except n1 => test round complete.")
@@ -61,15 +76,22 @@ def test(peers):
 						print(f"[*] Could not remove peer n{to_remove} with {i} peers up out of {peers} peers => test round complete.")
 						results.append((i, to_remove, "--still up--", "--"))
 						break
+
+
+				# start all nodes and add all removed peers
+				print(f"[*] Starting peers n{i+1} ... n{peers} again.")
+				start_peers(i+1, peers)
+
+				for peer in removed_peers:
+					add_peer(peer, timeout)
+
+					# TODO: check if really removed, otherwise clean delete and setup!
+
 		
-			else:
-				print("\n[!] TIMEOUT while trying to connect to DIVA.EXCHANGE explorer!")
-				print("[*] Test Failed!")
-				break
-
-			stop_testnet()
-			delete()
-
+		else:
+			print("\n[!] TIMEOUT while trying to connect to DIVA.EXCHANGE explorer!")
+			print("[*] Test Failed!")
+			break
 
 	except KeyboardInterrupt:
 		print("\n[!] Aborting Test! Please wait!")
@@ -94,6 +116,7 @@ def test(peers):
 if __name__ == "__main__":
 	from sys import argv
 	optimalPeers = [9, 15, 21, 27, 33] # see 2f_3f_optimal.diff
+	exhaustive = False # after successful removal of peer ni, remove ni-1, ni-2, ... n2
 	
 	if len(argv) > 1:
 
@@ -103,14 +126,14 @@ if __name__ == "__main__":
 				print("******************************************************************************")
 				print(f"[*] Starting test P2 with {peers} peers.")
 				print("******************************************************************************")
-				test(peers)
+				test(peers, exhaustive)
 
 		# test given peers count
 		else:
 			peers = int(argv[1])
-			test(peers)
+			test(peers, exhaustive)
 
 	# test default peers count
 	else:
 		peers = 9
-		test(peers)
+		test(peers, exhaustive=True)
