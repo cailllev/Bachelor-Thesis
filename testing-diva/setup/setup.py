@@ -217,6 +217,7 @@ def start_testnet(peers, benchmark=False):
 def stop_testnet():
 	print("\n------------------------------ docker volumes down ---------------------------")
 	os.system(f"sudo docker-compose -f {yml_file} down")
+	print("\n[*] Done.")
 
 
 def delete():
@@ -224,6 +225,7 @@ def delete():
 	os.system(f"sudo docker system prune -f")
 	os.system(f"sudo docker network prune -f")
 	os.system(f"sudo docker volume prune -f")
+	print("\n[*] Done.")
 
 
 if __name__ == "__main__":

@@ -76,7 +76,7 @@ def test(peers):
 
 				if no_ping:
 					print(f"\r[*] No other ping arrived after {waiting} sec with {running_peers} peers up out of {peers} peers.")
-					results.append((running_peers, waiting, "--no ping--", "--"))
+					results.append((running_peers, waiting, "--", "--"))
 
 				else:
 					print(f"\r[*] Another ping arrived after {waiting} sec in block nr. {len(blocks)} with {running_peers} peers up out of {peers} peers.")
@@ -84,7 +84,6 @@ def test(peers):
 					signers = get_signers(blocks[0])
 					results.append((running_peers, waiting, len(signatures), signers))
 					last_len_blocks = len(blocks)
-
 
 		else:
 			print("\n[!] TIMEOUT while trying to connect to Iroha Blockchain Explorer!")
@@ -102,7 +101,7 @@ def test(peers):
 		delete()
 
 	try:
-		print(render_results(results, peers, ["peers up", "ping at [sec]", "signs on ping",  "signers"], "P1"))
+		print(render_results(results, peers, ["peers up", "ping at", "signs",  "signers"], "P1"))
 	
 	except BaseException as e:
 		print("\n[!] Unexpected Error!")

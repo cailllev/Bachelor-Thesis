@@ -1095,7 +1095,7 @@ services:
     image: divax/diva-api:latest
     restart: unless-stopped
     environment:
-      NODE_ENV: production
+      peer_ENV: production
       IP_LISTEN: 0.0.0.0
       PORT_LISTEN: 19012
       API_ENDPOINT: 172.29.101.30:19012
@@ -1106,7 +1106,7 @@ services:
       I2P_WEBCONSOLE_PORT: ${I2P_WEBCONSOLE_PORT:-7070}
       PATH_IROHA: /tmp/iroha/
     volumes:
-      - api.testnet.diva.local:/home/node/data/
+      - api.testnet.diva.local:/home/peer/data/
       - n1.testnet.diva.local:/tmp/iroha/
     networks:
       network.testnet.diva.local:
@@ -1122,7 +1122,7 @@ services:
       PATH_IROHA: /tmp/iroha/
     volumes:
       - n1.testnet.diva.local:/tmp/iroha/:ro
-      - explorer.testnet.diva.local:/home/node/
+      - explorer.testnet.diva.local:/home/peer/
     networks:
       network.testnet.diva.local:
         ipv4_address: 172.29.101.100

@@ -2,16 +2,16 @@
 
 # normal usage from parent dir
 try:
-  from setup.node_db_text import *
-  from setup.node_text import *
+  from setup.peer_db_text import *
+  from setup.peer_text import *
 
 # direct usage from current dir
 except ModuleNotFoundError:
-  from node_db_text import *
-  from node_text import *
+  from peer_db_text import *
+  from peer_text import *
 
 
-# nodes_dbs_ip = "172.29.101.10 + node_nr" 
+# peers_dbs_ip = "172.29.101.10 + peer_nr" 
 # max ip = 255
 # reserved ips = 0, 1, 30 (API Endpoint), 100 (Explorer), 255
 # Torii -> n1 ip ??
@@ -20,23 +20,23 @@ dbs_ips = list(range(11,29,2))
 dbs_ips.extend(list(range(31,99,2)))
 dbs_ips.extend(list(range(103,255,2)))
 
-nodes_ips = list(range(12,30,2))
-nodes_ips.extend(list(range(32,100,2)))
-nodes_ips.extend(list(range(104,256,2)))
+peers_ips = list(range(12,30,2))
+peers_ips.extend(list(range(32,100,2)))
+peers_ips.extend(list(range(104,256,2)))
 
-max_nodes = len(dbs_ips)
+max_peers = len(dbs_ips)
 WARNING_THRESHOLD = 50
 
-n1_ip = "172.29.101." + str(nodes_ips[0])
+n1_ip = "172.29.101." + str(peers_ips[0])
 
 
-def combine(nodes_count, benchmark=False):
+def combine(peers_count, benchmark=False):
 
-  assert nodes_count <= max_nodes, f"[!] Max 100 nodes allowed, {nodes_count} are too much!"
+  assert peers_count <= max_peers, f"[!] Max 100 peers allowed, {peers_count} are too much!"
 
-  if nodes_count > WARNING_THRESHOLD and not benchmark:
-    ans = input("Diva dockerized was tested up to 50 nodes on a VM with 13GB RAM.\
-      You are about to create " + nodes_count + " nodes. \n\
+  if peers_count > WARNING_THRESHOLD and not benchmark:
+    ans = input("Diva dockerized was tested up to 50 peers on a VM with 13GB RAM.\
+      You are about to create " + peers_count + " peers. \n\
       Please save your work before continuing, or make sure your VM has enough RAM.\n\
       Continue [y/N]?")
 
@@ -65,14 +65,14 @@ def combine(nodes_count, benchmark=False):
 version: \"3.7\"\n\
 services:\n"
   
-  numbers = list(range(1, len(nodes_ips) + 1))
-  numbers = numbers[:nodes_count]
-  nodes = [node_text(ip, nr, nodes_ips, numbers) for ip, nr in zip(nodes_ips, numbers)]
-  nodes_dbs = [node_db_text(ip, nr) for ip, nr in zip(dbs_ips, numbers)]
+  numbers = list(range(1, len(peers_ips) + 1))
+  numbers = numbers[:peers_count]
+  peers = [peer_text(ip, nr, peers_ips, numbers) for ip, nr in zip(peers_ips, numbers)]
+  peers_dbs = [peer_db_text(ip, nr) for ip, nr in zip(dbs_ips, numbers)]
 
-  nodes_all = ""
-  for i in range(nodes_count):
-    nodes_all += nodes_dbs[i] + nodes[i]
+  peers_all = ""
+  for i in range(peers_count):
+    peers_all += peers_dbs[i] + peers[i]
 
   # vvvvv   EXCLUDE FOR BENCHMARK   vvvvv
   if not benchmark:
@@ -82,7 +82,7 @@ services:\n"
     image: divax/diva-api:latest\n\
     restart: unless-stopped\n\
     environment:\n\
-      NODE_ENV: production\n\
+      peer_ENV: production\n\
       IP_LISTEN: 0.0.0.0\n\
       PORT_LISTEN: 19012\n\
       API_ENDPOINT: 172.29.101.30:19012\n\
@@ -93,7 +93,7 @@ services:\n"
       I2P_WEBCONSOLE_PORT: ${I2P_WEBCONSOLE_PORT:-7070}\n\
       PATH_IROHA: /tmp/iroha/\n\
     volumes:\n\
-      - api.testnet.diva.local:/home/node/data/\n\
+      - api.testnet.diva.local:/home/peer/data/\n\
       - n1.testnet.diva.local:/tmp/iroha/\n\
     networks:\n\
       network.testnet.diva.local:\n\
@@ -110,7 +110,7 @@ services:\n"
       PATH_IROHA: /tmp/iroha/\n\
     volumes:\n\
       - n1.testnet.diva.local:/tmp/iroha/:ro\n\
-      - explorer.testnet.diva.local:/home/node/\n\
+      - explorer.testnet.diva.local:/home/peer/\n\
     networks:\n\
       network.testnet.diva.local:\n\
         ipv4_address: 172.29.101.100\n\n"
@@ -129,12 +129,12 @@ networks:\n\
   volumes = "\
 volumes:\n"
 
-  for i in range(nodes_count):
+  for i in range(peers_count):
     volumes += f"\
   n{i+1}.testnet.diva.local:\n\
     name: n{i+1}.testnet.diva.local\n"
 
-  for i in range(nodes_count):
+  for i in range(peers_count):
     volumes += f"\
   n{i+1}.db.testnet.diva.local:\n\
     name: n{i+1}.db.testnet.diva.local\n"
@@ -148,9 +148,9 @@ volumes:\n"
     name: explorer.testnet.diva.local\n"
   # ^^^^^   EXCLUDE FOR BENCHMARK   ^^^^^
 
-    return header+nodes_all+api+explorer+networks+volumes
+    return header+peers_all+api+explorer+networks+volumes
 
-  return header+nodes_all+networks+volumes
+  return header+peers_all+networks+volumes
 
 
 # test if created is correct

@@ -20,13 +20,13 @@ def test(peers, exhaustive):
 
 		if is_ready:
 		
-			# testing cycles, stop all except:
-			# n1; 
-			# n1,n2;
+			# testing cycles, stopping:
+			# n2 ... peers
+			# n3 ... peers
 			# ...
 			# ...
-			# n1,n2,n3,...,peers-1;
-			for i in range(1, peers):
+			# peers ... peers;
+			for i in range(5, peers):
 
 				print(f"\n****************************** start test round {i} **************************")
 
@@ -55,7 +55,7 @@ def test(peers, exhaustive):
 							print()
 							signatures = 0
 							signers = []
-						results.append((i, to_remove, len(signatures), signers))
+						results.append((i, f"n{to_remove}", len(signatures), signers))
 
 						removed_peers.append(to_remove)						
 						to_remove -= 1
@@ -74,24 +74,34 @@ def test(peers, exhaustive):
 
 					else:
 						print(f"[*] Could not remove peer n{to_remove} with {i} peers up out of {peers} peers => test round complete.")
-						results.append((i, to_remove, "--still up--", "--"))
+						results.append((i, "--", "--", "--"))
 						break
 
 
-				# start all nodes and add all removed peers
+				# start all peers (even the removes ones)
 				print(f"[*] Starting peers n{i+1} ... n{peers} again.")
 				start_peers(i+1, peers)
 
+				last_len_peers = len(get_peers())
+
+				# try to add all peers again
 				for peer in removed_peers:
-					add_peer(peer, timeout)
-
-					# TODO: check if really removed, otherwise clean delete and setup!
-
+					res = add_peer(peer, timeout)
+					len_peers = len(get_peers())
+					
+					# check if really removed, otherwise clean delete and setup!
+					if len_peers != last_len_peers + 1 or res.status_code != 200:
+						print("[!] Could not add peers again, restart everything!")
+						print(f"[#] Status: {res.status_code}, Text: {res.text}")
+						stop_testnet()
+						delete()
+						setup(peers)
+						start_testnet(peers)
+						break
 		
 		else:
 			print("\n[!] TIMEOUT while trying to connect to DIVA.EXCHANGE explorer!")
 			print("[*] Test Failed!")
-			break
 
 	except KeyboardInterrupt:
 		print("\n[!] Aborting Test! Please wait!")
@@ -105,7 +115,7 @@ def test(peers, exhaustive):
 		delete()
 
 	try:
-		print(render_results(results, peers, ["peers up", "removed peer", "signs on remove", "signers"], "P2"))
+		print(render_results(results, peers, ["peers up", "removed", "signs", "signers"], "P2"))
 	
 	except BaseException as e:
 		print("\n[!] Unexpected Error!")
@@ -116,7 +126,7 @@ def test(peers, exhaustive):
 if __name__ == "__main__":
 	from sys import argv
 	optimalPeers = [9, 15, 21, 27, 33] # see 2f_3f_optimal.diff
-	exhaustive = False # after successful removal of peer ni, remove ni-1, ni-2, ... n2
+	exhaustive = False # after successful removal of peer ni, remove ni-1, ni-2, ..., n2
 	
 	if len(argv) > 1:
 

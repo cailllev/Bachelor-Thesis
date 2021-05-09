@@ -1,5 +1,5 @@
 from setup.setup import API, EXPLORER, keys_path
-from setup.combine_texts import nodes_ips
+from setup.combine_texts import peers_ips
 
 from dateutil.parser import parse as date_parse
 from threading import Thread
@@ -80,7 +80,7 @@ def stop_peers(lower, upper):
 
 
 def stop_peer(i):
-	os.system(f"sudo docker stop n{i}.testnet.diva.local n{i}.db.testnet.diva.local")
+	os.system(f"sudo docker stop n{i}.db.testnet.diva.local n{i}.testnet.diva.local")
 	
 
 def start_peers(lower, upper):
@@ -125,31 +125,46 @@ def remove_peer(name, t):
 
 	return res
 
-#TODO: check if this works
-def add_peer(name, t):
+#TODO: make this works
+def add_peer(nr, t):
+
+	print(f"[#] Trying to add peer n{nr} with timeout of {t} sec.")
+	
 	"""
 	api:		where the api endpoint is (always first peer in this env)
 	address: 	172.29.101.<peer_specific>
 	name_peer:	n1.testnet.diva.local (e.g.)
 	key:		the peers public key
-	"""
 
-	print(f"[#] Trying to add peer n{name} with timeout of {t} sec.")
-	api = "n1.testnet.diva.local"
-	address = nodes_ips[peer-1]
-	pub_key = open(f"{keys_path}/n{name}.pub", "r").readlines()[0]
+	>>> url = 'http://172.29.101.30:19012/peer/apply?action=add&api=172.29.101.30&address=172.29.101.28:10001&key=2329e1d91d7566b49803876c3c368f552435f407e6b8742fb15fcbe4f1bf8aa8'
+	>>> req.get(url)
+	<Response [503]>
+	--> {"level":40,"time":1620571638257,"name":"devDivaApi","msg":"Peer.apply: failed to apply to add 172.29.101.28:10001 at 172.29.101.30"}
+
+	>>> url = 'http://172.29.101.30:19012/peer/apply?action=add&api=172.29.101.30:19012&address=172.29.101.28:10001&key=2329e1d91d7566b49803876c3c368f552435f407e6b8742fb15fcbe4f1bf8aa8'
+	>>> req.get(url)
+	<Response [403]>
+	--> {"level":10,"time":1620571665481,"name":"devDivaApi","msg":"Error: invalid peer name\n    at Function.validateHostname (/home/node/app/src/iroha.js:338:11)\n    at /home/node/app/src/api/peer.js:111:44\n ...
+
+	"""
+	
+	api = API.replace("http://", "")
+	pub_key = open(f"{keys_path}/n{nr}.pub", "r").readlines()[0]
+
+	address = f"172.29.101.{peers_ips[nr-1]}:10001" # this breaks if creation of peer ip changes
+
 
 	try:
-		res = req.get(f"{API}/peer/apply?action=add&api={api}&adress={address}&key={pub_key}", timeout=t)
+		res = req.get(f"{API}/peer/apply?action=add&api={API}&address={address}&key={pub_key}", timeout=t)
 		
 	except req.exceptions.Timeout as e:
-		print(f"[#] Timeout while trying to remove peer!")
+		print(f"[#] Timeout while trying to add peer!")
 				
 		class res: pass
 		res.status_code = 408
 		
 	except req.exceptions.RequestException as e:
-		print(f"[#] Unexpected exception while trying to remove peer!")
+		print(f"[#] Unexpected exception while trying to add peer!")
 		print(str(e))
 				
 		class res: pass
@@ -185,7 +200,7 @@ def render_results(res, peers, header, test_nr):
 	if len(res) == 0:
 		s += "[!] No results."
 
-	if len(res[0]) == 4:
+	elif len(res[0]) == 4:
 		s += f" {header[0]} | {header[1]} | {header[2]} | {header[3]} \n" 
 		s += "------------------------------------------------------------------------------\n" 
 		for r in res:
@@ -202,7 +217,13 @@ def render_results(res, peers, header, test_nr):
 	else:
 		s = "[!] Malformed results!\n" + str(res)
 
-	with open(f"results/{test_nr}_{peers}.txt", "w") as f:
+	file = f"results/{test_nr}_{peers}.txt"
+	if os.path.exists(file):
+		ans = input(f"[#] File {file} already exists! Overwrite? [y/N]")
+		if ans not in ["Yes", "yes", "Y", "y"]:
+			return s
+
+	with open(file, "w") as f:
 		f.write(s)
 
 	return s

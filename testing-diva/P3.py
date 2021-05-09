@@ -40,7 +40,7 @@ def test(peers):
 			start_peer(i)
 
 			# 2f+1
-			if running_peers <= peers / 2:
+			if i <= peers / 2:
 				timeout = 60 # not expecting a ping
 			else:
 				timeout = 15 * 60  # expecting a ping
@@ -64,7 +64,7 @@ def test(peers):
 
 			if no_ping:
 				print(f"\r[*] No other ping arrived after {waiting} sec with {i} peers up out of {peers} peers.")
-				results.append((i, waiting, "--no ping--", "--"))
+				results.append((i, waiting, "--", "--"))
 
 			else:
 				print(f"\r[*] Another ping arrived after {waiting} sec in block nr. {len(blocks)} with {i} peers up out of {peers} peers")
@@ -85,7 +85,7 @@ def test(peers):
 		delete()
 
 	try:
-		print(render_results(results, peers, ["peers up", "ping at [sec]", "signs on ping", "signers"], "P3"))
+		print(render_results(results, peers, ["peers up", "ping at", "signs", "signers"], "P3"))
 	
 	except BaseException as e:
 		print("\n[!] Unexpected Error!")

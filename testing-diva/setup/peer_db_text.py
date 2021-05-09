@@ -1,9 +1,9 @@
-#!/usr/bin/python3
+# python3 peer_db_text.py
 
-def node_db_text(node_ip, node_nr):
+def peer_db_text(peer_ip, peer_nr):
   return f"\
-  n{node_nr}.db.testnet.diva.local:\n\
-    container_name: n{node_nr}.db.testnet.diva.local\n\
+  n{peer_nr}.db.testnet.diva.local:\n\
+    container_name: n{peer_nr}.db.testnet.diva.local\n\
     image: postgres:10-alpine\n\
     command: -c max_prepared_transactions=100\n\
     restart: unless-stopped\n\
@@ -12,16 +12,16 @@ def node_db_text(node_ip, node_nr):
       POSTGRES_USER: iroha\n\
       POSTGRES_PASSWORD: iroha\n\
     volumes:\n\
-      - n{node_nr}.db.testnet.diva.local:/var/lib/postgresql/data/\n\
+      - n{peer_nr}.db.testnet.diva.local:/var/lib/postgresql/data/\n\
     networks:\n\
       network.testnet.diva.local:\n\
-        ipv4_address: 172.29.101.{node_ip}\n\n"
+        ipv4_address: 172.29.101.{peer_ip}\n\n"
 
 
 # test if created is correct
 if __name__ == "__main__":
 
-  created = node_db_text(1)
+  created = peer_db_text(11, 1)
 
   correct = f"\
   n1.db.testnet.diva.local:\n\
