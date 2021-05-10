@@ -1,0 +1,2 @@
+At 9 and 15 peers, and the start of 21 peers, I was using the PC too. After that, I let it run overnight -> weird behaviour.
+At 33 peers, with 25 peers up, I came back. After that it was working again as usual.
