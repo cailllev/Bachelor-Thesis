@@ -1,0 +1,9 @@
+All
+
+-Lib3 von Python ist einschränkend -> Http Connectionpool.
+-Unser Scope ist nicht performance.
+ 
+Students
+---------------
+-Tests durchführen
+-Schriftliche Arbeit
