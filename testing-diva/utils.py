@@ -103,11 +103,11 @@ def get_peers():
 	return json.loads(res.text)["peers"]
 
 
-def remove_peer(name, timeout):
+def remove_peer(name, t):
 	pub_key = open(f"{keys_path}/n{name}.pub", "r").readlines()[0]
 
 	try:
-		res = req.get(f"{API}/peer/remove?key={pub_key}", timeout=timeout)
+		res = req.get(f"{API}/peer/remove?key={pub_key}", timeout=t)
 		
 	except req.exceptions.Timeout as e:
 		print(f"[#] Timeout while trying to remove peer!")
@@ -152,7 +152,7 @@ def render_results(res, peers, header, test_nr):
 	if len(res) == 0:
 		s += "[!] No results."
 
-	elif len(res[0]) == 4 or len(res[0]) == 5:
+	elif len(res[0]) == 4:
 		s += " " + " | ".join([h for h in header]) + " \n" 
 		s += "------------------------------------------------------------------------------\n" 
 		for r in res:
@@ -163,6 +163,20 @@ def render_results(res, peers, header, test_nr):
 			else:
 				for signer in r[3]:
 					s += str(signer).rjust(3) + ", "
+				s = s[:-2]
+			s += "\n"
+
+	elif len(res[0]) == 5:
+		s += " " + " | ".join([h for h in header]) + " \n" 
+		s += "------------------------------------------------------------------------------\n" 
+		for r in res:
+			s += f" {str(r[0]).rjust(len(header[0]))} | {str(r[1]).rjust(len(header[1]))} | {str(r[2]).rjust(len(header[2]))} | {str(r[3]).rjust(len(header[3]))} | "
+
+			if "--" in r[4]:
+				s += r[4]
+			else:
+				for signer in r[4]:
+					s += str(signer).rjust(4) + ", "
 				s = s[:-2]
 			s += "\n"
 

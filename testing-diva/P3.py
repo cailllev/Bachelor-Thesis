@@ -9,7 +9,7 @@ from time import sleep
 import os
 
 
-def test(peers):
+def test(peers, optimized):
 
 	try:
 		results = []
@@ -21,12 +21,30 @@ def test(peers):
 		is_ready = start_testnet(peers)
 
 		if is_ready:
-			print("[*] Stopping all peers ... (except API peer n1)")
-			stop_peers(2, peers)
-			print("[*] All peers stopped successfully.")
-				
-			# testing cycles
-			for i in range(1, peers+1):
+
+			# wait for the first ping to ensure the network is working
+			blocks = []
+			while len(blocks) <= 1 or not is_ping(blocks[0]):  # blocks[0] is always the newest block
+				print(f"\r[#] Wait for first ping, waited for {waiting} sec ...", end="")					
+
+				blocks = get_blocks()
+				sleep_till_whole_sec()
+
+			print(f"\n[*] Got first ping, start test P3.")
+
+			if optimized:
+				start = peers // 2 # start + 1 would be able to get a ping (technically)
+				print(f"[*] Stopping peers n{start} ... n{peers}.")
+				stop_peers(start, peers)
+				print("[*] Peers stopped successfully.")
+
+			else:
+				start = 1
+				print("[*] Stopping all peers ... (except API peer n1)")
+				stop_peers(start+1, peers) # don't stop API
+				print("[*] Peers stopped successfully.")
+
+			for i in range(start, peers+1):
 
 				print(f"\n****************************** start test round {i} **************************")
 
@@ -106,14 +124,14 @@ if __name__ == "__main__":
 				print("******************************************************************************")
 				print(f"[*] Starting test P3 with {peers} peers.")
 				print("******************************************************************************")
-				test(peers)
+				test(peers, optimized=True)
 
 		# test given peers count
 		else:
 			peers = int(argv[1])
-			test(peers)
+			test(peers, optimized=False)
 
 	# test default peers count
 	else:
 		peers = 9
-		test(peers)
+		test(peers, optimized=False)

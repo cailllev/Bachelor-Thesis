@@ -1,0 +1,24 @@
+[snip]
+
+------------------------------ test connection -------------------------------
+[*] Testnet is up and running, sending test-request to diva-api/about and explorer.
+[#] No connection, waited for 0 sec...
+[#] No connection, waited for 5 sec...
+[#] No connection, waited for 10 sec...
+[#] No connection, waited for 15 sec...
+[#] No connection, waited for 20 sec...
+[*] Got 200 response from API.
+[#] No connection, waited for 25 sec...
+[*] Got 200 response from Explorer.
+[*] All 33 peers registered as peers, 33 total peers.
+[#] Trying to remove peer n33 with timeout of 900 sec and 33 peers up.
+[*] Peer successfully removed => benchmark complete!
+
+------------------------------ results ---------------------------------------
+[#] Peers up:      33 peers
+[#] Peer removed:  n33
+[#] After:         7 sec
+[#] Signs:         18 signatures
+[#] Signers:       n1, n14, n20, n29, n19, n7, n17, n21, n30, n5, n33, n24, n18, n28, n9, n23, n2, n31
+
+[snip]
