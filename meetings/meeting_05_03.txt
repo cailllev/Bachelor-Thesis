@@ -1,0 +1,11 @@
+All
+
+-Der erste Knoten ist wichtig für den Ping.
+-Die 2/3 Mehrheit laut Spezifikationen benötigt im Netzwerk. Remove oder Add Peer brauchen 2/3 Mehrheit. Die Mehrheit ist nicht veränderbar.
+-Crosschecking in Yac Whitepaper: supermajority > 2/3 -> 3f + 1
+-Eventuell keine 16 registrierte Knoten. Genesis Block abändern oder per add peer arbeiten.
+ 
+Students
+---------------
+-Tests durchführen
+-Schriftliche Arbeit
