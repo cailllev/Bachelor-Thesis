@@ -14,7 +14,6 @@ def test(peers, optimized):
 	try:
 		results = []
 		blocks = []
-		last_len_blocks = 1
 
 		download()
 		setup(peers)
@@ -28,6 +27,7 @@ def test(peers, optimized):
 				blocks = get_blocks()
 				sleep_till_whole_sec()
 
+			last_len_blocks = len(blocks)
 			print(f"\n[*] Got first ping, start test T3.")
 
 			if optimized:
