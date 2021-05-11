@@ -1,0 +1,2170 @@
+ubuntu@ubuntu2004:~/BA2021-Cailllev-Kybursas/testing-diva$ python3 T1.py A
+******************************************************************************
+[*] Starting test T1 with 9 peers.
+******************************************************************************
+
+------------------------------ docker stop and remove volumes ----------------
+[*] No containers to stop.
+
+------------------------------ pull docker images ----------------------------
+Pulling db       ... done
+Pulling node     ... done
+Pulling api      ... done
+Pulling explorer ... done
+
+------------------------------ adapt yml file --------------------------------
+[*] Changing yml file to create local-testnet with 9 peers.
+
+------------------------------ create docker containers ----------------------
+Total reclaimed space: 0B
+Total reclaimed space: 0B
+Creating network "network.testnet.diva.local" with the default driver
+Creating volume "n1.testnet.diva.local" with default driver
+Creating volume "n2.testnet.diva.local" with default driver
+Creating volume "n3.testnet.diva.local" with default driver
+Creating volume "n4.testnet.diva.local" with default driver
+Creating volume "n5.testnet.diva.local" with default driver
+Creating volume "n6.testnet.diva.local" with default driver
+Creating volume "n7.testnet.diva.local" with default driver
+Creating volume "n8.testnet.diva.local" with default driver
+Creating volume "n9.testnet.diva.local" with default driver
+Creating volume "n1.db.testnet.diva.local" with default driver
+Creating volume "n2.db.testnet.diva.local" with default driver
+Creating volume "n3.db.testnet.diva.local" with default driver
+Creating volume "n4.db.testnet.diva.local" with default driver
+Creating volume "n5.db.testnet.diva.local" with default driver
+Creating volume "n6.db.testnet.diva.local" with default driver
+Creating volume "n7.db.testnet.diva.local" with default driver
+Creating volume "n8.db.testnet.diva.local" with default driver
+Creating volume "n9.db.testnet.diva.local" with default driver
+Creating volume "api.testnet.diva.local" with default driver
+Creating volume "explorer.testnet.diva.local" with default driver
+Creating n1.testnet.diva.local       ... done
+Creating n8.db.testnet.diva.local    ... done
+Creating n9.testnet.diva.local    ... done
+Creating n2.db.testnet.diva.local    ... done
+Creating n4.db.testnet.diva.local    ... done
+Creating api.testnet.diva.local      ... done
+Creating n3.testnet.diva.local       ... done
+Creating n9.db.testnet.diva.local    ... done
+Creating n2.testnet.diva.local       ... done
+Creating n1.db.testnet.diva.local    ... done
+Creating n4.testnet.diva.local       ... done
+Creating n3.db.testnet.diva.local    ... done
+Creating n6.testnet.diva.local       ... done
+Creating n7.testnet.diva.local       ... done
+Creating n7.db.testnet.diva.local    ... done
+Creating n5.testnet.diva.local       ... done
+Creating n5.db.testnet.diva.local    ... done
+Creating n6.db.testnet.diva.local    ... done
+Creating n8.testnet.diva.local       ... done
+Creating explorer.testnet.diva.local ... done
+
+------------------------------ adapt iroha genesis block ---------------------
+[#] Trying to download the genesis block from codeberg ...
+[*] Got the genesis block.
+[*] Genesis block adapted for 9 peers.
+[*] Copied new genesis block to all iroha containers.
+
+------------------------------ copy iroha key pairs ---------------------------
+[*] Added keys to iroha containers.           
+
+------------------------------ start the containers --------------------------
+Starting n9.db.testnet.diva.local    ... done
+Starting n5.db.testnet.diva.local    ... done
+Starting n2.testnet.diva.local       ... done
+Starting explorer.testnet.diva.local ... done
+Starting n9.testnet.diva.local       ... done
+Starting n2.db.testnet.diva.local    ... done
+Starting n6.testnet.diva.local       ... done
+Starting n1.testnet.diva.local       ... done
+Starting n1.db.testnet.diva.local    ... done
+Starting n4.db.testnet.diva.local    ... done
+Starting n6.db.testnet.diva.local    ... done
+Starting api.testnet.diva.local      ... done
+Starting n4.testnet.diva.local       ... done
+Starting n7.db.testnet.diva.local    ... done
+Starting n3.db.testnet.diva.local    ... done
+Starting n7.testnet.diva.local       ... done
+Starting n8.db.testnet.diva.local    ... done
+Starting n5.testnet.diva.local       ... done
+Starting n8.testnet.diva.local       ... done
+Starting n3.testnet.diva.local       ... done
+
+------------------------------ test connection -------------------------------
+[*] Testnet is up and running, sending test-request to diva-api/about and explorer.
+[#] No connection, waited for 0 sec...
+[#] No connection, waited for 5 sec...
+[#] No connection, waited for 10 sec...
+[#] No connection, waited for 15 sec...
+[*] Got 200 response from API.
+[*] Got 200 response from Explorer.
+[*] All 9 peers registered as peers, 9 total peers.
+
+****************************** start test round 0 **************************
+[#] Wait for first ping, waited for 59 sec ...
+[*] Got first ping in block nr. 2 after 60 sec.
+
+****************************** start test round 1 **************************
+[*] Stopping peer n9.
+n9.db.testnet.diva.local
+n9.testnet.diva.local
+[*] Another ping arrived after 54 sec in block nr. 3 with 8 peers up out of 9 peers.
+
+****************************** start test round 2 **************************
+[*] Stopping peer n8.
+n8.db.testnet.diva.local
+n8.testnet.diva.local
+[*] Another ping arrived after 69 sec in block nr. 4 with 7 peers up out of 9 peers.
+
+****************************** start test round 3 **************************
+[*] Stopping peer n7.
+n7.db.testnet.diva.local
+n7.testnet.diva.local
+[*] Another ping arrived after 99 sec in block nr. 6 with 6 peers up out of 9 peers.
+
+****************************** start test round 4 **************************
+[*] Stopping peer n6.
+n6.db.testnet.diva.local
+n6.testnet.diva.local
+[*] Another ping arrived after 107 sec in block nr. 7 with 5 peers up out of 9 peers.
+
+****************************** start test round 5 **************************
+[*] Stopping peer n5.
+n5.db.testnet.diva.local
+n5.testnet.diva.local
+[*] No other ping arrived after 60 sec with 4 peers up out of 9 peers.
+
+****************************** start test round 6 **************************
+[*] Stopping peer n4.
+n4.db.testnet.diva.local
+n4.testnet.diva.local
+[*] No other ping arrived after 60 sec with 3 peers up out of 9 peers.
+
+****************************** start test round 7 **************************
+[*] Stopping peer n3.
+n3.db.testnet.diva.local
+n3.testnet.diva.local
+[*] No other ping arrived after 60 sec with 2 peers up out of 9 peers.
+
+****************************** start test round 8 **************************
+[*] Stopping peer n2.
+n2.db.testnet.diva.local
+n2.testnet.diva.local
+[*] No other ping arrived after 60 sec with 1 peers up out of 9 peers.
+
+****************************** start test round 9 **************************
+[*] Stopping peer n1.
+n1.db.testnet.diva.local
+n1.testnet.diva.local
+[*] No other ping arrived after 60 sec with 0 peers up out of 9 peers.
+
+------------------------------ docker volumes down ---------------------------
+Stopping explorer.testnet.diva.local ... done
+Stopping api.testnet.diva.local      ... done
+Removing n5.db.testnet.diva.local    ... done
+Removing explorer.testnet.diva.local ... done
+Removing n6.db.testnet.diva.local    ... done
+Removing n5.testnet.diva.local       ... done
+Removing n8.testnet.diva.local       ... done
+Removing n6.testnet.diva.local       ... done
+Removing n7.db.testnet.diva.local    ... done
+Removing n7.testnet.diva.local       ... done
+Removing n3.db.testnet.diva.local    ... done
+Removing n4.testnet.diva.local       ... done
+Removing n9.db.testnet.diva.local    ... done
+Removing n2.testnet.diva.local       ... done
+Removing n1.db.testnet.diva.local    ... done
+Removing n3.testnet.diva.local       ... done
+Removing api.testnet.diva.local      ... done
+Removing n4.db.testnet.diva.local    ... done
+Removing n1.testnet.diva.local       ... done
+Removing n2.db.testnet.diva.local    ... done
+Removing n9.testnet.diva.local       ... done
+Removing n8.db.testnet.diva.local    ... done
+Removing network network.testnet.diva.local
+
+[*] Done.
+
+------------------------------ docker remove all -----------------------------
+Total reclaimed space: 0B
+Deleted Volumes:
+n1.db.testnet.diva.local
+explorer.testnet.diva.local
+n1.testnet.diva.local
+n2.testnet.diva.local
+n3.testnet.diva.local
+n4.testnet.diva.local
+n9.testnet.diva.local
+n2.db.testnet.diva.local
+n7.db.testnet.diva.local
+n9.db.testnet.diva.local
+n7.testnet.diva.local
+n5.db.testnet.diva.local
+n5.testnet.diva.local
+n6.testnet.diva.local
+api.testnet.diva.local
+n4.db.testnet.diva.local
+n6.db.testnet.diva.local
+n3.db.testnet.diva.local
+n8.db.testnet.diva.local
+n8.testnet.diva.local
+db7ead5f904e757ccd7400ea938997b26d2ef5793e725885bee5515583e6fdf1
+
+Total reclaimed space: 445.1MB
+
+[*] Done.
+
+------------------------------ results - 9 peers total ----------------------
+ peers up | ping at | signs | signers 
+------------------------------------------------------------------------------
+        9 |      60 |     6 |  n1,  n4,  n3,  n9,  n2,  n5
+        8 |      54 |     6 |  n1,  n8,  n3,  n2,  n6,  n4
+        7 |      69 |     6 |  n1,  n5,  n6,  n4,  n7,  n3
+        6 |      99 |     5 |  n1,  n5,  n3,  n6,  n4
+        5 |     107 |     5 |  n1,  n5,  n4,  n3,  n2
+        4 |      60 |    -- | --
+        3 |      60 |    -- | --
+        2 |      60 |    -- | --
+        1 |      60 |    -- | --
+        0 |      60 |    -- | --
+
+******************************************************************************
+[*] Starting test T1 with 15 peers.
+******************************************************************************
+
+------------------------------ docker stop and remove volumes ----------------
+[*] No containers to stop.
+
+------------------------------ pull docker images ----------------------------
+Pulling db       ... done
+Pulling node     ... done
+Pulling api      ... done
+Pulling explorer ... done
+
+------------------------------ adapt yml file --------------------------------
+[*] Changing yml file to create local-testnet with 15 peers.
+
+------------------------------ create docker containers ----------------------
+Total reclaimed space: 0B
+Total reclaimed space: 0B
+Creating network "network.testnet.diva.local" with the default driver
+Creating volume "n1.testnet.diva.local" with default driver
+Creating volume "n2.testnet.diva.local" with default driver
+Creating volume "n3.testnet.diva.local" with default driver
+Creating volume "n4.testnet.diva.local" with default driver
+Creating volume "n5.testnet.diva.local" with default driver
+Creating volume "n6.testnet.diva.local" with default driver
+Creating volume "n7.testnet.diva.local" with default driver
+Creating volume "n8.testnet.diva.local" with default driver
+Creating volume "n9.testnet.diva.local" with default driver
+Creating volume "n10.testnet.diva.local" with default driver
+Creating volume "n11.testnet.diva.local" with default driver
+Creating volume "n12.testnet.diva.local" with default driver
+Creating volume "n13.testnet.diva.local" with default driver
+Creating volume "n14.testnet.diva.local" with default driver
+Creating volume "n15.testnet.diva.local" with default driver
+Creating volume "n1.db.testnet.diva.local" with default driver
+Creating volume "n2.db.testnet.diva.local" with default driver
+Creating volume "n3.db.testnet.diva.local" with default driver
+Creating volume "n4.db.testnet.diva.local" with default driver
+Creating volume "n5.db.testnet.diva.local" with default driver
+Creating volume "n6.db.testnet.diva.local" with default driver
+Creating volume "n7.db.testnet.diva.local" with default driver
+Creating volume "n8.db.testnet.diva.local" with default driver
+Creating volume "n9.db.testnet.diva.local" with default driver
+Creating volume "n10.db.testnet.diva.local" with default driver
+Creating volume "n11.db.testnet.diva.local" with default driver
+Creating volume "n12.db.testnet.diva.local" with default driver
+Creating volume "n13.db.testnet.diva.local" with default driver
+Creating volume "n14.db.testnet.diva.local" with default driver
+Creating volume "n15.db.testnet.diva.local" with default driver
+Creating volume "api.testnet.diva.local" with default driver
+Creating volume "explorer.testnet.diva.local" with default driver
+Creating n13.db.testnet.diva.local ... 
+Creating n13.db.testnet.diva.local   ... done
+Creating n8.testnet.diva.local       ... done
+Creating n3.db.testnet.diva.local    ... done
+Creating n3.db.testnet.diva.local    ... 
+Creating n11.testnet.diva.local      ... done
+Creating n4.testnet.diva.local       ... done
+Creating n10.testnet.diva.local      ... done
+Creating n12.testnet.diva.local      ... done
+Creating n12.db.testnet.diva.local   ... done
+Creating n6.db.testnet.diva.local    ... done
+Creating n3.testnet.diva.local       ... done
+Creating n10.db.testnet.diva.local   ... done
+Creating n13.testnet.diva.local      ... done
+Creating n11.db.testnet.diva.local   ... done
+Creating n9.testnet.diva.local       ... done
+Creating n5.testnet.diva.local       ... done
+Creating n9.db.testnet.diva.local    ... done
+Creating n8.db.testnet.diva.local    ... done
+Creating n7.testnet.diva.local       ... done
+Creating n1.testnet.diva.local       ... done
+Creating n5.db.testnet.diva.local    ... done
+Creating n2.db.testnet.diva.local    ... done
+Creating api.testnet.diva.local      ... done
+Creating n7.db.testnet.diva.local    ... done
+Creating n15.db.testnet.diva.local   ... done
+Creating n4.db.testnet.diva.local    ... done
+Creating n2.testnet.diva.local       ... done
+Creating n14.testnet.diva.local      ... done
+Creating n6.testnet.diva.local       ... done
+Creating n14.db.testnet.diva.local   ... done
+Creating n15.testnet.diva.local      ... done
+
+------------------------------ adapt iroha genesis block ---------------------
+[#] Trying to download the genesis block from codeberg ...
+[*] Got the genesis block.
+[*] Genesis block adapted for 15 peers.
+[*] Copied new genesis block to all iroha containers.
+
+------------------------------ copy iroha key pairs ---------------------------
+[*] Added keys to iroha containers.           
+
+------------------------------ start the containers --------------------------
+Starting n10.db.testnet.diva.local ... 
+Starting n4.testnet.diva.local     ... 
+Starting api.testnet.diva.local    ... 
+Starting n10.db.testnet.diva.local   ... done
+Starting n4.testnet.diva.local       ... done
+Starting api.testnet.diva.local      ... done
+Starting n7.testnet.diva.local       ... done
+Starting n9.testnet.diva.local       ... done
+Starting n4.db.testnet.diva.local    ... done
+Starting n3.db.testnet.diva.local    ... done
+Starting n1.db.testnet.diva.local    ... done
+Starting n11.testnet.diva.local      ... done
+Starting n13.db.testnet.diva.local   ... done
+Starting n5.db.testnet.diva.local    ... done
+Starting n14.testnet.diva.local      ... done
+Starting n8.testnet.diva.local       ... done
+Starting n11.db.testnet.diva.local   ... done
+Starting n10.testnet.diva.local      ... done
+Starting n3.testnet.diva.local       ... done
+Starting n12.db.testnet.diva.local   ... done
+Starting n5.testnet.diva.local       ... done
+Starting explorer.testnet.diva.local ... done
+Starting n2.db.testnet.diva.local    ... done
+Starting n14.db.testnet.diva.local   ... done
+Starting n9.db.testnet.diva.local    ... done
+Starting n2.testnet.diva.local       ... done
+Starting n15.testnet.diva.local      ... done
+Starting n6.testnet.diva.local       ... done
+Starting n12.testnet.diva.local      ... done
+Starting n6.db.testnet.diva.local    ... done
+Starting n7.db.testnet.diva.local    ... done
+Starting n8.db.testnet.diva.local    ... done
+Starting n1.testnet.diva.local       ... done
+Starting n15.db.testnet.diva.local   ... done
+Starting n13.testnet.diva.local      ... done
+
+------------------------------ test connection -------------------------------
+[*] Testnet is up and running, sending test-request to diva-api/about and explorer.
+[#] No connection, waited for 0 sec...
+[#] No connection, waited for 5 sec...
+[#] No connection, waited for 10 sec...
+[*] Got 200 response from API.
+[*] Got 200 response from Explorer.
+[*] All 15 peers registered as peers, 15 total peers.
+
+****************************** start test round 0 **************************
+[#] Wait for first ping, waited for 64 sec ...
+[*] Got first ping in block nr. 2 after 65 sec.
+
+****************************** start test round 1 **************************
+[*] Stopping peer n15.
+n15.db.testnet.diva.local
+n15.testnet.diva.local
+[*] Another ping arrived after 68 sec in block nr. 3 with 14 peers up out of 15 peers.
+
+****************************** start test round 2 **************************
+[*] Stopping peer n14.
+n14.db.testnet.diva.local
+n14.testnet.diva.local
+[*] Another ping arrived after 66 sec in block nr. 4 with 13 peers up out of 15 peers.
+
+****************************** start test round 3 **************************
+[*] Stopping peer n13.
+n13.db.testnet.diva.local
+n13.testnet.diva.local
+[*] Another ping arrived after 105 sec in block nr. 6 with 12 peers up out of 15 peers.
+
+****************************** start test round 4 **************************
+[*] Stopping peer n12.
+n12.db.testnet.diva.local
+n12.testnet.diva.local
+[*] Another ping arrived after 58 sec in block nr. 7 with 11 peers up out of 15 peers.
+
+****************************** start test round 5 **************************
+[*] Stopping peer n11.
+n11.db.testnet.diva.local
+n11.testnet.diva.local
+[*] Another ping arrived after 76 sec in block nr. 8 with 10 peers up out of 15 peers.
+
+****************************** start test round 6 **************************
+[*] Stopping peer n10.
+n10.db.testnet.diva.local
+n10.testnet.diva.local
+[*] Another ping arrived after 111 sec in block nr. 9 with 9 peers up out of 15 peers.
+
+****************************** start test round 7 **************************
+[*] Stopping peer n9.
+n9.db.testnet.diva.local
+n9.testnet.diva.local
+[*] Another ping arrived after 256 sec in block nr. 10 with 8 peers up out of 15 peers.
+
+****************************** start test round 8 **************************
+[*] Stopping peer n8.
+n8.db.testnet.diva.local
+n8.testnet.diva.local
+[*] No other ping arrived after 60 sec with 7 peers up out of 15 peers.
+
+****************************** start test round 9 **************************
+[*] Stopping peer n7.
+n7.db.testnet.diva.local
+n7.testnet.diva.local
+[*] No other ping arrived after 60 sec with 6 peers up out of 15 peers.
+
+****************************** start test round 10 **************************
+[*] Stopping peer n6.
+n6.db.testnet.diva.local
+n6.testnet.diva.local
+[*] No other ping arrived after 60 sec with 5 peers up out of 15 peers.
+
+****************************** start test round 11 **************************
+[*] Stopping peer n5.
+n5.db.testnet.diva.local
+n5.testnet.diva.local
+[*] No other ping arrived after 60 sec with 4 peers up out of 15 peers.
+
+****************************** start test round 12 **************************
+[*] Stopping peer n4.
+n4.db.testnet.diva.local
+n4.testnet.diva.local
+[*] No other ping arrived after 60 sec with 3 peers up out of 15 peers.
+
+****************************** start test round 13 **************************
+[*] Stopping peer n3.
+n3.db.testnet.diva.local
+n3.testnet.diva.local
+[*] No other ping arrived after 60 sec with 2 peers up out of 15 peers.
+
+****************************** start test round 14 **************************
+[*] Stopping peer n2.
+n2.db.testnet.diva.local
+n2.testnet.diva.local
+[*] No other ping arrived after 60 sec with 1 peers up out of 15 peers.
+
+****************************** start test round 15 **************************
+[*] Stopping peer n1.
+n1.db.testnet.diva.local
+n1.testnet.diva.local
+[*] No other ping arrived after 60 sec with 0 peers up out of 15 peers.
+
+------------------------------ docker volumes down ---------------------------
+Stopping api.testnet.diva.local      ... done
+Stopping explorer.testnet.diva.local ... done
+Removing n15.testnet.diva.local      ... done
+Removing n6.testnet.diva.local       ... done
+Removing n14.testnet.diva.local      ... done
+Removing n14.db.testnet.diva.local   ... done
+Removing n4.db.testnet.diva.local    ... done
+Removing n15.db.testnet.diva.local   ... done
+Removing n2.testnet.diva.local       ... done
+Removing n7.db.testnet.diva.local    ... done
+Removing n5.db.testnet.diva.local    ... done
+Removing api.testnet.diva.local      ... done
+Removing n2.db.testnet.diva.local    ... done
+Removing n1.testnet.diva.local       ... done
+Removing n7.testnet.diva.local       ... done
+Removing n9.db.testnet.diva.local    ... done
+Removing n8.db.testnet.diva.local    ... done
+Removing n5.testnet.diva.local       ... done
+Removing n9.testnet.diva.local       ... done
+Removing n13.testnet.diva.local      ... done
+Removing n11.db.testnet.diva.local   ... done
+Removing n3.testnet.diva.local       ... done
+Removing n10.db.testnet.diva.local   ... done
+Removing n12.testnet.diva.local      ... done
+Removing n12.db.testnet.diva.local   ... done
+Removing n6.db.testnet.diva.local    ... done
+Removing n3.db.testnet.diva.local    ... done
+Removing n10.testnet.diva.local      ... done
+Removing n11.testnet.diva.local      ... done
+Removing n1.db.testnet.diva.local    ... done
+Removing n4.testnet.diva.local       ... done
+Removing n8.testnet.diva.local       ... done
+Removing explorer.testnet.diva.local ... done
+Removing n13.db.testnet.diva.local   ... done
+Removing network network.testnet.diva.local
+
+[*] Done.
+
+------------------------------ docker remove all -----------------------------
+Total reclaimed space: 0B
+Deleted Volumes:
+n7.testnet.diva.local
+n5.db.testnet.diva.local
+n5.testnet.diva.local
+n6.testnet.diva.local
+n12.testnet.diva.local
+n13.testnet.diva.local
+n12.db.testnet.diva.local
+api.testnet.diva.local
+n14.testnet.diva.local
+n4.db.testnet.diva.local
+n6.db.testnet.diva.local
+n13.db.testnet.diva.local
+n11.testnet.diva.local
+n3.db.testnet.diva.local
+n8.db.testnet.diva.local
+n10.db.testnet.diva.local
+n15.db.testnet.diva.local
+n8.testnet.diva.local
+n11.db.testnet.diva.local
+n14.db.testnet.diva.local
+64ab36f6d7709e5cff5c0b235fd14e7f556cb8f21514bf29616a1c7eefc028c9
+n10.testnet.diva.local
+n15.testnet.diva.local
+n1.db.testnet.diva.local
+explorer.testnet.diva.local
+n1.testnet.diva.local
+n2.testnet.diva.local
+n3.testnet.diva.local
+n4.testnet.diva.local
+n9.testnet.diva.local
+n2.db.testnet.diva.local
+n7.db.testnet.diva.local
+n9.db.testnet.diva.local
+
+Total reclaimed space: 741.9MB
+
+[*] Done.
+
+------------------------------ results - 15 peers total ----------------------
+ peers up | ping at | signs | signers 
+------------------------------------------------------------------------------
+       15 |      65 |     8 |  n1,  n7,  n4, n11,  n2,  n3, n15,  n6
+       14 |      68 |     8 |  n1,  n4,  n3,  n5,  n2, n14, n13,  n8
+       13 |      66 |     9 |  n1, n10,  n4,  n6,  n5,  n9,  n3,  n8, n13
+       12 |     105 |     8 |  n1,  n4, n10,  n5, n12,  n2, n11,  n8
+       11 |      58 |     8 |  n1, n11,  n9,  n4,  n7,  n8, n10,  n3
+       10 |      76 |     8 |  n1,  n4,  n5,  n7, n10,  n3,  n8,  n6
+        9 |     111 |     8 |  n1,  n8,  n4,  n7,  n3,  n6,  n5,  n9
+        8 |     256 |     8 |  n1,  n2,  n5,  n4,  n8,  n7,  n6,  n3
+        7 |      60 |    -- | --
+        6 |      60 |    -- | --
+        5 |      60 |    -- | --
+        4 |      60 |    -- | --
+        3 |      60 |    -- | --
+        2 |      60 |    -- | --
+        1 |      60 |    -- | --
+        0 |      60 |    -- | --
+
+******************************************************************************
+[*] Starting test T1 with 21 peers.
+******************************************************************************
+
+------------------------------ docker stop and remove volumes ----------------
+[*] No containers to stop.
+
+------------------------------ pull docker images ----------------------------
+Pulling db       ... done
+Pulling node     ... done
+Pulling api      ... done
+Pulling explorer ... done
+
+------------------------------ adapt yml file --------------------------------
+[*] Changing yml file to create local-testnet with 21 peers.
+
+------------------------------ create docker containers ----------------------
+Total reclaimed space: 0B
+Total reclaimed space: 0B
+Creating network "network.testnet.diva.local" with the default driver
+Creating volume "n1.testnet.diva.local" with default driver
+Creating volume "n2.testnet.diva.local" with default driver
+Creating volume "n3.testnet.diva.local" with default driver
+Creating volume "n4.testnet.diva.local" with default driver
+Creating volume "n5.testnet.diva.local" with default driver
+Creating volume "n6.testnet.diva.local" with default driver
+Creating volume "n7.testnet.diva.local" with default driver
+Creating volume "n8.testnet.diva.local" with default driver
+Creating volume "n9.testnet.diva.local" with default driver
+Creating volume "n10.testnet.diva.local" with default driver
+Creating volume "n11.testnet.diva.local" with default driver
+Creating volume "n12.testnet.diva.local" with default driver
+Creating volume "n13.testnet.diva.local" with default driver
+Creating volume "n14.testnet.diva.local" with default driver
+Creating volume "n15.testnet.diva.local" with default driver
+Creating volume "n16.testnet.diva.local" with default driver
+Creating volume "n17.testnet.diva.local" with default driver
+Creating volume "n18.testnet.diva.local" with default driver
+Creating volume "n19.testnet.diva.local" with default driver
+Creating volume "n20.testnet.diva.local" with default driver
+Creating volume "n21.testnet.diva.local" with default driver
+Creating volume "n1.db.testnet.diva.local" with default driver
+Creating volume "n2.db.testnet.diva.local" with default driver
+Creating volume "n3.db.testnet.diva.local" with default driver
+Creating volume "n4.db.testnet.diva.local" with default driver
+Creating volume "n5.db.testnet.diva.local" with default driver
+Creating volume "n6.db.testnet.diva.local" with default driver
+Creating volume "n7.db.testnet.diva.local" with default driver
+Creating volume "n8.db.testnet.diva.local" with default driver
+Creating volume "n9.db.testnet.diva.local" with default driver
+Creating volume "n10.db.testnet.diva.local" with default driver
+Creating volume "n11.db.testnet.diva.local" with default driver
+Creating volume "n12.db.testnet.diva.local" with default driver
+Creating volume "n13.db.testnet.diva.local" with default driver
+Creating volume "n14.db.testnet.diva.local" with default driver
+Creating volume "n15.db.testnet.diva.local" with default driver
+Creating volume "n16.db.testnet.diva.local" with default driver
+Creating volume "n17.db.testnet.diva.local" with default driver
+Creating volume "n18.db.testnet.diva.local" with default driver
+Creating volume "n19.db.testnet.diva.local" with default driver
+Creating volume "n20.db.testnet.diva.local" with default driver
+Creating volume "n21.db.testnet.diva.local" with default driver
+Creating volume "api.testnet.diva.local" with default driver
+Creating volume "explorer.testnet.diva.local" with default driver
+Creating n4.db.testnet.diva.local    ... done
+Creating n17.testnet.diva.local      ... done
+Creating n16.testnet.diva.local      ... done
+Creating n1.db.testnet.diva.local    ... done
+Creating n13.testnet.diva.local      ... done
+Creating n10.testnet.diva.local      ... done
+Creating n12.db.testnet.diva.local   ... done
+Creating n15.db.testnet.diva.local   ... done
+Creating n7.testnet.diva.local       ... done
+Creating n19.db.testnet.diva.local   ... done
+Creating n5.testnet.diva.local       ... done
+Creating n18.db.testnet.diva.local   ... done
+Creating n9.db.testnet.diva.local    ... done
+Creating explorer.testnet.diva.local ... done
+Creating n10.db.testnet.diva.local   ... done
+Creating n6.db.testnet.diva.local    ... done
+Creating n9.testnet.diva.local       ... done
+Creating n17.db.testnet.diva.local   ... done
+Creating n18.testnet.diva.local      ... done
+Creating n3.db.testnet.diva.local    ... done
+Creating n8.db.testnet.diva.local    ... done
+Creating n5.db.testnet.diva.local    ... done
+Creating n15.testnet.diva.local      ... done
+Creating n19.testnet.diva.local      ... done
+Creating n11.testnet.diva.local      ... done
+Creating n6.testnet.diva.local       ... done
+Creating n11.db.testnet.diva.local   ... done
+Creating n2.db.testnet.diva.local    ... done
+Creating n1.testnet.diva.local       ... done
+Creating n20.db.testnet.diva.local   ... done
+Creating n3.testnet.diva.local       ... done
+Creating n14.db.testnet.diva.local   ... done
+Creating n7.db.testnet.diva.local    ... done
+Creating n8.testnet.diva.local       ... done
+Creating n4.testnet.diva.local       ... done
+Creating api.testnet.diva.local      ... done
+Creating n16.db.testnet.diva.local   ... done
+Creating n20.testnet.diva.local      ... done
+Creating n2.testnet.diva.local       ... done
+Creating n21.testnet.diva.local      ... done
+Creating n21.db.testnet.diva.local   ... done
+Creating n13.db.testnet.diva.local   ... done
+Creating n14.testnet.diva.local      ... done
+Creating n12.testnet.diva.local      ... done
+
+------------------------------ adapt iroha genesis block ---------------------
+[#] Trying to download the genesis block from codeberg ...
+[*] Got the genesis block.
+[*] Genesis block adapted for 21 peers.
+[*] Copied new genesis block to all iroha containers.
+
+------------------------------ copy iroha key pairs ---------------------------
+[*] Added keys to iroha containers.           
+
+------------------------------ start the containers --------------------------
+Starting n7.testnet.diva.local       ... done
+Starting n18.db.testnet.diva.local   ... done
+Starting n9.db.testnet.diva.local    ... done
+Starting n18.testnet.diva.local      ... done
+Starting n20.testnet.diva.local      ... done
+Starting explorer.testnet.diva.local ... done
+Starting n13.db.testnet.diva.local   ... done
+Starting n8.db.testnet.diva.local    ... done
+Starting n21.testnet.diva.local      ... done
+Starting n1.db.testnet.diva.local    ... done
+Starting n11.testnet.diva.local      ... done
+Starting n5.testnet.diva.local       ... done
+Starting n14.testnet.diva.local      ... done
+Starting n15.db.testnet.diva.local   ... done
+Starting n13.testnet.diva.local      ... done
+Starting n3.testnet.diva.local       ... done
+Starting n12.testnet.diva.local      ... done
+Starting n11.db.testnet.diva.local   ... done
+Starting n4.db.testnet.diva.local    ... done
+Starting n9.testnet.diva.local       ... done
+Starting n10.testnet.diva.local      ... done
+Starting n17.db.testnet.diva.local   ... done
+Starting n14.db.testnet.diva.local   ... done
+Starting n5.db.testnet.diva.local    ... done
+Starting n7.db.testnet.diva.local    ... done
+Starting n8.testnet.diva.local       ... done
+Starting n4.testnet.diva.local       ... done
+Starting n6.db.testnet.diva.local    ... done
+Starting n19.db.testnet.diva.local   ... done
+Starting n16.db.testnet.diva.local   ... done
+Starting n21.db.testnet.diva.local   ... done
+Starting n3.db.testnet.diva.local    ... done
+Starting n17.testnet.diva.local      ... done
+Starting n2.db.testnet.diva.local    ... done
+Starting n6.testnet.diva.local       ... done
+Starting n16.testnet.diva.local      ... done
+Starting n19.testnet.diva.local      ... done
+Starting n2.testnet.diva.local       ... done
+Starting n20.db.testnet.diva.local   ... done
+Starting api.testnet.diva.local      ... done
+Starting n15.testnet.diva.local      ... done
+Starting n10.db.testnet.diva.local   ... done
+Starting n12.db.testnet.diva.local   ... done
+Starting n1.testnet.diva.local       ... done
+
+------------------------------ test connection -------------------------------
+[*] Testnet is up and running, sending test-request to diva-api/about and explorer.
+[#] No connection, waited for 0 sec...
+[#] No connection, waited for 5 sec...
+[#] No connection, waited for 10 sec...
+[#] No connection, waited for 15 sec...
+[*] Got 200 response from API.
+[*] Got 200 response from Explorer.
+[*] All 21 peers registered as peers, 21 total peers.
+
+****************************** start test round 0 **************************
+[#] Wait for first ping, waited for 59 sec ...
+[*] Got first ping in block nr. 2 after 60 sec.
+
+****************************** start test round 1 **************************
+[*] Stopping peer n21.
+n21.db.testnet.diva.local
+n21.testnet.diva.local
+[*] Another ping arrived after 57 sec in block nr. 3 with 20 peers up out of 21 peers.
+
+****************************** start test round 2 **************************
+[*] Stopping peer n20.
+n20.db.testnet.diva.local
+n20.testnet.diva.local
+[*] Another ping arrived after 82 sec in block nr. 4 with 19 peers up out of 21 peers.
+
+****************************** start test round 3 **************************
+[*] Stopping peer n19.
+n19.db.testnet.diva.local
+n19.testnet.diva.local
+[*] Another ping arrived after 92 sec in block nr. 5 with 18 peers up out of 21 peers.
+
+****************************** start test round 4 **************************
+[*] Stopping peer n18.
+n18.db.testnet.diva.local
+n18.testnet.diva.local
+[*] Another ping arrived after 90 sec in block nr. 6 with 17 peers up out of 21 peers.
+
+****************************** start test round 5 **************************
+[*] Stopping peer n17.
+n17.db.testnet.diva.local
+n17.testnet.diva.local
+[*] Another ping arrived after 54 sec in block nr. 7 with 16 peers up out of 21 peers.
+
+****************************** start test round 6 **************************
+[*] Stopping peer n16.
+n16.db.testnet.diva.local
+n16.testnet.diva.local
+[*] Another ping arrived after 55 sec in block nr. 8 with 15 peers up out of 21 peers.
+
+****************************** start test round 7 **************************
+[*] Stopping peer n15.
+n15.db.testnet.diva.local
+n15.testnet.diva.local
+[*] Another ping arrived after 102 sec in block nr. 9 with 14 peers up out of 21 peers.
+
+****************************** start test round 8 **************************
+[*] Stopping peer n14.
+n14.db.testnet.diva.local
+n14.testnet.diva.local
+[*] Another ping arrived after 151 sec in block nr. 10 with 13 peers up out of 21 peers.
+
+****************************** start test round 9 **************************
+[*] Stopping peer n13.
+n13.db.testnet.diva.local
+n13.testnet.diva.local
+[*] Another ping arrived after 427 sec in block nr. 11 with 12 peers up out of 21 peers.
+
+****************************** start test round 10 **************************
+[*] Stopping peer n12.
+n12.db.testnet.diva.local
+n12.testnet.diva.local
+[*] No other ping arrived after 900 sec with 11 peers up out of 21 peers.
+
+****************************** start test round 11 **************************
+[*] Stopping peer n11.
+n11.db.testnet.diva.local
+n11.testnet.diva.local
+[*] No other ping arrived after 60 sec with 10 peers up out of 21 peers.
+
+****************************** start test round 12 **************************
+[*] Stopping peer n10.
+n10.db.testnet.diva.local
+n10.testnet.diva.local
+[*] No other ping arrived after 60 sec with 9 peers up out of 21 peers.
+
+****************************** start test round 13 **************************
+[*] Stopping peer n9.
+n9.db.testnet.diva.local
+n9.testnet.diva.local
+[*] No other ping arrived after 60 sec with 8 peers up out of 21 peers.
+
+****************************** start test round 14 **************************
+[*] Stopping peer n8.
+n8.db.testnet.diva.local
+n8.testnet.diva.local
+[*] No other ping arrived after 60 sec with 7 peers up out of 21 peers.
+
+****************************** start test round 15 **************************
+[*] Stopping peer n7.
+n7.db.testnet.diva.local
+n7.testnet.diva.local
+[*] No other ping arrived after 60 sec with 6 peers up out of 21 peers.
+
+****************************** start test round 16 **************************
+[*] Stopping peer n6.
+n6.db.testnet.diva.local
+n6.testnet.diva.local
+[*] No other ping arrived after 60 sec with 5 peers up out of 21 peers.
+
+****************************** start test round 17 **************************
+[*] Stopping peer n5.
+n5.db.testnet.diva.local
+n5.testnet.diva.local
+[*] No other ping arrived after 60 sec with 4 peers up out of 21 peers.
+
+****************************** start test round 18 **************************
+[*] Stopping peer n4.
+n4.db.testnet.diva.local
+n4.testnet.diva.local
+[*] No other ping arrived after 60 sec with 3 peers up out of 21 peers.
+
+****************************** start test round 19 **************************
+[*] Stopping peer n3.
+n3.db.testnet.diva.local
+n3.testnet.diva.local
+[*] No other ping arrived after 60 sec with 2 peers up out of 21 peers.
+
+****************************** start test round 20 **************************
+[*] Stopping peer n2.
+n2.db.testnet.diva.local
+n2.testnet.diva.local
+[*] No other ping arrived after 60 sec with 1 peers up out of 21 peers.
+
+****************************** start test round 21 **************************
+[*] Stopping peer n1.
+n1.db.testnet.diva.local
+n1.testnet.diva.local
+[*] No other ping arrived after 60 sec with 0 peers up out of 21 peers.
+
+------------------------------ docker volumes down ---------------------------
+Stopping api.testnet.diva.local      ... done
+Stopping explorer.testnet.diva.local ... done
+Removing n12.testnet.diva.local      ... done
+Removing n13.db.testnet.diva.local   ... done
+Removing n14.db.testnet.diva.local   ... done
+Removing n14.testnet.diva.local      ... done
+Removing n21.testnet.diva.local      ... done
+Removing n20.testnet.diva.local      ... done
+Removing n21.db.testnet.diva.local   ... done
+Removing api.testnet.diva.local      ... done
+Removing n16.db.testnet.diva.local   ... done
+Removing n8.testnet.diva.local       ... done
+Removing n3.testnet.diva.local       ... done
+Removing n2.testnet.diva.local       ... done
+Removing n4.testnet.diva.local       ... done
+Removing n11.db.testnet.diva.local   ... done
+Removing n20.db.testnet.diva.local   ... done
+Removing n1.testnet.diva.local       ... done
+Removing n7.db.testnet.diva.local    ... done
+Removing n2.db.testnet.diva.local    ... done
+Removing n3.db.testnet.diva.local    ... done
+Removing n6.testnet.diva.local       ... done
+Removing n11.testnet.diva.local      ... done
+Removing n19.testnet.diva.local      ... done
+Removing n5.db.testnet.diva.local    ... done
+Removing n8.db.testnet.diva.local    ... done
+Removing n17.db.testnet.diva.local   ... done
+Removing n18.testnet.diva.local      ... done
+Removing n15.testnet.diva.local      ... done
+Removing n9.testnet.diva.local       ... done
+Removing n6.db.testnet.diva.local    ... done
+Removing n10.db.testnet.diva.local   ... done
+Removing n19.db.testnet.diva.local   ... done
+Removing n9.db.testnet.diva.local    ... done
+Removing n18.db.testnet.diva.local   ... done
+Removing n5.testnet.diva.local       ... done
+Removing n12.db.testnet.diva.local   ... done
+Removing explorer.testnet.diva.local ... done
+Removing n7.testnet.diva.local       ... done
+Removing n15.db.testnet.diva.local   ... done
+Removing n10.testnet.diva.local      ... done
+Removing n13.testnet.diva.local      ... done
+Removing n1.db.testnet.diva.local    ... done
+Removing n16.testnet.diva.local      ... done
+Removing n17.testnet.diva.local      ... done
+Removing n4.db.testnet.diva.local    ... done
+Removing network network.testnet.diva.local
+
+[*] Done.
+
+------------------------------ docker remove all -----------------------------
+Total reclaimed space: 0B
+Deleted Volumes:
+n21.db.testnet.diva.local
+3fffc411009eb8f3bd7bf4b121bb9881cb9460feae56cb3afcf2991e3f1600a1
+n8.testnet.diva.local
+n11.db.testnet.diva.local
+n14.db.testnet.diva.local
+n19.testnet.diva.local
+n1.db.testnet.diva.local
+n20.db.testnet.diva.local
+explorer.testnet.diva.local
+n10.testnet.diva.local
+n15.testnet.diva.local
+n17.testnet.diva.local
+n4.testnet.diva.local
+n9.testnet.diva.local
+n2.db.testnet.diva.local
+n7.db.testnet.diva.local
+n9.db.testnet.diva.local
+n1.testnet.diva.local
+n2.testnet.diva.local
+n3.testnet.diva.local
+n7.testnet.diva.local
+n20.testnet.diva.local
+n5.db.testnet.diva.local
+n13.testnet.diva.local
+n16.testnet.diva.local
+n18.testnet.diva.local
+n12.db.testnet.diva.local
+n16.db.testnet.diva.local
+n5.testnet.diva.local
+n6.testnet.diva.local
+n12.testnet.diva.local
+n17.db.testnet.diva.local
+api.testnet.diva.local
+n6.db.testnet.diva.local
+n13.db.testnet.diva.local
+n19.db.testnet.diva.local
+n14.testnet.diva.local
+n21.testnet.diva.local
+n4.db.testnet.diva.local
+n18.db.testnet.diva.local
+n10.db.testnet.diva.local
+n15.db.testnet.diva.local
+n11.testnet.diva.local
+n3.db.testnet.diva.local
+n8.db.testnet.diva.local
+
+Total reclaimed space: 1.039GB
+
+[*] Done.
+
+------------------------------ results - 21 peers total ----------------------
+ peers up | ping at | signs | signers 
+------------------------------------------------------------------------------
+       21 |      60 |    11 |  n1,  n2,  n7, n18,  n5, n21,  n8, n16, n19, n13,  n3
+       20 |      57 |    12 |  n1, n12,  n9, n18,  n6, n13, n11,  n5,  n7, n19,  n3, n10
+       19 |      82 |    11 |  n5,  n7,  n2,  n8, n14, n12, n11, n10, n18, n17, n15
+       18 |      92 |    12 |  n1, n10,  n5, n12, n18,  n2, n14, n17, n15,  n6,  n9, n13
+       17 |      90 |    12 |  n1, n12, n10,  n6,  n2, n14,  n9, n13, n11,  n5, n15, n17
+       16 |      54 |    11 |  n1,  n3, n16, n12, n11, n15,  n9,  n8,  n6,  n7,  n2
+       15 |      55 |    11 |  n1,  n9,  n5, n12,  n7, n14, n13,  n8, n11,  n2,  n3
+       14 |     102 |    11 |  n1, n12,  n7, n11,  n8,  n5,  n9, n14,  n6, n10, n13
+       13 |     151 |    11 |  n1,  n2, n12, n11,  n9, n13,  n8,  n5,  n3,  n6, n10
+       12 |     427 |    11 |  n1,  n3,  n5,  n9, n12,  n2, n11,  n8,  n4,  n6, n10
+       11 |     900 |    -- | --
+       10 |      60 |    -- | --
+        9 |      60 |    -- | --
+        8 |      60 |    -- | --
+        7 |      60 |    -- | --
+        6 |      60 |    -- | --
+        5 |      60 |    -- | --
+        4 |      60 |    -- | --
+        3 |      60 |    -- | --
+        2 |      60 |    -- | --
+        1 |      60 |    -- | --
+        0 |      60 |    -- | --
+
+******************************************************************************
+[*] Starting test T1 with 27 peers.
+******************************************************************************
+
+------------------------------ docker stop and remove volumes ----------------
+[*] No containers to stop.
+
+------------------------------ pull docker images ----------------------------
+Pulling db       ... done
+Pulling node     ... done
+Pulling api      ... done
+Pulling explorer ... done
+
+------------------------------ adapt yml file --------------------------------
+[*] Changing yml file to create local-testnet with 27 peers.
+
+------------------------------ create docker containers ----------------------
+Total reclaimed space: 0B
+Total reclaimed space: 0B
+Creating network "network.testnet.diva.local" with the default driver
+Creating volume "n1.testnet.diva.local" with default driver
+Creating volume "n2.testnet.diva.local" with default driver
+Creating volume "n3.testnet.diva.local" with default driver
+Creating volume "n4.testnet.diva.local" with default driver
+Creating volume "n5.testnet.diva.local" with default driver
+Creating volume "n6.testnet.diva.local" with default driver
+Creating volume "n7.testnet.diva.local" with default driver
+Creating volume "n8.testnet.diva.local" with default driver
+Creating volume "n9.testnet.diva.local" with default driver
+Creating volume "n10.testnet.diva.local" with default driver
+Creating volume "n11.testnet.diva.local" with default driver
+Creating volume "n12.testnet.diva.local" with default driver
+Creating volume "n13.testnet.diva.local" with default driver
+Creating volume "n14.testnet.diva.local" with default driver
+Creating volume "n15.testnet.diva.local" with default driver
+Creating volume "n16.testnet.diva.local" with default driver
+Creating volume "n17.testnet.diva.local" with default driver
+Creating volume "n18.testnet.diva.local" with default driver
+Creating volume "n19.testnet.diva.local" with default driver
+Creating volume "n20.testnet.diva.local" with default driver
+Creating volume "n21.testnet.diva.local" with default driver
+Creating volume "n22.testnet.diva.local" with default driver
+Creating volume "n23.testnet.diva.local" with default driver
+Creating volume "n24.testnet.diva.local" with default driver
+Creating volume "n25.testnet.diva.local" with default driver
+Creating volume "n26.testnet.diva.local" with default driver
+Creating volume "n27.testnet.diva.local" with default driver
+Creating volume "n1.db.testnet.diva.local" with default driver
+Creating volume "n2.db.testnet.diva.local" with default driver
+Creating volume "n3.db.testnet.diva.local" with default driver
+Creating volume "n4.db.testnet.diva.local" with default driver
+Creating volume "n5.db.testnet.diva.local" with default driver
+Creating volume "n6.db.testnet.diva.local" with default driver
+Creating volume "n7.db.testnet.diva.local" with default driver
+Creating volume "n8.db.testnet.diva.local" with default driver
+Creating volume "n9.db.testnet.diva.local" with default driver
+Creating volume "n10.db.testnet.diva.local" with default driver
+Creating volume "n11.db.testnet.diva.local" with default driver
+Creating volume "n12.db.testnet.diva.local" with default driver
+Creating volume "n13.db.testnet.diva.local" with default driver
+Creating volume "n14.db.testnet.diva.local" with default driver
+Creating volume "n15.db.testnet.diva.local" with default driver
+Creating volume "n16.db.testnet.diva.local" with default driver
+Creating volume "n17.db.testnet.diva.local" with default driver
+Creating volume "n18.db.testnet.diva.local" with default driver
+Creating volume "n19.db.testnet.diva.local" with default driver
+Creating volume "n20.db.testnet.diva.local" with default driver
+Creating volume "n21.db.testnet.diva.local" with default driver
+Creating volume "n22.db.testnet.diva.local" with default driver
+Creating volume "n23.db.testnet.diva.local" with default driver
+Creating volume "n24.db.testnet.diva.local" with default driver
+Creating volume "n25.db.testnet.diva.local" with default driver
+Creating volume "n26.db.testnet.diva.local" with default driver
+Creating volume "n27.db.testnet.diva.local" with default driver
+Creating volume "api.testnet.diva.local" with default driver
+Creating volume "explorer.testnet.diva.local" with default driver
+Creating n9.testnet.diva.local       ... done
+Creating n25.testnet.diva.local      ... done
+Creating n13.testnet.diva.local      ... done
+Creating n2.db.testnet.diva.local    ... done
+Creating explorer.testnet.diva.local ... done
+Creating n12.db.testnet.diva.local   ... done
+Creating n3.testnet.diva.local       ... done
+Creating n4.db.testnet.diva.local    ... done
+Creating n27.db.testnet.diva.local   ... done
+Creating n19.testnet.diva.local      ... done
+Creating n26.db.testnet.diva.local   ... done
+Creating n8.db.testnet.diva.local    ... done
+Creating n20.testnet.diva.local      ... done
+Creating n5.db.testnet.diva.local    ... done
+Creating n7.db.testnet.diva.local    ... done
+Creating n17.testnet.diva.local      ... done
+Creating n5.testnet.diva.local       ... done
+Creating n6.testnet.diva.local       ... done
+Creating n11.testnet.diva.local      ... done
+Creating n15.db.testnet.diva.local   ... done
+Creating n10.testnet.diva.local      ... done
+Creating n27.testnet.diva.local      ... done
+Creating n14.db.testnet.diva.local   ... done
+Creating n15.testnet.diva.local      ... done
+Creating n23.testnet.diva.local      ... done
+Creating n26.testnet.diva.local      ... done
+Creating n22.testnet.diva.local      ... done
+Creating n4.testnet.diva.local       ... done
+Creating n9.db.testnet.diva.local    ... done
+Creating n1.testnet.diva.local       ... done
+Creating n8.testnet.diva.local       ... done
+Creating n1.db.testnet.diva.local    ... done
+Creating n11.db.testnet.diva.local   ... done
+Creating n16.db.testnet.diva.local   ... done
+Creating n19.db.testnet.diva.local   ... done
+Creating n20.db.testnet.diva.local   ... done
+Creating n21.db.testnet.diva.local   ... done
+Creating n13.db.testnet.diva.local   ... done
+Creating n7.testnet.diva.local       ... done
+Creating n17.db.testnet.diva.local   ... done
+Creating n25.db.testnet.diva.local   ... done
+Creating n6.db.testnet.diva.local    ... done
+Creating n21.testnet.diva.local      ... done
+Creating n18.testnet.diva.local      ... done
+Creating n18.db.testnet.diva.local   ... done
+Creating n24.db.testnet.diva.local   ... done
+Creating n22.db.testnet.diva.local   ... done
+Creating n12.testnet.diva.local      ... done
+Creating n23.db.testnet.diva.local   ... done
+Creating api.testnet.diva.local      ... done
+Creating n10.db.testnet.diva.local   ... done
+Creating n16.testnet.diva.local      ... done
+Creating n24.testnet.diva.local      ... done
+Creating n2.testnet.diva.local       ... done
+Creating n3.db.testnet.diva.local    ... done
+Creating n14.testnet.diva.local      ... done
+
+------------------------------ adapt iroha genesis block ---------------------
+[#] Trying to download the genesis block from codeberg ...
+[*] Got the genesis block.
+[*] Genesis block adapted for 27 peers.
+[*] Copied new genesis block to all iroha containers.
+
+------------------------------ copy iroha key pairs ---------------------------
+[*] Added keys to iroha containers.           
+
+------------------------------ start the containers --------------------------
+Starting n10.db.testnet.diva.local   ... done
+Starting n18.db.testnet.diva.local   ... done
+Starting n26.testnet.diva.local      ... done
+Starting explorer.testnet.diva.local ... done
+Starting n2.db.testnet.diva.local    ... done
+Starting n15.testnet.diva.local      ... done
+Starting n1.db.testnet.diva.local    ... done
+Starting n13.testnet.diva.local      ... done
+Starting n8.db.testnet.diva.local    ... done
+Starting n3.testnet.diva.local       ... done
+Starting n14.testnet.diva.local      ... done
+Starting n19.testnet.diva.local      ... done
+Starting n15.db.testnet.diva.local   ... done
+Starting n5.db.testnet.diva.local    ... done
+Starting n14.db.testnet.diva.local   ... done
+Starting n25.db.testnet.diva.local   ... done
+Starting n20.testnet.diva.local      ... done
+Starting n11.testnet.diva.local      ... done
+Starting n16.testnet.diva.local      ... done
+Starting n9.testnet.diva.local       ... done
+Starting n1.testnet.diva.local       ... done
+Starting n25.testnet.diva.local      ... done
+Starting n19.db.testnet.diva.local   ... done
+Starting n12.testnet.diva.local      ... done
+Starting n16.db.testnet.diva.local   ... done
+Starting n4.db.testnet.diva.local    ... done
+Starting n9.db.testnet.diva.local    ... done
+Starting n23.testnet.diva.local      ... done
+Starting n27.db.testnet.diva.local   ... done
+Starting n5.testnet.diva.local       ... done
+Starting n8.testnet.diva.local       ... done
+Starting n10.testnet.diva.local      ... done
+Starting n7.db.testnet.diva.local    ... done
+Starting n17.db.testnet.diva.local   ... done
+Starting api.testnet.diva.local      ... done
+Starting n18.testnet.diva.local      ... done
+Starting n26.db.testnet.diva.local   ... done
+Starting n21.testnet.diva.local      ... done
+Starting n24.db.testnet.diva.local   ... done
+Starting n13.db.testnet.diva.local   ... done
+Starting n6.testnet.diva.local       ... done
+Starting n22.db.testnet.diva.local   ... done
+Starting n4.testnet.diva.local       ... done
+Starting n7.testnet.diva.local       ... done
+Starting n17.testnet.diva.local      ... done
+Starting n12.db.testnet.diva.local   ... done
+Starting n21.db.testnet.diva.local   ... done
+Starting n22.testnet.diva.local      ... done
+Starting n6.db.testnet.diva.local    ... done
+Starting n23.db.testnet.diva.local   ... done
+Starting n20.db.testnet.diva.local   ... done
+Starting n2.testnet.diva.local       ... done
+Starting n3.db.testnet.diva.local    ... done
+Starting n24.testnet.diva.local      ... done
+Starting n11.db.testnet.diva.local   ... done
+Starting n27.testnet.diva.local      ... done
+
+------------------------------ test connection -------------------------------
+[*] Testnet is up and running, sending test-request to diva-api/about and explorer.
+[#] No connection, waited for 0 sec...
+[#] No connection, waited for 5 sec...
+[#] No connection, waited for 10 sec...
+[#] No connection, waited for 15 sec...
+[*] Got 200 response from API.
+[*] Got 200 response from Explorer.
+[*] All 27 peers registered as peers, 27 total peers.
+
+****************************** start test round 0 **************************
+[#] Wait for first ping, waited for 62 sec ...
+[*] Got first ping in block nr. 2 after 63 sec.
+
+****************************** start test round 1 **************************
+[*] Stopping peer n27.
+n27.db.testnet.diva.local
+n27.testnet.diva.local
+[*] Another ping arrived after 54 sec in block nr. 3 with 26 peers up out of 27 peers.
+
+****************************** start test round 2 **************************
+[*] Stopping peer n26.
+n26.db.testnet.diva.local
+n26.testnet.diva.local
+[*] Another ping arrived after 224 sec in block nr. 6 with 25 peers up out of 27 peers.
+
+****************************** start test round 3 **************************
+[*] Stopping peer n25.
+n25.db.testnet.diva.local
+n25.testnet.diva.local
+[*] Another ping arrived after 101 sec in block nr. 7 with 24 peers up out of 27 peers.
+
+****************************** start test round 4 **************************
+[*] Stopping peer n24.
+n24.db.testnet.diva.local
+n24.testnet.diva.local
+[*] Another ping arrived after 111 sec in block nr. 8 with 23 peers up out of 27 peers.
+
+****************************** start test round 5 **************************
+[*] Stopping peer n23.
+n23.db.testnet.diva.local
+n23.testnet.diva.local
+[*] Another ping arrived after 55 sec in block nr. 9 with 22 peers up out of 27 peers.
+
+****************************** start test round 6 **************************
+[*] Stopping peer n22.
+n22.db.testnet.diva.local
+n22.testnet.diva.local
+[*] Another ping arrived after 103 sec in block nr. 10 with 21 peers up out of 27 peers.
+
+****************************** start test round 7 **************************
+[*] Stopping peer n21.
+n21.db.testnet.diva.local
+n21.testnet.diva.local
+[*] Another ping arrived after 103 sec in block nr. 11 with 20 peers up out of 27 peers.
+
+****************************** start test round 8 **************************
+[*] Stopping peer n20.
+n20.db.testnet.diva.local
+n20.testnet.diva.local
+[*] Another ping arrived after 60 sec in block nr. 12 with 19 peers up out of 27 peers.
+
+****************************** start test round 9 **************************
+[*] Stopping peer n19.
+n19.db.testnet.diva.local
+n19.testnet.diva.local
+[*] Another ping arrived after 57 sec in block nr. 13 with 18 peers up out of 27 peers.
+
+****************************** start test round 10 **************************
+[*] Stopping peer n18.
+n18.db.testnet.diva.local
+n18.testnet.diva.local
+[*] Another ping arrived after 116 sec in block nr. 14 with 17 peers up out of 27 peers.
+
+****************************** start test round 11 **************************
+[*] Stopping peer n17.
+n17.db.testnet.diva.local
+n17.testnet.diva.local
+[*] No other ping arrived after 900 sec with 16 peers up out of 27 peers.
+
+****************************** start test round 12 **************************
+[*] Stopping peer n16.
+n16.db.testnet.diva.local
+n16.testnet.diva.local
+[*] No other ping arrived after 900 sec with 15 peers up out of 27 peers.
+
+****************************** start test round 13 **************************
+[*] Stopping peer n15.
+n15.db.testnet.diva.local
+n15.testnet.diva.local
+[*] No other ping arrived after 900 sec with 14 peers up out of 27 peers.
+
+****************************** start test round 14 **************************
+[*] Stopping peer n14.
+n14.db.testnet.diva.local
+n14.testnet.diva.local
+[*] No other ping arrived after 60 sec with 13 peers up out of 27 peers.
+
+****************************** start test round 15 **************************
+[*] Stopping peer n13.
+n13.db.testnet.diva.local
+n13.testnet.diva.local
+[*] No other ping arrived after 60 sec with 12 peers up out of 27 peers.
+
+****************************** start test round 16 **************************
+[*] Stopping peer n12.
+n12.db.testnet.diva.local
+n12.testnet.diva.local
+[*] No other ping arrived after 60 sec with 11 peers up out of 27 peers.
+
+****************************** start test round 17 **************************
+[*] Stopping peer n11.
+n11.db.testnet.diva.local
+n11.testnet.diva.local
+[*] No other ping arrived after 60 sec with 10 peers up out of 27 peers.
+
+****************************** start test round 18 **************************
+[*] Stopping peer n10.
+n10.db.testnet.diva.local
+n10.testnet.diva.local
+[*] No other ping arrived after 60 sec with 9 peers up out of 27 peers.
+
+****************************** start test round 19 **************************
+[*] Stopping peer n9.
+n9.db.testnet.diva.local
+n9.testnet.diva.local
+[*] No other ping arrived after 60 sec with 8 peers up out of 27 peers.
+
+****************************** start test round 20 **************************
+[*] Stopping peer n8.
+n8.db.testnet.diva.local
+n8.testnet.diva.local
+[*] No other ping arrived after 60 sec with 7 peers up out of 27 peers.
+
+****************************** start test round 21 **************************
+[*] Stopping peer n7.
+n7.db.testnet.diva.local
+n7.testnet.diva.local
+[*] No other ping arrived after 60 sec with 6 peers up out of 27 peers.
+
+****************************** start test round 22 **************************
+[*] Stopping peer n6.
+n6.db.testnet.diva.local
+n6.testnet.diva.local
+[*] No other ping arrived after 60 sec with 5 peers up out of 27 peers.
+
+****************************** start test round 23 **************************
+[*] Stopping peer n5.
+n5.db.testnet.diva.local
+n5.testnet.diva.local
+[*] No other ping arrived after 60 sec with 4 peers up out of 27 peers.
+
+****************************** start test round 24 **************************
+[*] Stopping peer n4.
+n4.db.testnet.diva.local
+n4.testnet.diva.local
+[*] No other ping arrived after 60 sec with 3 peers up out of 27 peers.
+
+****************************** start test round 25 **************************
+[*] Stopping peer n3.
+n3.db.testnet.diva.local
+n3.testnet.diva.local
+[*] No other ping arrived after 60 sec with 2 peers up out of 27 peers.
+
+****************************** start test round 26 **************************
+[*] Stopping peer n2.
+n2.db.testnet.diva.local
+n2.testnet.diva.local
+[*] No other ping arrived after 60 sec with 1 peers up out of 27 peers.
+
+****************************** start test round 27 **************************
+[*] Stopping peer n1.
+n1.db.testnet.diva.local
+n1.testnet.diva.local
+[*] No other ping arrived after 60 sec with 0 peers up out of 27 peers.
+
+------------------------------ docker volumes down ---------------------------
+Stopping api.testnet.diva.local      ... done
+Stopping explorer.testnet.diva.local ... done
+Removing n2.testnet.diva.local       ... 
+Removing n16.testnet.diva.local      ... 
+Removing n14.testnet.diva.local      ... 
+Removing n3.db.testnet.diva.local    ... 
+Removing n24.testnet.diva.local      ... 
+Removing n16.testnet.diva.local      ... done
+Removing n23.db.testnet.diva.local   ... done
+Removing n10.db.testnet.diva.local   ... done
+Removing n12.testnet.diva.local      ... done
+Removing n18.db.testnet.diva.local   ... done
+Removing n18.testnet.diva.local      ... done
+Removing n6.db.testnet.diva.local    ... done
+Removing n25.db.testnet.diva.local   ... done
+Removing api.testnet.diva.local      ... done
+Removing n17.db.testnet.diva.local   ... done
+Removing n21.testnet.diva.local      ... done
+Removing n24.db.testnet.diva.local   ... done
+Removing n7.testnet.diva.local       ... done
+Removing n13.db.testnet.diva.local   ... done
+Removing n11.db.testnet.diva.local   ... done
+Removing n1.testnet.diva.local       ... done
+Removing n20.db.testnet.diva.local   ... done
+Removing n19.db.testnet.diva.local   ... done
+Removing n1.db.testnet.diva.local    ... done
+Removing n16.db.testnet.diva.local   ... done
+Removing n9.db.testnet.diva.local    ... done
+Removing n21.db.testnet.diva.local   ... done
+Removing n8.testnet.diva.local       ... done
+Removing n22.testnet.diva.local      ... done
+Removing n4.testnet.diva.local       ... done
+Removing n26.testnet.diva.local      ... done
+Removing n15.testnet.diva.local      ... done
+Removing n23.testnet.diva.local      ... done
+Removing n27.testnet.diva.local      ... done
+Removing n15.db.testnet.diva.local   ... done
+Removing n10.testnet.diva.local      ... done
+Removing n11.testnet.diva.local      ... done
+Removing n14.db.testnet.diva.local   ... done
+Removing n6.testnet.diva.local       ... done
+Removing n17.testnet.diva.local      ... done
+Removing n5.testnet.diva.local       ... done
+Removing n7.db.testnet.diva.local    ... done
+Removing n19.testnet.diva.local      ... done
+Removing n8.db.testnet.diva.local    ... done
+Removing n5.db.testnet.diva.local    ... done
+Removing n20.testnet.diva.local      ... done
+Removing n26.db.testnet.diva.local   ... done
+Removing n3.testnet.diva.local       ... done
+Removing n12.db.testnet.diva.local   ... done
+Removing n4.db.testnet.diva.local    ... done
+Removing n27.db.testnet.diva.local   ... done
+Removing explorer.testnet.diva.local ... done
+Removing n13.testnet.diva.local      ... done
+Removing n2.db.testnet.diva.local    ... done
+Removing n25.testnet.diva.local      ... done
+Removing n9.testnet.diva.local       ... done
+Removing network network.testnet.diva.local
+
+[*] Done.
+
+------------------------------ docker remove all -----------------------------
+Total reclaimed space: 0B
+Deleted Volumes:
+n5.testnet.diva.local
+n6.testnet.diva.local
+n13.testnet.diva.local
+n16.testnet.diva.local
+n12.db.testnet.diva.local
+n17.db.testnet.diva.local
+n14.testnet.diva.local
+n4.db.testnet.diva.local
+n13.db.testnet.diva.local
+n18.db.testnet.diva.local
+n3.db.testnet.diva.local
+n15.db.testnet.diva.local
+n22.testnet.diva.local
+n19.testnet.diva.local
+n24.db.testnet.diva.local
+n1.testnet.diva.local
+n4.testnet.diva.local
+n9.testnet.diva.local
+n2.db.testnet.diva.local
+n20.testnet.diva.local
+n5.db.testnet.diva.local
+n27.db.testnet.diva.local
+7324b2d45b3fad038b947f0a590c4f3eda270564635e0debf6b26929f9a09458
+n12.testnet.diva.local
+n18.testnet.diva.local
+n16.db.testnet.diva.local
+api.testnet.diva.local
+n21.testnet.diva.local
+n24.testnet.diva.local
+n6.db.testnet.diva.local
+n19.db.testnet.diva.local
+n22.db.testnet.diva.local
+n11.testnet.diva.local
+n25.testnet.diva.local
+n27.testnet.diva.local
+n8.db.testnet.diva.local
+n10.db.testnet.diva.local
+n8.testnet.diva.local
+n11.db.testnet.diva.local
+n14.db.testnet.diva.local
+n21.db.testnet.diva.local
+n26.db.testnet.diva.local
+explorer.testnet.diva.local
+n10.testnet.diva.local
+n15.testnet.diva.local
+n17.testnet.diva.local
+n26.testnet.diva.local
+n1.db.testnet.diva.local
+n20.db.testnet.diva.local
+n2.testnet.diva.local
+n3.testnet.diva.local
+n7.db.testnet.diva.local
+n9.db.testnet.diva.local
+n23.db.testnet.diva.local
+n25.db.testnet.diva.local
+n7.testnet.diva.local
+n23.testnet.diva.local
+
+Total reclaimed space: 1.337GB
+
+[*] Done.
+
+------------------------------ results - 27 peers total ----------------------
+ peers up | ping at | signs | signers 
+------------------------------------------------------------------------------
+       27 |      63 |    14 |  n1,  n3,  n5, n11, n18,  n4, n16,  n7, n12,  n6,  n8, n21, n27, n19
+       26 |      54 |    15 |  n1, n24, n18, n26, n16, n12,  n7, n11,  n5,  n3, n23, n15,  n8,  n2,  n9
+       25 |     224 |    14 |  n1, n18,  n4, n11,  n7,  n3,  n6, n23,  n5,  n8, n20, n21, n12, n22
+       24 |     101 |    15 |  n1, n11,  n3,  n4, n22, n23, n19,  n8, n18,  n7, n17,  n5, n10, n14, n20
+       23 |     111 |    14 |  n1,  n3, n11, n22, n23, n18, n19,  n9, n20,  n2,  n6, n21,  n7, n12
+       22 |      55 |    14 |  n1,  n8, n22, n11,  n3,  n9, n16, n18, n19, n20, n12,  n6, n10, n14
+       21 |     103 |    14 |  n1, n18,  n3, n14,  n5, n19, n10,  n8,  n2,  n6,  n9, n21, n15, n13
+       20 |     103 |    14 |  n1, n15,  n5,  n8, n18,  n3, n11,  n9,  n2, n19,  n6, n12, n14, n20
+       19 |      60 |    14 |  n1, n10, n11,  n8, n18,  n5,  n3, n16,  n6,  n9, n14, n19, n15, n17
+       18 |      57 |    14 |  n1,  n3, n11, n18, n16,  n5, n15,  n6,  n2, n10,  n9,  n8, n14, n17
+       17 |     116 |    14 |  n1,  n4,  n8,  n7,  n6,  n3, n13,  n2, n11, n16,  n5, n12,  n9, n10
+       16 |     900 |    -- | --
+       15 |     900 |    -- | --
+       14 |     900 |    -- | --
+       13 |      60 |    -- | --
+       12 |      60 |    -- | --
+       11 |      60 |    -- | --
+       10 |      60 |    -- | --
+        9 |      60 |    -- | --
+        8 |      60 |    -- | --
+        7 |      60 |    -- | --
+        6 |      60 |    -- | --
+        5 |      60 |    -- | --
+        4 |      60 |    -- | --
+        3 |      60 |    -- | --
+        2 |      60 |    -- | --
+        1 |      60 |    -- | --
+        0 |      60 |    -- | --
+
+******************************************************************************
+[*] Starting test T1 with 33 peers.
+******************************************************************************
+
+------------------------------ docker stop and remove volumes ----------------
+[*] No containers to stop.
+
+------------------------------ pull docker images ----------------------------
+Pulling db       ... done
+Pulling node     ... done
+Pulling api      ... done
+Pulling explorer ... done
+
+------------------------------ adapt yml file --------------------------------
+[*] Changing yml file to create local-testnet with 33 peers.
+
+------------------------------ create docker containers ----------------------
+Total reclaimed space: 0B
+Total reclaimed space: 0B
+Creating network "network.testnet.diva.local" with the default driver
+Creating volume "n1.testnet.diva.local" with default driver
+Creating volume "n2.testnet.diva.local" with default driver
+Creating volume "n3.testnet.diva.local" with default driver
+Creating volume "n4.testnet.diva.local" with default driver
+Creating volume "n5.testnet.diva.local" with default driver
+Creating volume "n6.testnet.diva.local" with default driver
+Creating volume "n7.testnet.diva.local" with default driver
+Creating volume "n8.testnet.diva.local" with default driver
+Creating volume "n9.testnet.diva.local" with default driver
+Creating volume "n10.testnet.diva.local" with default driver
+Creating volume "n11.testnet.diva.local" with default driver
+Creating volume "n12.testnet.diva.local" with default driver
+Creating volume "n13.testnet.diva.local" with default driver
+Creating volume "n14.testnet.diva.local" with default driver
+Creating volume "n15.testnet.diva.local" with default driver
+Creating volume "n16.testnet.diva.local" with default driver
+Creating volume "n17.testnet.diva.local" with default driver
+Creating volume "n18.testnet.diva.local" with default driver
+Creating volume "n19.testnet.diva.local" with default driver
+Creating volume "n20.testnet.diva.local" with default driver
+Creating volume "n21.testnet.diva.local" with default driver
+Creating volume "n22.testnet.diva.local" with default driver
+Creating volume "n23.testnet.diva.local" with default driver
+Creating volume "n24.testnet.diva.local" with default driver
+Creating volume "n25.testnet.diva.local" with default driver
+Creating volume "n26.testnet.diva.local" with default driver
+Creating volume "n27.testnet.diva.local" with default driver
+Creating volume "n28.testnet.diva.local" with default driver
+Creating volume "n29.testnet.diva.local" with default driver
+Creating volume "n30.testnet.diva.local" with default driver
+Creating volume "n31.testnet.diva.local" with default driver
+Creating volume "n32.testnet.diva.local" with default driver
+Creating volume "n33.testnet.diva.local" with default driver
+Creating volume "n1.db.testnet.diva.local" with default driver
+Creating volume "n2.db.testnet.diva.local" with default driver
+Creating volume "n3.db.testnet.diva.local" with default driver
+Creating volume "n4.db.testnet.diva.local" with default driver
+Creating volume "n5.db.testnet.diva.local" with default driver
+Creating volume "n6.db.testnet.diva.local" with default driver
+Creating volume "n7.db.testnet.diva.local" with default driver
+Creating volume "n8.db.testnet.diva.local" with default driver
+Creating volume "n9.db.testnet.diva.local" with default driver
+Creating volume "n10.db.testnet.diva.local" with default driver
+Creating volume "n11.db.testnet.diva.local" with default driver
+Creating volume "n12.db.testnet.diva.local" with default driver
+Creating volume "n13.db.testnet.diva.local" with default driver
+Creating volume "n14.db.testnet.diva.local" with default driver
+Creating volume "n15.db.testnet.diva.local" with default driver
+Creating volume "n16.db.testnet.diva.local" with default driver
+Creating volume "n17.db.testnet.diva.local" with default driver
+Creating volume "n18.db.testnet.diva.local" with default driver
+Creating volume "n19.db.testnet.diva.local" with default driver
+Creating volume "n20.db.testnet.diva.local" with default driver
+Creating volume "n21.db.testnet.diva.local" with default driver
+Creating volume "n22.db.testnet.diva.local" with default driver
+Creating volume "n23.db.testnet.diva.local" with default driver
+Creating volume "n24.db.testnet.diva.local" with default driver
+Creating volume "n25.db.testnet.diva.local" with default driver
+Creating volume "n26.db.testnet.diva.local" with default driver
+Creating volume "n27.db.testnet.diva.local" with default driver
+Creating volume "n28.db.testnet.diva.local" with default driver
+Creating volume "n29.db.testnet.diva.local" with default driver
+Creating volume "n30.db.testnet.diva.local" with default driver
+Creating volume "n31.db.testnet.diva.local" with default driver
+Creating volume "n32.db.testnet.diva.local" with default driver
+Creating volume "n33.db.testnet.diva.local" with default driver
+Creating volume "api.testnet.diva.local" with default driver
+Creating volume "explorer.testnet.diva.local" with default driver
+Creating n8.testnet.diva.local     ... done
+Creating n33.testnet.diva.local    ... done
+Creating n11.db.testnet.diva.local ... done
+Creating n28.testnet.diva.local    ... done
+Creating n10.db.testnet.diva.local ... done
+Creating n2.db.testnet.diva.local  ... done
+Creating n24.testnet.diva.local    ... done
+Creating n22.testnet.diva.local    ... done
+Creating n33.db.testnet.diva.local ... done
+Creating n3.testnet.diva.local       ... done
+Creating n20.testnet.diva.local      ... done
+Creating n9.testnet.diva.local       ... done
+Creating n29.testnet.diva.local      ... done
+Creating n30.testnet.diva.local      ... done
+Creating n27.db.testnet.diva.local   ... done
+Creating n9.db.testnet.diva.local    ... done
+Creating n3.db.testnet.diva.local    ... done
+Creating n24.db.testnet.diva.local   ... done
+Creating n20.db.testnet.diva.local   ... done
+Creating n27.testnet.diva.local      ... done
+Creating n4.db.testnet.diva.local    ... done
+Creating n26.testnet.diva.local      ... done
+Creating n31.db.testnet.diva.local   ... done
+Creating n7.db.testnet.diva.local    ... done
+Creating n13.db.testnet.diva.local   ... done
+Creating n5.db.testnet.diva.local    ... done
+Creating n1.testnet.diva.local       ... done
+Creating n15.db.testnet.diva.local   ... done
+Creating n18.db.testnet.diva.local   ... done
+Creating n21.db.testnet.diva.local   ... done
+Creating n4.testnet.diva.local       ... done
+Creating n26.db.testnet.diva.local   ... done
+Creating n29.db.testnet.diva.local   ... done
+Creating n1.db.testnet.diva.local    ... done
+Creating n7.testnet.diva.local       ... done
+Creating n5.testnet.diva.local       ... done
+Creating n23.db.testnet.diva.local   ... done
+Creating n32.db.testnet.diva.local   ... done
+Creating n22.db.testnet.diva.local   ... done
+Creating n6.db.testnet.diva.local    ... done
+Creating n17.db.testnet.diva.local   ... done
+Creating n14.testnet.diva.local      ... done
+Creating api.testnet.diva.local      ... done
+Creating n16.testnet.diva.local      ... done
+Creating n19.db.testnet.diva.local   ... done
+Creating n14.db.testnet.diva.local   ... done
+Creating n23.testnet.diva.local      ... done
+Creating n18.testnet.diva.local      ... done
+Creating n10.db.testnet.diva.local   ... done
+Creating n19.testnet.diva.local      ... done
+Creating n32.testnet.diva.local      ... done
+Creating n30.db.testnet.diva.local   ... done
+Creating n17.testnet.diva.local      ... done
+Creating n16.db.testnet.diva.local   ... done
+Creating explorer.testnet.diva.local ... done
+Creating n15.testnet.diva.local      ... done
+Creating n12.testnet.diva.local      ... done
+Creating n10.testnet.diva.local      ... done
+Creating n13.testnet.diva.local      ... done
+Creating n6.testnet.diva.local       ... done
+Creating n21.testnet.diva.local      ... done
+Creating n2.testnet.diva.local       ... done
+Creating n28.db.testnet.diva.local   ... done
+Creating n8.db.testnet.diva.local    ... done
+Creating n25.testnet.diva.local      ... done
+Creating n25.db.testnet.diva.local   ... done
+Creating n31.testnet.diva.local      ... done
+
+------------------------------ adapt iroha genesis block ---------------------
+[#] Trying to download the genesis block from codeberg ...
+[*] Got the genesis block.
+[*] Genesis block adapted for 33 peers.
+[*] Copied new genesis block to all iroha containers.
+
+------------------------------ copy iroha key pairs ---------------------------
+[*] Added keys to iroha containers.           
+
+------------------------------ start the containers --------------------------
+Starting n1.db.testnet.diva.local ... 
+Starting n1.db.testnet.diva.local    ... done
+Starting n11.db.testnet.diva.local   ... done
+Starting n3.db.testnet.diva.local    ... done
+Starting n12.testnet.diva.local      ... done
+Starting n13.testnet.diva.local      ... done
+Starting n29.testnet.diva.local      ... done
+Starting n30.db.testnet.diva.local   ... done
+Starting n31.db.testnet.diva.local   ... done
+Starting n16.testnet.diva.local    ... 
+Starting n16.testnet.diva.local      ... done
+Starting n1.testnet.diva.local     ... 
+Starting n17.testnet.diva.local    ... 
+Starting n33.db.testnet.diva.local   ... done
+Starting n2.testnet.diva.local       ... done
+Starting n7.testnet.diva.local       ... done
+Starting n25.db.testnet.diva.local   ... done
+Starting n30.testnet.diva.local      ... done
+Starting n32.testnet.diva.local      ... done
+Starting n9.db.testnet.diva.local    ... done
+Starting n5.testnet.diva.local       ... done
+Starting n16.db.testnet.diva.local   ... done
+Starting n27.db.testnet.diva.local   ... done
+Starting n21.testnet.diva.local      ... done
+Starting n32.db.testnet.diva.local   ... done
+Starting explorer.testnet.diva.local ... done
+Starting n6.testnet.diva.local       ... done
+Starting n8.testnet.diva.local       ... done
+Starting n14.db.testnet.diva.local   ... done
+Starting api.testnet.diva.local      ... done
+Starting n25.testnet.diva.local      ... done
+Starting n10.testnet.diva.local      ... done
+Starting n24.db.testnet.diva.local   ... done
+Starting n19.testnet.diva.local      ... done
+Starting n28.testnet.diva.local      ... done
+Starting n14.testnet.diva.local      ... done
+Starting n24.testnet.diva.local      ... done
+Starting n3.testnet.diva.local       ... done
+Starting n23.db.testnet.diva.local   ... done
+Starting n9.testnet.diva.local       ... done
+Starting n22.db.testnet.diva.local   ... done
+Starting n15.testnet.diva.local      ... done
+Starting n6.db.testnet.diva.local    ... done
+Starting n13.db.testnet.diva.local   ... done
+Starting n2.db.testnet.diva.local    ... done
+Starting n4.db.testnet.diva.local    ... done
+Starting n26.testnet.diva.local      ... done
+Starting n23.testnet.diva.local      ... done
+Starting n29.db.testnet.diva.local   ... done
+Starting n10.db.testnet.diva.local   ... done
+Starting n19.db.testnet.diva.local   ... done
+Starting n15.db.testnet.diva.local   ... done
+Starting n18.testnet.diva.local      ... done
+Starting n5.db.testnet.diva.local    ... done
+Starting n33.testnet.diva.local      ... done
+Starting n31.testnet.diva.local      ... done
+Starting n17.db.testnet.diva.local   ... done
+Starting n7.db.testnet.diva.local    ... done
+Starting n18.db.testnet.diva.local   ... done
+Starting n20.testnet.diva.local      ... done
+Starting n4.testnet.diva.local       ... done
+Starting n27.testnet.diva.local      ... done
+Starting n26.db.testnet.diva.local   ... done
+Starting n12.db.testnet.diva.local   ... done
+Starting n20.db.testnet.diva.local   ... done
+Starting n11.testnet.diva.local      ... done
+Starting n28.db.testnet.diva.local   ... done
+Starting n21.db.testnet.diva.local   ... done
+Starting n8.db.testnet.diva.local    ... done
+
+------------------------------ test connection -------------------------------
+[*] Testnet is up and running, sending test-request to diva-api/about and explorer.
+[#] No connection, waited for 0 sec...
+[#] No connection, waited for 5 sec...
+[*] Got 200 response from API.
+[*] Got 200 response from Explorer.
+[*] All 33 peers registered as peers, 33 total peers.
+
+****************************** start test round 0 **************************
+[#] Wait for first ping, waited for 79 sec ...
+[*] Got first ping in block nr. 2 after 80 sec.
+
+****************************** start test round 1 **************************
+[*] Stopping peer n33.
+n33.db.testnet.diva.local
+n33.testnet.diva.local
+[*] Another ping arrived after 58 sec in block nr. 3 with 32 peers up out of 33 peers.
+
+****************************** start test round 2 **************************
+[*] Stopping peer n32.
+n32.db.testnet.diva.local
+n32.testnet.diva.local
+[*] Another ping arrived after 55 sec in block nr. 4 with 31 peers up out of 33 peers.
+
+****************************** start test round 3 **************************
+[*] Stopping peer n31.
+n31.db.testnet.diva.local
+n31.testnet.diva.local
+[*] Another ping arrived after 60 sec in block nr. 6 with 30 peers up out of 33 peers.
+
+****************************** start test round 4 **************************
+[*] Stopping peer n30.
+n30.db.testnet.diva.local
+n30.testnet.diva.local
+[*] Another ping arrived after 58 sec in block nr. 7 with 29 peers up out of 33 peers.
+
+****************************** start test round 5 **************************
+[*] Stopping peer n29.
+n29.db.testnet.diva.local
+n29.testnet.diva.local
+[*] Another ping arrived after 62 sec in block nr. 8 with 28 peers up out of 33 peers.
+
+****************************** start test round 6 **************************
+[*] Stopping peer n28.
+n28.db.testnet.diva.local
+n28.testnet.diva.local
+[*] Another ping arrived after 82 sec in block nr. 9 with 27 peers up out of 33 peers.
+
+****************************** start test round 7 **************************
+[*] Stopping peer n27.
+n27.db.testnet.diva.local
+n27.testnet.diva.local
+[*] Another ping arrived after 98 sec in block nr. 10 with 26 peers up out of 33 peers.
+
+****************************** start test round 8 **************************
+[*] Stopping peer n26.
+n26.db.testnet.diva.local
+n26.testnet.diva.local
+[*] Another ping arrived after 59 sec in block nr. 11 with 25 peers up out of 33 peers.
+
+****************************** start test round 9 **************************
+[*] Stopping peer n25.
+n25.db.testnet.diva.local
+n25.testnet.diva.local
+[*] Another ping arrived after 106 sec in block nr. 12 with 24 peers up out of 33 peers.
+
+****************************** start test round 10 **************************
+[*] Stopping peer n24.
+n24.db.testnet.diva.local
+n24.testnet.diva.local
+[*] Another ping arrived after 85 sec in block nr. 13 with 23 peers up out of 33 peers.
+
+****************************** start test round 11 **************************
+[*] Stopping peer n23.
+n23.db.testnet.diva.local
+n23.testnet.diva.local
+[*] Another ping arrived after 56 sec in block nr. 14 with 22 peers up out of 33 peers.
+
+****************************** start test round 12 **************************
+[*] Stopping peer n22.
+n22.db.testnet.diva.local
+n22.testnet.diva.local
+[*] Another ping arrived after 54 sec in block nr. 15 with 21 peers up out of 33 peers.
+
+****************************** start test round 13 **************************
+[*] Stopping peer n21.
+n21.db.testnet.diva.local
+n21.testnet.diva.local
+[*] Another ping arrived after 97 sec in block nr. 16 with 20 peers up out of 33 peers.
+
+****************************** start test round 14 **************************
+[*] Stopping peer n20.
+n20.db.testnet.diva.local
+n20.testnet.diva.local
+[*] No other ping arrived after 900 sec with 19 peers up out of 33 peers.
+
+****************************** start test round 15 **************************
+[*] Stopping peer n19.
+n19.db.testnet.diva.local
+n19.testnet.diva.local
+[*] No other ping arrived after 900 sec with 18 peers up out of 33 peers.
+
+****************************** start test round 16 **************************
+[*] Stopping peer n18.
+n18.db.testnet.diva.local
+n18.testnet.diva.local
+[*] No other ping arrived after 900 sec with 17 peers up out of 33 peers.
+
+****************************** start test round 17 **************************
+[*] Stopping peer n17.
+n17.db.testnet.diva.local
+n17.testnet.diva.local
+[*] No other ping arrived after 60 sec with 16 peers up out of 33 peers.
+
+****************************** start test round 18 **************************
+[*] Stopping peer n16.
+n16.db.testnet.diva.local
+n16.testnet.diva.local
+[*] No other ping arrived after 60 sec with 15 peers up out of 33 peers.
+
+****************************** start test round 19 **************************
+[*] Stopping peer n15.
+n15.db.testnet.diva.local
+n15.testnet.diva.local
+[*] No other ping arrived after 60 sec with 14 peers up out of 33 peers.
+
+****************************** start test round 20 **************************
+[*] Stopping peer n14.
+n14.db.testnet.diva.local
+n14.testnet.diva.local
+[*] No other ping arrived after 60 sec with 13 peers up out of 33 peers.
+
+****************************** start test round 21 **************************
+[*] Stopping peer n13.
+n13.db.testnet.diva.local
+n13.testnet.diva.local
+[*] No other ping arrived after 60 sec with 12 peers up out of 33 peers.
+
+****************************** start test round 22 **************************
+[*] Stopping peer n12.
+n12.db.testnet.diva.local
+n12.testnet.diva.local
+[*] No other ping arrived after 60 sec with 11 peers up out of 33 peers.
+
+****************************** start test round 23 **************************
+[*] Stopping peer n11.
+n11.db.testnet.diva.local
+n11.testnet.diva.local
+[*] No other ping arrived after 60 sec with 10 peers up out of 33 peers.
+
+****************************** start test round 24 **************************
+[*] Stopping peer n10.
+n10.db.testnet.diva.local
+n10.testnet.diva.local
+[*] No other ping arrived after 60 sec with 9 peers up out of 33 peers.
+
+****************************** start test round 25 **************************
+[*] Stopping peer n9.
+n9.db.testnet.diva.local
+n9.testnet.diva.local
+[*] No other ping arrived after 60 sec with 8 peers up out of 33 peers.
+
+****************************** start test round 26 **************************
+[*] Stopping peer n8.
+n8.db.testnet.diva.local
+n8.testnet.diva.local
+[*] No other ping arrived after 60 sec with 7 peers up out of 33 peers.
+
+****************************** start test round 27 **************************
+[*] Stopping peer n7.
+n7.db.testnet.diva.local
+n7.testnet.diva.local
+[*] No other ping arrived after 60 sec with 6 peers up out of 33 peers.
+
+****************************** start test round 28 **************************
+[*] Stopping peer n6.
+n6.db.testnet.diva.local
+n6.testnet.diva.local
+[*] No other ping arrived after 60 sec with 5 peers up out of 33 peers.
+
+****************************** start test round 29 **************************
+[*] Stopping peer n5.
+n5.db.testnet.diva.local
+n5.testnet.diva.local
+[*] No other ping arrived after 60 sec with 4 peers up out of 33 peers.
+
+****************************** start test round 30 **************************
+[*] Stopping peer n4.
+n4.db.testnet.diva.local
+n4.testnet.diva.local
+[*] No other ping arrived after 60 sec with 3 peers up out of 33 peers.
+
+****************************** start test round 31 **************************
+[*] Stopping peer n3.
+n3.db.testnet.diva.local
+n3.testnet.diva.local
+[*] No other ping arrived after 60 sec with 2 peers up out of 33 peers.
+
+****************************** start test round 32 **************************
+[*] Stopping peer n2.
+n2.db.testnet.diva.local
+n2.testnet.diva.local
+[*] No other ping arrived after 60 sec with 1 peers up out of 33 peers.
+
+****************************** start test round 33 **************************
+[*] Stopping peer n1.
+n1.db.testnet.diva.local
+n1.testnet.diva.local
+[*] No other ping arrived after 60 sec with 0 peers up out of 33 peers.
+
+------------------------------ docker volumes down ---------------------------
+Stopping explorer.testnet.diva.local ... done
+Stopping api.testnet.diva.local      ... done
+Removing n31.testnet.diva.local      ... 
+Removing n25.db.testnet.diva.local   ... 
+Removing n25.testnet.diva.local      ... 
+Removing n13.testnet.diva.local      ... 
+Removing n16.db.testnet.diva.local   ... 
+Removing n28.db.testnet.diva.local   ... 
+Removing n8.db.testnet.diva.local    ... 
+Removing n21.testnet.diva.local      ... 
+Removing n10.testnet.diva.local      ... 
+Removing n6.testnet.diva.local       ... 
+Removing n2.testnet.diva.local       ... 
+Removing n15.testnet.diva.local      ... 
+Removing explorer.testnet.diva.local ... 
+Removing n23.testnet.diva.local      ... 
+Removing n30.db.testnet.diva.local   ... 
+Removing n17.testnet.diva.local      ... 
+Removing n18.testnet.diva.local      ... 
+Removing n10.testnet.diva.local      ... done
+Removing n14.db.testnet.diva.local   ... done
+Removing n7.db.testnet.diva.local    ... done
+Removing n32.testnet.diva.local      ... done
+Removing api.testnet.diva.local      ... done
+Removing n19.db.testnet.diva.local   ... done
+Removing n1.db.testnet.diva.local    ... done
+Removing n5.testnet.diva.local       ... done
+Removing n6.db.testnet.diva.local    ... done
+Removing n17.db.testnet.diva.local   ... done
+Removing n16.testnet.diva.local      ... done
+Removing n14.testnet.diva.local      ... done
+Removing n15.db.testnet.diva.local   ... done
+Removing n23.db.testnet.diva.local   ... done
+Removing n22.db.testnet.diva.local   ... done
+Removing n7.testnet.diva.local       ... done
+Removing n32.db.testnet.diva.local   ... done
+Removing n29.db.testnet.diva.local   ... done
+Removing n21.db.testnet.diva.local   ... done
+Removing n26.db.testnet.diva.local   ... done
+Removing n27.testnet.diva.local      ... done
+Removing n12.testnet.diva.local      ... done
+Removing n5.db.testnet.diva.local    ... done
+Removing n1.testnet.diva.local       ... done
+Removing n18.db.testnet.diva.local   ... done
+Removing n19.testnet.diva.local      ... done
+Removing n31.db.testnet.diva.local   ... done
+Removing n13.db.testnet.diva.local   ... done
+Removing n26.testnet.diva.local      ... done
+Removing n4.testnet.diva.local       ... done
+Removing n20.db.testnet.diva.local   ... done
+Removing n4.db.testnet.diva.local    ... done
+Removing n24.db.testnet.diva.local   ... done
+Removing n3.db.testnet.diva.local    ... done
+Removing n9.db.testnet.diva.local    ... done
+Removing n27.db.testnet.diva.local   ... done
+Removing n29.testnet.diva.local      ... done
+Removing n30.testnet.diva.local      ... done
+Removing n9.testnet.diva.local       ... done
+Removing n20.testnet.diva.local      ... done
+Removing n3.testnet.diva.local       ... done
+Removing n33.db.testnet.diva.local   ... done
+Removing n22.testnet.diva.local      ... done
+Removing n11.testnet.diva.local      ... done
+Removing n2.db.testnet.diva.local    ... done
+Removing n24.testnet.diva.local      ... done
+Removing n12.db.testnet.diva.local   ... done
+Removing n28.testnet.diva.local      ... done
+Removing n11.db.testnet.diva.local   ... done
+Removing n33.testnet.diva.local      ... done
+Removing n8.testnet.diva.local       ... done
+Removing network network.testnet.diva.local
+
+[*] Done.
+
+------------------------------ docker remove all -----------------------------
+Total reclaimed space: 0B
+Deleted Volumes:
+n22.testnet.diva.local
+n19.testnet.diva.local
+n24.db.testnet.diva.local
+n1.testnet.diva.local
+n4.testnet.diva.local
+n9.testnet.diva.local
+n30.testnet.diva.local
+n2.db.testnet.diva.local
+n20.testnet.diva.local
+n5.db.testnet.diva.local
+n27.db.testnet.diva.local
+n30.db.testnet.diva.local
+n12.testnet.diva.local
+n18.testnet.diva.local
+n16.db.testnet.diva.local
+api.testnet.diva.local
+n21.testnet.diva.local
+n24.testnet.diva.local
+n6.db.testnet.diva.local
+n19.db.testnet.diva.local
+n22.db.testnet.diva.local
+n31.db.testnet.diva.local
+n10.db.testnet.diva.local
+n33.db.testnet.diva.local
+n11.testnet.diva.local
+n25.testnet.diva.local
+n27.testnet.diva.local
+n28.testnet.diva.local
+n29.testnet.diva.local
+n8.db.testnet.diva.local
+n26.db.testnet.diva.local
+n8.testnet.diva.local
+n32.testnet.diva.local
+n33.testnet.diva.local
+n11.db.testnet.diva.local
+n14.db.testnet.diva.local
+n21.db.testnet.diva.local
+explorer.testnet.diva.local
+n10.testnet.diva.local
+n15.testnet.diva.local
+n17.testnet.diva.local
+n26.testnet.diva.local
+n1.db.testnet.diva.local
+n20.db.testnet.diva.local
+n32.db.testnet.diva.local
+n2.testnet.diva.local
+n3.testnet.diva.local
+n7.db.testnet.diva.local
+n9.db.testnet.diva.local
+n23.db.testnet.diva.local
+n25.db.testnet.diva.local
+n7.testnet.diva.local
+n23.testnet.diva.local
+n28.db.testnet.diva.local
+a910047b14285d0dee82f7d5bbad797d9dfaf24cd8a73f3f1fba9d72061e2291
+n5.testnet.diva.local
+n6.testnet.diva.local
+n13.testnet.diva.local
+n16.testnet.diva.local
+n12.db.testnet.diva.local
+n17.db.testnet.diva.local
+n14.testnet.diva.local
+n31.testnet.diva.local
+n4.db.testnet.diva.local
+n13.db.testnet.diva.local
+n29.db.testnet.diva.local
+n18.db.testnet.diva.local
+n3.db.testnet.diva.local
+n15.db.testnet.diva.local
+
+Total reclaimed space: 1.635GB
+
+[*] Done.
+
+------------------------------ results - 33 peers total ----------------------
+ peers up | ping at | signs | signers 
+------------------------------------------------------------------------------
+       33 |      80 |    17 | n19, n22,  n2, n27, n20, n17, n16, n28,  n5, n18, n33,  n8, n15, n21, n26,  n4, n11
+       32 |      58 |    18 |  n1, n20, n30, n22, n27, n19,  n2, n16, n17, n26, n25, n12, n21,  n4,  n5, n28, n32, n15
+       31 |      55 |    17 | n22, n16, n20,  n2, n12, n26, n21,  n5,  n4, n24, n29, n28, n31, n15,  n6, n18, n10
+       30 |      60 |    17 |  n1, n23, n21,  n2, n14, n19, n27, n20,  n8, n18, n10, n22, n28, n16, n17,  n3, n30
+       29 |      58 |    18 |  n1,  n2, n19, n12, n26, n21, n14, n18,  n5, n16, n28, n25, n10,  n6, n24,  n7, n17,  n3
+       28 |      62 |    17 |  n1, n21,  n6, n26, n12,  n5, n24, n18,  n9,  n2, n14,  n3, n19, n13,  n4, n23, n15
+       27 |      82 |    17 |  n1, n22, n16, n27, n17, n21,  n3,  n9,  n7, n11, n18,  n8, n10,  n4, n26, n12, n23
+       26 |      98 |    18 |  n1, n15, n22, n17, n19,  n2, n26, n16,  n5,  n6, n25, n14,  n8,  n4, n24, n18, n10, n20
+       25 |      59 |    18 |  n1, n22, n19, n17, n16, n23, n25, n24, n12, n15, n18, n11,  n4,  n5,  n6, n21,  n2,  n3
+       24 |     106 |    18 |  n1, n12, n21, n24,  n9, n15, n14, n16,  n2,  n4, n13,  n7, n17, n11, n19, n18,  n5, n10
+       23 |      85 |    18 |  n1, n22, n16,  n4, n17, n19,  n5,  n2,  n7, n13, n20, n18, n10,  n6, n12,  n8, n14,  n3
+       22 |      56 |    18 |  n1, n19, n17, n22, n16, n18, n11, n14,  n7, n10, n21,  n2,  n8,  n4, n12, n13,  n9,  n3
+       21 |      54 |    17 |  n1, n19, n16,  n2, n17, n18,  n7,  n5, n10,  n4, n13,  n8, n11, n12,  n6,  n9, n14
+       20 |      97 |    18 |  n1, n12,  n6, n14, n15,  n9,  n3, n20, n19,  n2,  n4,  n7, n17,  n5, n16, n11, n13, n18
+       19 |     900 |    -- | --
+       18 |     900 |    -- | --
+       17 |     900 |    -- | --
+       16 |      60 |    -- | --
+       15 |      60 |    -- | --
+       14 |      60 |    -- | --
+       13 |      60 |    -- | --
+       12 |      60 |    -- | --
+       11 |      60 |    -- | --
+       10 |      60 |    -- | --
+        9 |      60 |    -- | --
+        8 |      60 |    -- | --
+        7 |      60 |    -- | --
+        6 |      60 |    -- | --
+        5 |      60 |    -- | --
+        4 |      60 |    -- | --
+        3 |      60 |    -- | --
+        2 |      60 |    -- | --
+        1 |      60 |    -- | --
+        0 |      60 |    -- | --
