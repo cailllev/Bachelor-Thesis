@@ -1,4 +1,4 @@
-# python3 P3.py [all | <peers_count> | <None>]
+# python3 T3.py [all | <peers_count> | <None>]
 
 from setup.setup import download, setup, start_testnet, stop_testnet, delete, API
 from utils import *
@@ -25,12 +25,10 @@ def test(peers, optimized):
 			# wait for the first ping to ensure the network is working
 			blocks = []
 			while len(blocks) <= 1 or not is_ping(blocks[0]):  # blocks[0] is always the newest block
-				print(f"\r[#] Wait for first ping, waited for {waiting} sec ...", end="")					
-
 				blocks = get_blocks()
 				sleep_till_whole_sec()
 
-			print(f"\n[*] Got first ping, start test P3.")
+			print(f"\n[*] Got first ping, start test T3.")
 
 			if optimized:
 				start = peers // 2 # start + 1 would be able to get a ping (technically)
@@ -104,7 +102,7 @@ def test(peers, optimized):
 		delete()
 
 	try:
-		print(render_results(results, peers, ["peers up", "ping at", "signs", "signers"], "P3"))
+		print(render_results(results, peers, ["peers up", "ping at", "signs", "signers"], "T3"))
 	
 	except BaseException as e:
 		print("\n[!] Unexpected Error!")
@@ -122,14 +120,14 @@ if __name__ == "__main__":
 		if argv[1] in ["All", "all", "A", "a"]:
 			for peers in optimalPeers:
 				print("******************************************************************************")
-				print(f"[*] Starting test P3 with {peers} peers.")
+				print(f"[*] Starting test T3 with {peers} peers.")
 				print("******************************************************************************")
 				test(peers, optimized=True)
 
 		# test given peers count
 		else:
 			peers = int(argv[1])
-			test(peers, optimized=False)
+			test(peers, optimized=True)
 
 	# test default peers count
 	else:

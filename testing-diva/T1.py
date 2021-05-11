@@ -1,4 +1,4 @@
-# python3 P1.py [all | <peers_count> | <None>]
+# python3 T1.py [all | <peers_count> | <None>]
 
 from setup.setup import download, setup, start_testnet, stop_testnet, delete, API
 from utils import *
@@ -101,7 +101,7 @@ def test(peers):
 		delete()
 
 	try:
-		print(render_results(results, peers, ["peers up", "ping at", "signs",  "signers"], "P1"))
+		print(render_results(results, peers, ["peers up", "ping at", "signs",  "signers"], "T1"))
 	
 	except BaseException as e:
 		print("\n[!] Unexpected Error!")
@@ -118,7 +118,7 @@ if __name__ == "__main__":
 		if argv[1] in ["All", "all", "A", "a"]:
 			for peers in optimalPeers:
 				print("******************************************************************************")
-				print(f"[*] Starting test P1 with {peers} peers.")
+				print(f"[*] Starting test T1 with {peers} peers.")
 				print("******************************************************************************")
 				test(peers)
 
