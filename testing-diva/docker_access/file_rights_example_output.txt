@@ -1,0 +1,11 @@
+file rights of testfile.txt:
+-rw-rw-r-- 1 root root 8 May 13 05:29 testfile.txt
+
+cat content of testfile.txt:
+content
+
+overwrite content of testfile.txt:
+./file_rights_example.sh: line 8: testfile.txt: Permission denied
+
+excecute testfile.txt:
+./file_rights_example.sh: line 11: ./testfile.txt: Permission denied
