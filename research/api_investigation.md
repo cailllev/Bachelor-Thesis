@@ -97,7 +97,20 @@ gets private key from ``buffer_1.Buffer.frompublic
 
                     * ``hash(transaction)``<br>
 function on line 91 in ``/package/lib/txHelper.js``<br>
-hashes ``transaction.getPayload()`` with ``js-sha3``
+hashes ``transaction.getPayload()`` with ``js_sha3_1.sha3_256``
+
+                      * ``js_sha3_1``<br>
+variable defined in ``/package/lib/txHelper.js`` on line 5<br>
+``var js_sha3_1 = require("js-sha3")``
+
+						* ``js_sha3_1``<br>
+variable defined in ``/package/lib/txHelper.js`` on line 5<br>
+``var js_sha3_1 = require("js-sha3")``
+
+						  * ``js-sha3`` in ``package.json``<br>
+dependency defined on line 41 in ``package.json``<br>
+``"js-sha3": "^0.8.0"``<br>
+no vulns according to https://snyk.io/vuln/npm:js-sha3
 
                     * ``cryptoHelper_1``<br>
 variable defined in ``/package/lib/txHelper.js`` on line 12<br>
@@ -105,7 +118,17 @@ variable defined in ``/package/lib/txHelper.js`` on line 12<br>
 
 
                       * ``cryptoHelper.js``<br>
-TODO
+``sign(...)`` function on line 61, signs the payload with private and public key<br>
+``ed25519sha3.sign(...)`` on line 64
+
+                        * ``ed25519sha3``<br>
+variable defined in ``/package/lib/cryptoHelper.js`` on line 5<br>
+``var ed25519sha3 = tslib_1.__importStar(require("ed25519.js"))``
+
+						  * ``ed25519.js`` in ``package.json``<br>
+dependency defined on line 39 in ``package.json``<br>
+``"ed25519.js": "^1.3.0"``<br>
+no vulns according to https://snyk.io/vuln/npm:ed25519.js
 
             * ``util_1.sendTransaction(...)``<br>
 function on line 105 from ``/package/lib/util.js``<br>
