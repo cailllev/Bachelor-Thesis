@@ -1,0 +1,10 @@
+All
+
+-Kein Meeting Donnertags.
+-Umgehen des Add-Peer Problems dadurch, dass wir nur bis zur Grenze der Annhame eines Kommandos im Netzwerk gehen.
+
+ 
+Students
+---------------
+-Tests durchführen
+-Schriftliche Arbeit
