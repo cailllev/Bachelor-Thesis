@@ -73,6 +73,7 @@ sudo docker-compose -f setup_iroha.yml down --volumes
 # **********
 # Altough the access rights of the files are: 
 # -rw-rw-r-- 1 root root   64 Apr  1 04:40 n1.priv
+
 # "docker exec" is only excecutable by root and the folder "/var/lib/docker" is only readable and writeable by root:
 # $ ls -alh /var/lib/ | grep docker
 # drwx--x--x 14 root          root          4.0K May 13 04:47 docker
@@ -81,4 +82,4 @@ sudo docker-compose -f setup_iroha.yml down --volumes
 # $ sudo ls -alh /var/lib/docker | grep volumes
 # drwx------  3 root root  12K May 13 05:16 volumes
 
-# Additionally, there are no executable files in the docker container nor set UID binaries, so the keys are protected as well as it's possible.
+# Additionally, there are no executable files in the docker container nor "set UID binaries", so the keys are protected as well as it's possible.
