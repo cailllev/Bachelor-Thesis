@@ -1,3 +1,6 @@
+# is not runnable on it's own (makes no sense)
+
+
 from setup.setup import API, EXPLORER, keys_path
 from setup.combine_texts import peers_ips
 

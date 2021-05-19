@@ -1,4 +1,5 @@
 # python3 peer_db_text.py
+# -> can be run from any folder
 
 def peer_db_text(peer_ip, peer_nr):
   return f"\

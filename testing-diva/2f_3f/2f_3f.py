@@ -1,5 +1,5 @@
-#!/usr/bin/python3
 # python3 2f_3f.py [peers] [only_optimal]
+# -> can be run from any folder
 
 from math import floor
 import sys

@@ -1,4 +1,5 @@
-#!/usr/bin/python3
+# python3 combine_texts.py
+# -> can be run from any folder
 
 # normal usage from parent dir
 try:

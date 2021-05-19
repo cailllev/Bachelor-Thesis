@@ -1,4 +1,5 @@
 # python3 peer_text.py
+# -> can be run from any folder
 
 def peer_text(peer_ip, peer_nr, peer_ips, peer_nrs):
   string = f"\

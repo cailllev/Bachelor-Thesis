@@ -1,5 +1,5 @@
-#!/usr/bin/python3
-# python3 setup/setup.py
+# python3 setup.py
+# -> can be run from any folder
 
 
 import os
@@ -39,7 +39,7 @@ def download():
 	output = subprocess.check_output(["sudo", "docker", "ps", "-a"])
 	running = len(output.split(b"\n")) - 2 # -1 for header and last \n
 	if running > 0:
-	
+
 		# check if the original yml file is there to remove the containers
 		if os.path.isfile(yml_file):
 			os.system(f"sudo docker-compose -f {yml_file} down --volumes")
@@ -65,7 +65,7 @@ def setup(peers, benchmark=False):
 		cleanup()
 
 	with open(yml_file, "w") as f:
-		f.write(yml_content)	
+		f.write(yml_content)
 	
 
 	print("\n------------------------------ create docker containers ----------------------")
@@ -74,8 +74,7 @@ def setup(peers, benchmark=False):
 	os.system("sudo docker volume prune -f")
 	os.system(f"sudo docker-compose -f {yml_file} up --no-start")
 	
-	
-	# all peers up, return without explorer and api started
+	# all peers created, return without adapting the genesis block and iroha nodes
 	if benchmark:
 		return
 
