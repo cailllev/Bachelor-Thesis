@@ -1,11 +1,4 @@
 from setup.setup import download, setup, start_testnet, stop_testnet, delete, API, EXPLORER
-from utils import *
-
-from pprint import pprint
-from time import sleep
-
-import requests as req
-import json
 
 NODES = 50
 BENCHMARK = True
