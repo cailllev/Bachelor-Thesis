@@ -18,8 +18,8 @@ def benchmark():
 	print("\n------------------------------ network up - check ram and cpu usage ----------")
 	print("Enter following in separate terminal:")
 
-	 # takes 5 snapshots of top, takes the header of those snapshots and saves them to top_benchmark.txt
-	input("$ top -b -n 5 -d 1 | grep \"top - \" -A5 > top_benchmark.txt")
+	 # takes 5 snapshots of top, takes the header of those snapshots and saves them to system_resources_results.txt
+	input("$ top -b -n 5 -d 1 | grep \"top - \" -A5 > system_resources_results.txt")
 
 	stop_testnet()
 	delete()
