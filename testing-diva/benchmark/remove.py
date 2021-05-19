@@ -1,4 +1,4 @@
-# cp benchmark/remove.py . && python3 remove.py; rm remove.py
+# cp benchmark/remove.py . && python3 remove.py 9; rm remove.py
 # -> has to be run from inside testing-diva folder
 
 from setup.setup import download, setup, start_testnet, stop_testnet, delete

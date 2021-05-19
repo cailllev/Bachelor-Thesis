@@ -145,6 +145,10 @@ def start_testnet(peers, benchmark=False):
 	print("\n------------------------------ start the containers --------------------------")
 	os.system(f"sudo docker-compose -f {yml_file} up -d")
 
+	# do not test connection on benchmark
+	if benchmark:
+		return
+
 	print("\n------------------------------ test connection -------------------------------")
 	print("[*] Testnet is up and running, sending test-request to diva-api/about and explorer.")
 
@@ -224,6 +228,7 @@ def delete():
 	os.system(f"sudo docker system prune -f")
 	os.system(f"sudo docker network prune -f")
 	os.system(f"sudo docker volume prune -f")
+	os.system(f"rm {yml_file}")
 	print("\n[*] Done.")
 
 
