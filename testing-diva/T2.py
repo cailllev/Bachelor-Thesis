@@ -1,4 +1,5 @@
 # python3 T2.py [all | <peers_count> | <None>]
+# -> has to be run from inside testing-diva folder
 
 from setup.setup import download, setup, start_testnet, stop_testnet, delete
 from utils import *
