@@ -29,8 +29,6 @@ TIMEOUT = 60  # sec
 API = "http://172.29.101.30:19012"
 EXPLORER = "http://172.29.101.100:3920"
 
-remove_orphans = False
-
 
 def download():
 	print("\n------------------------------ docker stop and remove volumes ----------------")
