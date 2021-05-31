@@ -6,5 +6,5 @@ All
  
 Students
 ---------------
--Tests durchführen
+
 -Schriftliche Arbeit
