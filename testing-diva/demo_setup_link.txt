@@ -1,0 +1,4 @@
+$ asciinema upload demo_setup.cast 
+View the recording at:
+
+    https://asciinema.org/a/RbZdRdgBsJVyBzNMq8OfwoClZ
